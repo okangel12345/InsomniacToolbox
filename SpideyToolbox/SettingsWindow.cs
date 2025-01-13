@@ -32,6 +32,7 @@ namespace SpideyToolbox
             
             check_AutoLoadToc.Checked = settings._autoloadRecent;
             textBox_AuthorName.Text = settings._authorName;
+            check_LoadModToc.Checked = settings._loadtocModded;
         }
 
         // Save and load methods
@@ -63,6 +64,7 @@ namespace SpideyToolbox
             {
                 _autoloadRecent = check_AutoLoadToc.Checked,
                 _authorName = textBox_AuthorName.Text,
+                _loadtocModded = check_LoadModToc.Checked,
             };
 
             SaveSettings(settings);

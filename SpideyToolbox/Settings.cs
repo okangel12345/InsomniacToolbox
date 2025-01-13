@@ -11,6 +11,7 @@ namespace SpideyToolbox
         // Modding settings
         //------------------------------------------------------------------------------------------
         public bool _autoloadRecent { get; set; }
+        public bool _loadtocModded { get; set; }
         public string _authorName { get; set; }
 
         // Save most recent TOCs

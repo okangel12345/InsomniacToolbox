@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             statusStrip1 = new StatusStrip();
             OverlayHeaderLabel = new ToolStripStatusLabel();
             OverlayOperationLabel = new ToolStripStatusLabel();
             TreeView_Assets = new TreeView();
             dataGridView_Files = new DataGridView();
-            AssetSelected = new DataGridViewCheckBoxColumn();
             FileName = new DataGridViewTextBoxColumn();
             Size = new DataGridViewTextBoxColumn();
             Archive = new DataGridViewTextBoxColumn();
@@ -52,7 +52,6 @@
             hashesToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             searchByNameToolStripMenuItem = new ToolStripMenuItem();
-            advancedSearchToolStripMenuItem = new ToolStripMenuItem();
             jumpToHashToolStripMenuItem = new ToolStripMenuItem();
             modToolStripMenuItem = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
@@ -61,6 +60,17 @@
             helpToolStripMenuItem = new ToolStripMenuItem();
             informationToolStripMenuItem = new ToolStripMenuItem();
             discordToolStripMenuItem = new ToolStripMenuItem();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            assetSelectedToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem7 = new ToolStripMenuItem();
+            ExtractSelectedtoolStripMenuItem = new ToolStripMenuItem();
+            extractAsasciiToolStripMenuItem = new ToolStripMenuItem();
+            extractAsddsToolStripMenuItem = new ToolStripMenuItem();
+            extractToStageToolStripMenuItem = new ToolStripMenuItem();
+            replaceAssetToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem8 = new ToolStripMenuItem();
+            copyPathToolStripMenuItem = new ToolStripMenuItem();
+            copyHashToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -68,6 +78,7 @@
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             menuStrip1.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // statusStrip1
@@ -102,7 +113,7 @@
             TreeView_Assets.Name = "TreeView_Assets";
             TreeView_Assets.Size = new Size(311, 508);
             TreeView_Assets.TabIndex = 1;
-            TreeView_Assets.NodeMouseClick += TreeView_Assets_NodeMouseClick;
+            TreeView_Assets.AfterSelect += TreeView_Assets_AfterSelect;
             // 
             // dataGridView_Files
             // 
@@ -110,7 +121,7 @@
             dataGridView_Files.AllowUserToDeleteRows = false;
             dataGridView_Files.AllowUserToResizeRows = false;
             dataGridView_Files.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { AssetSelected, FileName, Size, Archive, Span });
+            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span });
             dataGridView_Files.Dock = DockStyle.Fill;
             dataGridView_Files.Location = new Point(0, 0);
             dataGridView_Files.Name = "dataGridView_Files";
@@ -118,13 +129,7 @@
             dataGridView_Files.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView_Files.Size = new Size(624, 508);
             dataGridView_Files.TabIndex = 2;
-            // 
-            // AssetSelected
-            // 
-            AssetSelected.FillWeight = 5F;
-            AssetSelected.HeaderText = "";
-            AssetSelected.Name = "AssetSelected";
-            AssetSelected.Width = 20;
+            dataGridView_Files.MouseClick += dataGridView_Files_MouseClick;
             // 
             // FileName
             // 
@@ -170,7 +175,6 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(panel_Main);
             splitContainer1.Panel2.Controls.Add(dataGridView_Files);
             splitContainer1.Size = new Size(939, 508);
             splitContainer1.SplitterDistance = 311;
@@ -178,9 +182,9 @@
             // 
             // panel_Main
             // 
-            panel_Main.Location = new Point(515, 429);
+            panel_Main.Location = new Point(904, 27);
             panel_Main.Name = "panel_Main";
-            panel_Main.Size = new Size(97, 76);
+            panel_Main.Size = new Size(35, 169);
             panel_Main.TabIndex = 5;
             // 
             // menuStrip1
@@ -202,7 +206,8 @@
             // loadTOCToolStripMenuItem
             // 
             loadTOCToolStripMenuItem.Name = "loadTOCToolStripMenuItem";
-            loadTOCToolStripMenuItem.Size = new Size(148, 22);
+            loadTOCToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
+            loadTOCToolStripMenuItem.Size = new Size(177, 22);
             loadTOCToolStripMenuItem.Text = "Load TOC...";
             loadTOCToolStripMenuItem.Click += loadTOCToolStripMenuItem_Click;
             // 
@@ -210,7 +215,7 @@
             // 
             loadRecentToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem2, toolStripMenuItem3, toolStripMenuItem4, toolStripMenuItem5, toolStripMenuItem6 });
             loadRecentToolStripMenuItem.Name = "loadRecentToolStripMenuItem";
-            loadRecentToolStripMenuItem.Size = new Size(148, 22);
+            loadRecentToolStripMenuItem.Size = new Size(177, 22);
             loadRecentToolStripMenuItem.Text = "Load Recent...";
             // 
             // toolStripMenuItem2
@@ -246,12 +251,12 @@
             // hashesToolStripMenuItem
             // 
             hashesToolStripMenuItem.Name = "hashesToolStripMenuItem";
-            hashesToolStripMenuItem.Size = new Size(148, 22);
+            hashesToolStripMenuItem.Size = new Size(177, 22);
             hashesToolStripMenuItem.Text = "Hashes... >";
             // 
             // searchToolStripMenuItem
             // 
-            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { searchByNameToolStripMenuItem, advancedSearchToolStripMenuItem, jumpToHashToolStripMenuItem });
+            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { searchByNameToolStripMenuItem, jumpToHashToolStripMenuItem });
             searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             searchToolStripMenuItem.Size = new Size(54, 20);
             searchToolStripMenuItem.Text = "Search";
@@ -259,14 +264,10 @@
             // searchByNameToolStripMenuItem
             // 
             searchByNameToolStripMenuItem.Name = "searchByNameToolStripMenuItem";
+            searchByNameToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
             searchByNameToolStripMenuItem.Size = new Size(195, 22);
             searchByNameToolStripMenuItem.Text = "Search...";
-            // 
-            // advancedSearchToolStripMenuItem
-            // 
-            advancedSearchToolStripMenuItem.Name = "advancedSearchToolStripMenuItem";
-            advancedSearchToolStripMenuItem.Size = new Size(195, 22);
-            advancedSearchToolStripMenuItem.Text = "Advanced Search...";
+            searchByNameToolStripMenuItem.Click += searchByNameToolStripMenuItem_Click;
             // 
             // jumpToHashToolStripMenuItem
             // 
@@ -310,14 +311,109 @@
             // informationToolStripMenuItem
             // 
             informationToolStripMenuItem.Name = "informationToolStripMenuItem";
-            informationToolStripMenuItem.Size = new Size(137, 22);
+            informationToolStripMenuItem.ShortcutKeys = Keys.F11;
+            informationToolStripMenuItem.Size = new Size(162, 22);
             informationToolStripMenuItem.Text = "Information";
             // 
             // discordToolStripMenuItem
             // 
             discordToolStripMenuItem.Name = "discordToolStripMenuItem";
-            discordToolStripMenuItem.Size = new Size(137, 22);
+            discordToolStripMenuItem.ShortcutKeys = Keys.F12;
+            discordToolStripMenuItem.Size = new Size(162, 22);
             discordToolStripMenuItem.Text = "Discord";
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { assetSelectedToolStripMenuItem, toolStripMenuItem7, ExtractSelectedtoolStripMenuItem, extractAsasciiToolStripMenuItem, extractAsddsToolStripMenuItem, extractToStageToolStripMenuItem, replaceAssetToolStripMenuItem, toolStripMenuItem8, copyPathToolStripMenuItem, copyHashToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(215, 224);
+            // 
+            // assetSelectedToolStripMenuItem
+            // 
+            assetSelectedToolStripMenuItem.BackColor = Color.Black;
+            assetSelectedToolStripMenuItem.ForeColor = SystemColors.Control;
+            assetSelectedToolStripMenuItem.Name = "assetSelectedToolStripMenuItem";
+            assetSelectedToolStripMenuItem.Size = new Size(214, 22);
+            assetSelectedToolStripMenuItem.Text = "N assets selected";
+            // 
+            // toolStripMenuItem7
+            // 
+            toolStripMenuItem7.BackColor = Color.Black;
+            toolStripMenuItem7.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripMenuItem7.Enabled = false;
+            toolStripMenuItem7.ForeColor = SystemColors.Control;
+            toolStripMenuItem7.Name = "toolStripMenuItem7";
+            toolStripMenuItem7.Size = new Size(214, 22);
+            toolStripMenuItem7.Text = "____________________________";
+            // 
+            // ExtractSelectedtoolStripMenuItem
+            // 
+            ExtractSelectedtoolStripMenuItem.BackColor = Color.Black;
+            ExtractSelectedtoolStripMenuItem.ForeColor = SystemColors.Control;
+            ExtractSelectedtoolStripMenuItem.Name = "ExtractSelectedtoolStripMenuItem";
+            ExtractSelectedtoolStripMenuItem.Size = new Size(214, 22);
+            ExtractSelectedtoolStripMenuItem.Text = "Extract selected...";
+            ExtractSelectedtoolStripMenuItem.Click += ExtractSelectedtoolStripMenuItem_Click;
+            // 
+            // extractAsasciiToolStripMenuItem
+            // 
+            extractAsasciiToolStripMenuItem.BackColor = Color.Black;
+            extractAsasciiToolStripMenuItem.ForeColor = SystemColors.Control;
+            extractAsasciiToolStripMenuItem.Name = "extractAsasciiToolStripMenuItem";
+            extractAsasciiToolStripMenuItem.Size = new Size(214, 22);
+            extractAsasciiToolStripMenuItem.Text = "Extract as .ascii...";
+            extractAsasciiToolStripMenuItem.Click += extractAsasciiToolStripMenuItem_Click;
+            // 
+            // extractAsddsToolStripMenuItem
+            // 
+            extractAsddsToolStripMenuItem.BackColor = Color.Black;
+            extractAsddsToolStripMenuItem.ForeColor = SystemColors.Control;
+            extractAsddsToolStripMenuItem.Name = "extractAsddsToolStripMenuItem";
+            extractAsddsToolStripMenuItem.Size = new Size(214, 22);
+            extractAsddsToolStripMenuItem.Text = "Extract as .dds...";
+            // 
+            // extractToStageToolStripMenuItem
+            // 
+            extractToStageToolStripMenuItem.BackColor = Color.Black;
+            extractToStageToolStripMenuItem.ForeColor = SystemColors.Control;
+            extractToStageToolStripMenuItem.Name = "extractToStageToolStripMenuItem";
+            extractToStageToolStripMenuItem.Size = new Size(214, 22);
+            extractToStageToolStripMenuItem.Text = "Extract to stage...";
+            extractToStageToolStripMenuItem.Click += extractToStageToolStripMenuItem_Click;
+            // 
+            // replaceAssetToolStripMenuItem
+            // 
+            replaceAssetToolStripMenuItem.BackColor = Color.Black;
+            replaceAssetToolStripMenuItem.ForeColor = SystemColors.Control;
+            replaceAssetToolStripMenuItem.Name = "replaceAssetToolStripMenuItem";
+            replaceAssetToolStripMenuItem.Size = new Size(214, 22);
+            replaceAssetToolStripMenuItem.Text = "Replace selected...";
+            // 
+            // toolStripMenuItem8
+            // 
+            toolStripMenuItem8.BackColor = Color.Black;
+            toolStripMenuItem8.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripMenuItem8.Enabled = false;
+            toolStripMenuItem8.ForeColor = SystemColors.Control;
+            toolStripMenuItem8.Name = "toolStripMenuItem8";
+            toolStripMenuItem8.Size = new Size(214, 22);
+            toolStripMenuItem8.Text = "____________________________";
+            // 
+            // copyPathToolStripMenuItem
+            // 
+            copyPathToolStripMenuItem.BackColor = Color.Black;
+            copyPathToolStripMenuItem.ForeColor = SystemColors.Control;
+            copyPathToolStripMenuItem.Name = "copyPathToolStripMenuItem";
+            copyPathToolStripMenuItem.Size = new Size(214, 22);
+            copyPathToolStripMenuItem.Text = "Copy path";
+            // 
+            // copyHashToolStripMenuItem
+            // 
+            copyHashToolStripMenuItem.BackColor = Color.Black;
+            copyHashToolStripMenuItem.ForeColor = SystemColors.Control;
+            copyHashToolStripMenuItem.Name = "copyHashToolStripMenuItem";
+            copyHashToolStripMenuItem.Size = new Size(214, 22);
+            copyHashToolStripMenuItem.Text = "Copy hash";
             // 
             // MainWindow
             // 
@@ -325,6 +421,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(12, 12, 12);
             ClientSize = new Size(939, 560);
+            Controls.Add(panel_Main);
             Controls.Add(splitContainer1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
@@ -332,6 +429,8 @@
             MainMenuStrip = menuStrip1;
             Name = "MainWindow";
             Text = "WebWorks";
+            FormClosing += MainWindow_FormClosing;
+            Load += MainWindow_Load;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).EndInit();
@@ -341,6 +440,7 @@
             splitContainer1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -353,11 +453,6 @@
         private TreeView TreeView_Assets;
         private DataGridView dataGridView_Files;
         private SplitContainer splitContainer1;
-        private DataGridViewCheckBoxColumn AssetSelected;
-        private DataGridViewTextBoxColumn FileName;
-        private DataGridViewTextBoxColumn Size;
-        private DataGridViewTextBoxColumn Archive;
-        private DataGridViewTextBoxColumn Span;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem searchToolStripMenuItem;
@@ -370,7 +465,6 @@
         private ToolStripMenuItem hashesi30txtToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem searchByNameToolStripMenuItem;
-        private ToolStripMenuItem advancedSearchToolStripMenuItem;
         private ToolStripMenuItem jumpToHashToolStripMenuItem;
         private ToolStripMenuItem modToolStripMenuItem;
         private ToolStripMenuItem calculateHashToolStripMenuItem;
@@ -382,5 +476,20 @@
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem toolStripMenuItem5;
         private ToolStripMenuItem toolStripMenuItem6;
+        private DataGridViewTextBoxColumn FileName;
+        private DataGridViewTextBoxColumn Size;
+        private DataGridViewTextBoxColumn Archive;
+        private DataGridViewTextBoxColumn Span;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem ExtractSelectedtoolStripMenuItem;
+        private ToolStripMenuItem assetSelectedToolStripMenuItem;
+        private ToolStripMenuItem extractAsasciiToolStripMenuItem;
+        private ToolStripMenuItem extractAsddsToolStripMenuItem;
+        private ToolStripMenuItem extractToStageToolStripMenuItem;
+        private ToolStripMenuItem replaceAssetToolStripMenuItem;
+        private ToolStripMenuItem copyPathToolStripMenuItem;
+        private ToolStripMenuItem copyHashToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem8;
+        private ToolStripMenuItem toolStripMenuItem7;
     }
 }

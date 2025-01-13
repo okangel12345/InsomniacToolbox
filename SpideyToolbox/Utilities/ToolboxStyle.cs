@@ -7,14 +7,15 @@ namespace SpideyToolbox.Utilities
     {
         // Public static method to apply all styles to a form
         //------------------------------------------------------------------------------------------
-        public static void ApplyToolBoxStyle(Control parent, IntPtr hwnd, MenuStrip strip = null)
+        public static void ApplyToolBoxStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null)
         {
             ApplySplitContainerStyle(parent);
             ApplyDataGridViewStyle(parent);
             ApplyGroupBoxStyle(parent);
             ApplyButtonStyle(parent);
             SetTitleBarColor(hwnd);
-            ApplyDarkTheme(strip);
+            ApplyMenuStripDark(strip);
+            ApplyContextMenuStripDark(context);
             ApplyTreeViewStyle(parent);
         }
         //------------------------------------------------------------------------------------------
@@ -456,7 +457,29 @@ namespace SpideyToolbox.Utilities
             DwmSetWindowAttribute(hwnd, DWMWA_CAPTION_COLOR, ref finalColorValue, sizeof(int));
         }
 
-        public static void ApplyDarkTheme(MenuStrip MainMenuStrip)
+        public static void ApplyContextMenuStripDark(ContextMenuStrip contextMenuStrip)
+        {
+            if (contextMenuStrip != null)
+            {
+                contextMenuStrip.BackColor = Color.FromArgb(25, 25, 25); // ContextMenuStrip background set to black
+                contextMenuStrip.ForeColor = Color.White;
+
+                // Set custom renderer to ensure black border and full control styling
+                contextMenuStrip.Renderer = new CustomToolStripRenderer();
+
+                // Loop through all items in the ContextMenuStrip
+                foreach (var item in contextMenuStrip.Items)
+                {
+                    // Check if the item is a ToolStripMenuItem
+                    if (item is ToolStripMenuItem menuItem)
+                    {
+                        ApplyMenuItemStyle(menuItem); // Apply style only if it's a ToolStripMenuItem
+                    }
+                }
+            }
+        }
+
+        public static void ApplyMenuStripDark(MenuStrip MainMenuStrip)
         {
             if (MainMenuStrip != null)
             {

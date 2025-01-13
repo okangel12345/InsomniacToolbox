@@ -32,6 +32,7 @@
             textBox_AuthorName = new TextBox();
             check_AutoLoadToc = new CheckBox();
             label1 = new Label();
+            check_LoadModToc = new CheckBox();
             SuspendLayout();
             // 
             // btn_Save
@@ -53,10 +54,13 @@
             textBox_AuthorName.Name = "textBox_AuthorName";
             textBox_AuthorName.Size = new Size(273, 23);
             textBox_AuthorName.TabIndex = 2;
+            textBox_AuthorName.Text = "name";
             // 
             // check_AutoLoadToc
             // 
             check_AutoLoadToc.AutoSize = true;
+            check_AutoLoadToc.Checked = true;
+            check_AutoLoadToc.CheckState = CheckState.Checked;
             check_AutoLoadToc.ForeColor = SystemColors.Control;
             check_AutoLoadToc.Location = new Point(12, 119);
             check_AutoLoadToc.Name = "check_AutoLoadToc";
@@ -75,12 +79,26 @@
             label1.TabIndex = 4;
             label1.Text = "Author name:";
             // 
+            // check_LoadModToc
+            // 
+            check_LoadModToc.AutoSize = true;
+            check_LoadModToc.Checked = true;
+            check_LoadModToc.CheckState = CheckState.Checked;
+            check_LoadModToc.ForeColor = SystemColors.Control;
+            check_LoadModToc.Location = new Point(12, 94);
+            check_LoadModToc.Name = "check_LoadModToc";
+            check_LoadModToc.Size = new Size(130, 19);
+            check_LoadModToc.TabIndex = 5;
+            check_LoadModToc.Text = "Load modded TOCs";
+            check_LoadModToc.UseVisualStyleBackColor = true;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(12, 12, 12);
             ClientSize = new Size(404, 154);
+            Controls.Add(check_LoadModToc);
             Controls.Add(label1);
             Controls.Add(textBox_AuthorName);
             Controls.Add(check_AutoLoadToc);
@@ -97,5 +115,6 @@
         private CheckBox check_AutoLoadToc;
         private TextBox textBox_AuthorName;
         private Label label1;
+        private CheckBox check_LoadModToc;
     }
 }

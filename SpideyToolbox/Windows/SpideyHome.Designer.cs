@@ -34,12 +34,12 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.BackgroundImage = FormIcons.Spidey;
+            pictureBox1.BackgroundImage = WebWorks.Windows.FormIcons.Spidey;
             pictureBox1.BackgroundImageLayout = ImageLayout.Center;
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(957, 454);
+            pictureBox1.Size = new Size(957, 518);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -50,7 +50,7 @@
             BackColor = Color.FromArgb(12, 12, 12);
             Controls.Add(pictureBox1);
             Name = "SpideyHome";
-            Size = new Size(957, 454);
+            Size = new Size(957, 518);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
