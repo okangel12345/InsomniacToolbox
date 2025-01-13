@@ -1,21 +1,12 @@
 using DAT1;
-using Microsoft.VisualBasic;
+using SpideyTextureScaler;
 using SpideyToolbox.Utilities;
 using SpideyToolbox.Windows;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing.Text;
 using System.Globalization;
-using System.Runtime;
-using System.Text;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using WebWorks.Windows;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using WebWorks.Utilities;
 
 // Spidey Toolbox is an alternative Modding Tool for Insomniac Games videogames.
 //
@@ -35,7 +26,7 @@ namespace SpideyToolbox
             LoadSpideyPanel();
 
             // Apply Style
-            ToolboxStyle.ApplyToolBoxStyle(this, Handle, menuStrip1, contextMenuStrip1);
+            ModdingLab.ToolboxStyle.ApplyToolBoxStyle(this, Handle, menuStrip1, contextMenuStrip1);
             panel_Main.Dock = DockStyle.Fill;
         }
 
@@ -67,10 +58,31 @@ namespace SpideyToolbox
         #region User Settings
         private void LoadSpideyPanel()
         {
+            splitContainer1.Visible = false;
+
             ToolUtils toolUtils = new ToolUtils();
             SpideyHome spideyHome = new SpideyHome();
 
-            toolUtils.LoadFormIntoPanel(spideyHome, panel_Main);
+            panel_Main.Dock = DockStyle.Fill;
+
+            toolUtils.LoadFormIntoPanel(spideyHome, panel_Main, true);
+        }
+        private void LoadFormIntoPanel(Form form, Panel panel)
+        {
+            splitContainer1.Visible = false;
+
+            form.FormBorderStyle = FormBorderStyle.None;
+
+            form.TopLevel = false;
+
+            panel.Controls.Clear();
+            panel.Controls.Add(form);
+            panel.Dock = DockStyle.Fill;
+            panel.Visible = true;
+
+            form.Dock = DockStyle.Fill;
+
+            form.Show();
         }
         private void LoadPreferences()
         {
@@ -113,7 +125,7 @@ namespace SpideyToolbox
             }
             else
             {
-                loadRecentToolStripMenuItem.Visible= false;
+                loadRecentToolStripMenuItem.Visible = false;
             }
 
             for (int i = 0; i < toolStripMenuItems.Length; i++)
@@ -236,20 +248,25 @@ namespace SpideyToolbox
         // Start loading the TOC
         //------------------------------------------------------------------------------------------
         private void StartLoadTOCThread(string path)
-        {
+        { 
             SettingsWindow settingsWindow = new SettingsWindow();
             AppSettings settings = settingsWindow.LoadSettings();
-
-            LoadSpideyPanel();
 
             var tocPath = path;
 
             if (!settings._loadtocModded)
             {
                 string gameFolder = Path.GetDirectoryName(path);
+                string backupTOC = Path.Combine(gameFolder, "toc.BAK");
 
-                try { tocPath = Path.Combine(gameFolder, "toc.BAK"); }
-                catch (Exception ex) { tocPath = path; }
+                if (File.Exists(backupTOC))
+                {
+                    tocPath = backupTOC;
+                }
+                else
+                {
+                    tocPath = path;
+                }
             }
 
             if (!File.Exists(tocPath))
@@ -270,8 +287,8 @@ namespace SpideyToolbox
                     LoadTOC(tocPath);
                     this.Invoke(() =>
                     {
-                        panel_Main.Dock = DockStyle.None;
-                        panel_Main.Visible = false;
+                        //panel_Main.Dock = DockStyle.None;
+                        //panel_Main.Visible = false;
                     });
                 }
                 catch (Exception ex)
@@ -290,12 +307,15 @@ namespace SpideyToolbox
 
             _taskThreads.Add(thread);
             thread.Start();
+
+            SetEnvironment("ModdingTool");
         }
 
         // Start loading the TOC file
         //------------------------------------------------------------------------------------------
         private void LoadTOC(string path)
         {
+
             this.Invoke(() =>
             {
                 OverlayHeaderLabel.Text = "Loading 'toc'...";
@@ -319,6 +339,8 @@ namespace SpideyToolbox
 
                 archiveNames.Add(fn);
             }
+
+            Debug.WriteLine("2");
 
             // Clear existing lists
             _assets.Clear();
@@ -636,7 +658,7 @@ namespace SpideyToolbox
                         displaySize = $"{size} bytes";
                     }
 
-                    dataGridView_Files.Rows.Add(asset.Name, displaySize, archive, span);
+                    dataGridView_Files.Rows.Add(asset.Name, displaySize, archive, span, asset.Id);
                 }
             }
 
@@ -667,19 +689,16 @@ namespace SpideyToolbox
 
         // Additional menu item buttons
         //------------------------------------------------------------------------------------------
-        // Settings
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var settings = new SettingsWindow();
             settings.ShowDialog();
         }
-        // Search by name
         private void searchByNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SearchWindow searchWindow = new SearchWindow(_assets, _assetsByPath);
             searchWindow.Show();
         }
-        // Extract to Stage
         private void extractToStageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //var window = new StageSelector();
@@ -692,25 +711,21 @@ namespace SpideyToolbox
             var stagePath = Path.Combine(path, "test");
             if (!Directory.Exists(stagePath)) Directory.CreateDirectory(stagePath);
 
-            string[] assets = getSelectedAssetsPaths();
+            string[] assetNames = getSelectedAssetsNames();
+            ulong[] assetIDs = getSelectedAssetsIDs();
             byte[] spans = getSelectedAssetsSpans();
 
-            for (int i = 0; i < assets.Length; i++)
+            for (int i = 0; i < assetNames.Length; i++)
             {
-                string assetPath = Path.Combine(stagePath, $"{spans[i]}", assets[i]);
+                string assetPath = Path.Combine(stagePath, $"{spans[i]}", assetNames[i]);
 
-                Debug.WriteLine($"Extracting to stage {assets[i]}, with span {spans[i]}, to {assetPath}");
-                ExtractAsset(assets[i], spans[i], assetPath);
+                Debug.WriteLine($"Extracting to stage {assetNames[i]}, with span {spans[i]}, to {assetPath}");
+                ExtractionMethods.ExtractAsset(assetIDs[i], spans[i], assetPath, _toc);
             }
         }
-
-        // Extract as Ascii
         private void extractAsasciiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string asset = getSelectedAssetsPaths()[0];
-            string type = Path.GetExtension(asset);
 
-            ExtractOneAssetDialog(asset, 0, type);
         }
 
         // Extract all selected asset rows
@@ -719,14 +734,14 @@ namespace SpideyToolbox
         {
             if (dataGridView_Files.SelectedRows.Count == 1)
             {
-                string assetToExtract = getSelectedAssetsPaths()[0];
-                string assetType = Path.GetExtension(assetToExtract);
+                string assetPath = getSelectedAssetsNames()[0];
+                ulong assetID = getSelectedAssetsIDs()[0];
 
-                ExtractOneAssetDialog(assetToExtract, getSelectedAssetsSpans()[0], assetType);
+                ExtractOneAssetDialog(assetPath, getSelectedAssetsSpans()[0], assetID);
             }
             else
             {
-                ExtractMultipleAssetsDialog(getSelectedAssetsPaths(), getSelectedAssetsSpans());
+                ExtractMultipleAssetsDialog(getSelectedAssetsNames(), getSelectedAssetsSpans(), getSelectedAssetsIDs());
             }
         }
 
@@ -740,20 +755,27 @@ namespace SpideyToolbox
             extractAsasciiToolStripMenuItem.Visible = false;
             extractAsddsToolStripMenuItem.Visible = false;
 
-            // Make sure it's right click and in the asset column
-            if (e.Button == MouseButtons.Right && hitTestInfo.ColumnIndex == 0)
+            // Check if it's a valid right-click and within the DataGridView
+            if (e.Button == MouseButtons.Right && hitTestInfo.RowIndex >= 0 && hitTestInfo.ColumnIndex >= 0)
             {
-                // Handle single asset, model and texture
-                if (selectedRows == 1)
+                // If no rows are selected, select the row under the cursor
+                if (selectedRows == 0)
                 {
-                    dataGridView_Files.CurrentCell = dataGridView_Files[hitTestInfo.ColumnIndex, hitTestInfo.RowIndex];
-                    string assetType = Path.GetExtension(dataGridView_Files.CurrentCell.Value?.ToString() ?? string.Empty);
-
-                    extractAsasciiToolStripMenuItem.Visible = assetType == ".model";
-                    extractAsddsToolStripMenuItem.Visible = assetType == ".texture";
+                    dataGridView_Files.ClearSelection();
+                    dataGridView_Files.Rows[hitTestInfo.RowIndex].Selected = true;
+                    selectedRows = 1; // Update the count after selecting
                 }
 
-                // If more than 1 asset selected, change the name
+                // Set the current cell for single-row actions
+                dataGridView_Files.CurrentCell = dataGridView_Files[hitTestInfo.ColumnIndex, hitTestInfo.RowIndex];
+
+                string assetType = Path.GetExtension(dataGridView_Files.CurrentCell.Value?.ToString() ?? string.Empty);
+
+                // Toggle menu items based on the asset type
+                extractAsasciiToolStripMenuItem.Visible = assetType == ".model";
+                extractAsddsToolStripMenuItem.Visible = assetType == ".texture";
+
+                // Update the context menu text based on the selection count
                 assetSelectedToolStripMenuItem.Text = selectedRows > 1
                     ? $"{selectedRows} assets selected"
                     : $"{selectedRows} asset selected";
@@ -761,31 +783,110 @@ namespace SpideyToolbox
                 copyPathToolStripMenuItem.Text = selectedRows > 1 ? "Copy paths" : "Copy path";
                 copyHashToolStripMenuItem.Text = selectedRows > 1 ? "Copy hashes" : "Copy hash";
 
-                if (!dataGridView_Files.Rows[hitTestInfo.RowIndex].Selected)
-                    dataGridView_Files.Rows[hitTestInfo.RowIndex].Selected = true;
-
                 contextMenuStrip1.Show(dataGridView_Files, new Point(e.X, e.Y));
             }
+
         }
 
+        #region Open additional tools
+        // Open Tools
+        //------------------------------------------------------------------------------------------
+        private void SetEnvironment(string Program)
+        {
+            if (Program == "Spandex")
+            {
+                if (spandexForm == null || spandexForm.IsDisposed)
+                {
+                    string[] args = { "" };
+                    spandexForm = new Spandex.Form1(args);
+                }
+
+                LoadFormIntoPanel(spandexForm, panel_Main);
+                this.Text = "WebWorks - Spandex";
+            }
+            if (Program == "SilkTexture")
+            {
+                if (silkTextureForm == null || silkTextureForm.IsDisposed)
+                {
+                    var program = new SpideyTextureScaler.Program
+                    {
+                        texturestats = new List<TextureBase>
+                    {
+                        new Source(),
+                        new DDS(),
+                        new Output()
+                    }
+                    };
+
+                    silkTextureForm = new SpideyTexture(program);
+                }
+
+                LoadFormIntoPanel(silkTextureForm, panel_Main);
+                this.Text = "WebWorks - Silk Texture";
+            }
+            if (Program == "HashTool")
+            {
+                HashTool hashTool = new HashTool();
+                hashTool.Show();
+            }
+            if (Program == "ModdingTool")
+            {
+                panel_Main.Visible = false;
+                splitContainer1.Visible = true;
+                this.Text = "WebWorks - Modding Tool";
+            }
+
+        }
+        
+        private Spandex.Form1 spandexForm;
+        private SpideyTexture silkTextureForm;
+        private void spandexToolStripMenuItem_Click(object sender, EventArgs e)
+        { SetEnvironment("Spandex"); }
+        private void silkTextureToolStripMenuItem_Click(object sender, EventArgs e)
+        { SetEnvironment("SilkTexture"); }
+
+        private void calculateHashToolStripMenuItem_Click(object sender, EventArgs e)
+        { SetEnvironment("HashTool"); }
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        { SetEnvironment("ModdingTool"); }
+
+        #endregion
         #endregion
 
         #region Extraction methods
 
         // Misc
         //------------------------------------------------------------------------------------------
-        private string[] getSelectedAssetsPaths()
+        private ulong[] getSelectedAssetsIDs()
         {
-            string[] assetPaths = new string[dataGridView_Files.SelectedRows.Count];
+            ulong[] assetIDs = new ulong[dataGridView_Files.SelectedRows.Count];
             int i = 0;
 
             foreach (DataGridViewRow selectedRow in dataGridView_Files.SelectedRows)
             {
-                // Get the value of the 1st column (asset path as string)
-                assetPaths[i] = OverlayHeaderLabel.Text.Replace("Current directory: ", "") + "\\" + selectedRow.Cells[0].Value?.ToString();
+                object cellValue = selectedRow.Cells[4].Value;
+
+                if (cellValue != null && ulong.TryParse(cellValue.ToString(), out ulong assetID))
+                {
+                    assetIDs[i] = assetID;
+                    i++;
+                }
+            }
+
+            return assetIDs;
+        }
+
+        private string[] getSelectedAssetsNames()
+        {
+            string[] assetNames = new string[dataGridView_Files.SelectedRows.Count];
+            int i = 0;
+
+            foreach (DataGridViewRow selectedRow in dataGridView_Files.SelectedRows)
+            {
+                assetNames[i] = OverlayHeaderLabel.Text.Replace("Current directory: ", "") + "\\" + selectedRow.Cells[0].Value?.ToString();
                 i++;
             }
-            return assetPaths;
+            return assetNames;
         }
 
         private byte[] getSelectedAssetsSpans()
@@ -804,7 +905,7 @@ namespace SpideyToolbox
 
         // Extract a single asset dialog
         //------------------------------------------------------------------------------------------
-        private void ExtractOneAssetDialog(string assetpath, byte span, string assetType = "")
+        private void ExtractOneAssetDialog(string assetpath, byte span, ulong assetID)
         {
             // Build the dialog
             SaveFileDialog dialog = new SaveFileDialog
@@ -819,13 +920,13 @@ namespace SpideyToolbox
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = dialog.FileName;
-                ExtractAsset(assetpath, span, selectedPath, assetType);
+                ExtractionMethods.ExtractAsset(assetID, span, selectedPath, _toc);
             }
         }
 
         // Extract multiple assets dialog
         //------------------------------------------------------------------------------------------
-        private void ExtractMultipleAssetsDialog(string[] assets, byte[] spans)
+        private void ExtractMultipleAssetsDialog(string[] assets, byte[] spans, ulong[] assetIDs)
         {
             // Build folder dialog
             FolderBrowserDialog dialog = new FolderBrowserDialog
@@ -846,85 +947,14 @@ namespace SpideyToolbox
             for (int i = 0; i < assets.Length; i++)
             {
                 string assetPath = assets[i];
+                ulong assetID = assetIDs[i];
                 byte span = spans[i];
                 string outputPath = Path.Combine(path, Path.GetFileName(assetPath));
 
-                ExtractAsset(assetPath, span, outputPath);
+                ExtractionMethods.ExtractAsset(assetID, span, outputPath, _toc);
             }
         }
-
-        // Global method to extract an asset from loaded TOC
-        //------------------------------------------------------------------------------------------
-        private void ExtractAsset(string asset, byte span, string path, string type = "")
-        {
-            var AssetHash = CRC64.Hash(asset, true);
-
-            Debug.WriteLine($"Got hash: {AssetHash:X016}");
-            Debug.WriteLine($"Got span: {span}");
-
-            // TODO: Add Window to handle MSMR, MSMM and RCRA models
-            // Currently, this only works for MSM2.
-
-            // Handle .model and .texture
-            if (type == ".model" || type == ".texture")
-            {
-                if (_toc is not TOC_I29)
-                {
-                    MessageBox.Show("Game not supported");
-                    return;
-                }
-
-                string cwd = Path.GetDirectoryName(Application.ExecutablePath);
-                string spidermanExtractor = Path.Combine(cwd, "WebWorksMisc", "spiderman2.exe");
-
-                string hexString = AssetHash.ToString("X");
-
-                string arguments = $"{hexString:X016} \"{path}\"";
-
-                Debug.WriteLine($"Running command {spidermanExtractor} with {arguments}");
-
-                string workingDirectory = Path.Combine(cwd, "WebWorksMisc");
-
-                // Create a new ProcessStartInfo to run spiderman2.exe directly
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    FileName = "spiderman2.exe",
-                    Arguments = arguments,
-                    WorkingDirectory = workingDirectory, // Set working directory
-                    WindowStyle = ProcessWindowStyle.Normal
-                };
-
-                try
-                {
-                    Process.Start(processStartInfo);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-            else
-            {
-                try
-                {
-                    BinaryReader assetData = _toc.GetAssetReader(span, AssetHash);
-
-                    byte[] assetBytes = assetData.ReadBytes((int)assetData.BaseStream.Length);
-                    string FileHex = BitConverter.ToString(assetBytes).Replace("-", "");
-
-                    string directoryPath = Path.GetDirectoryName(path);
-
-                    if (!Directory.Exists(directoryPath))
-                    {
-                        Debug.WriteLine("Couldn't find directory, creating a new one.");
-                        Directory.CreateDirectory(directoryPath);
-                    }
-
-                    File.WriteAllBytes(path, assetBytes);
-                }
-                catch { }
-            }
-        }
+        
         #endregion
 
 
@@ -932,15 +962,6 @@ namespace SpideyToolbox
         //------------------------------------------------------------------------------------------
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            foreach (var thread in _taskThreads)
-            {
-                if (thread.IsAlive)
-                {
-                    thread.Join();
-                }
-            }
-
-            this.Dispose();
             Process.GetCurrentProcess().Kill();
         }
         private void MainWindow_Load(object sender, EventArgs e)

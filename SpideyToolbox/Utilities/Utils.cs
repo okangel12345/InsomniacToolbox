@@ -1,10 +1,4 @@
 ﻿using SpideyToolbox.Windows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SpideyToolbox.Utilities
 {
@@ -25,11 +19,18 @@ namespace SpideyToolbox.Utilities
             Form.Show();
         }
 
-        public void LoadFormIntoPanel(UserControl userControl, Panel panel)
+        public void LoadFormIntoPanel(UserControl userControl, Panel panel, bool fillPanel = false)
         {
+            if (fillPanel)
+            {
+                panel.Dock = DockStyle.Fill;
+            }
+
             panel.Controls.Clear();
+
             userControl.Dock = DockStyle.Fill;
             panel.Controls.Add(userControl);
+
         }
         // Load Message form
         //------------------------------------------------------------------------------------------

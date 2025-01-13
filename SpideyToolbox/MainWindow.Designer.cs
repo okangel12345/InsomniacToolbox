@@ -38,6 +38,7 @@
             Size = new DataGridViewTextBoxColumn();
             Archive = new DataGridViewTextBoxColumn();
             Span = new DataGridViewTextBoxColumn();
+            assetID = new DataGridViewTextBoxColumn();
             splitContainer1 = new SplitContainer();
             panel_Main = new Panel();
             menuStrip1 = new MenuStrip();
@@ -57,6 +58,9 @@
             optionsToolStripMenuItem = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
             calculateHashToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            spandexToolStripMenuItem = new ToolStripMenuItem();
+            silkTextureToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             informationToolStripMenuItem = new ToolStripMenuItem();
             discordToolStripMenuItem = new ToolStripMenuItem();
@@ -121,7 +125,7 @@
             dataGridView_Files.AllowUserToDeleteRows = false;
             dataGridView_Files.AllowUserToResizeRows = false;
             dataGridView_Files.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span });
+            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span, assetID });
             dataGridView_Files.Dock = DockStyle.Fill;
             dataGridView_Files.Location = new Point(0, 0);
             dataGridView_Files.Name = "dataGridView_Files";
@@ -163,6 +167,13 @@
             Span.ReadOnly = true;
             Span.Width = 75;
             // 
+            // assetID
+            // 
+            assetID.HeaderText = "assetID";
+            assetID.Name = "assetID";
+            assetID.Visible = false;
+            assetID.Width = 5;
+            // 
             // splitContainer1
             // 
             splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -182,9 +193,10 @@
             // 
             // panel_Main
             // 
-            panel_Main.Location = new Point(904, 27);
+            panel_Main.BackColor = Color.FromArgb(12, 12, 12);
+            panel_Main.Location = new Point(891, 372);
             panel_Main.Name = "panel_Main";
-            panel_Main.Size = new Size(35, 169);
+            panel_Main.Size = new Size(21, 335);
             panel_Main.TabIndex = 5;
             // 
             // menuStrip1
@@ -290,7 +302,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { calculateHashToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { calculateHashToolStripMenuItem, toolStripMenuItem1, spandexToolStripMenuItem, silkTextureToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(46, 20);
             toolsToolStripMenuItem.Text = "Tools";
@@ -298,8 +310,35 @@
             // calculateHashToolStripMenuItem
             // 
             calculateHashToolStripMenuItem.Name = "calculateHashToolStripMenuItem";
-            calculateHashToolStripMenuItem.Size = new Size(160, 22);
-            calculateHashToolStripMenuItem.Text = "Calculate hash...";
+            calculateHashToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.H;
+            calculateHashToolStripMenuItem.Size = new Size(215, 22);
+            calculateHashToolStripMenuItem.Text = "Calculate hash...    ";
+            calculateHashToolStripMenuItem.Click += calculateHashToolStripMenuItem_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.ShortcutKeys = Keys.Control | Keys.D1;
+            toolStripMenuItem1.Size = new Size(215, 22);
+            toolStripMenuItem1.Text = "Modding Tool";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
+            // spandexToolStripMenuItem
+            // 
+            spandexToolStripMenuItem.Image = WebWorks.Windows.FormIcons.Spiderman_Symbol;
+            spandexToolStripMenuItem.Name = "spandexToolStripMenuItem";
+            spandexToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.D2;
+            spandexToolStripMenuItem.Size = new Size(215, 22);
+            spandexToolStripMenuItem.Text = "Spandex";
+            spandexToolStripMenuItem.Click += spandexToolStripMenuItem_Click;
+            // 
+            // silkTextureToolStripMenuItem
+            // 
+            silkTextureToolStripMenuItem.Name = "silkTextureToolStripMenuItem";
+            silkTextureToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.D3;
+            silkTextureToolStripMenuItem.Size = new Size(215, 22);
+            silkTextureToolStripMenuItem.Text = "Silk Texture";
+            silkTextureToolStripMenuItem.Click += silkTextureToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -476,10 +515,6 @@
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem toolStripMenuItem5;
         private ToolStripMenuItem toolStripMenuItem6;
-        private DataGridViewTextBoxColumn FileName;
-        private DataGridViewTextBoxColumn Size;
-        private DataGridViewTextBoxColumn Archive;
-        private DataGridViewTextBoxColumn Span;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem ExtractSelectedtoolStripMenuItem;
         private ToolStripMenuItem assetSelectedToolStripMenuItem;
@@ -491,5 +526,13 @@
         private ToolStripMenuItem copyHashToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem8;
         private ToolStripMenuItem toolStripMenuItem7;
+        private ToolStripMenuItem spandexToolStripMenuItem;
+        private ToolStripMenuItem silkTextureToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private DataGridViewTextBoxColumn FileName;
+        private DataGridViewTextBoxColumn Size;
+        private DataGridViewTextBoxColumn Archive;
+        private DataGridViewTextBoxColumn Span;
+        private DataGridViewTextBoxColumn assetID;
     }
 }

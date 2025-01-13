@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SpideyToolbox
+﻿namespace SpideyToolbox
 {
     public class AppSettings
     {
@@ -16,7 +10,7 @@ namespace SpideyToolbox
 
         // Save most recent TOCs
         //------------------------------------------------------------------------------------------
-        public string _recentTOC1 { get; set;}
+        public string _recentTOC1 { get; set; }
         public string _recentTOC2 { get; set; }
         public string _recentTOC3 { get; set; }
         public string _recentTOC4 { get; set; }

@@ -6,29 +6,35 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace DAT1.Sections.TOC {
-	public class AssetHeadersSection: Section {
-		public const uint TAG = 0x654BDED9; // Archive TOC Asset Header Data
+namespace DAT1.Sections.TOC
+{
+    public class AssetHeadersSection : Section
+    {
+        public const uint TAG = 0x654BDED9; // Archive TOC Asset Header Data
 
-		public List<byte[]> Headers = new();
-			
-		override public void Load(byte[] bytes, DAT1 container) {
-			using var r = new BinaryReader(new MemoryStream(bytes));
-			int size = bytes.Length;
-			int count = size / 36;
-			for (int i = 0; i < count; ++i) {
-				var b = r.ReadBytes(36);
-				Headers.Add(b);
-			}
-		}
+        public List<byte[]> Headers = new();
 
-		override public byte[] Save() {
-			var s = new MemoryStream();
-			var w = new BinaryWriter(s);
-			foreach (var e in Headers) {
-				w.Write(e);
-			}
-			return s.ToArray();
-		}
-	}
+        override public void Load(byte[] bytes, DAT1 container)
+        {
+            using var r = new BinaryReader(new MemoryStream(bytes));
+            int size = bytes.Length;
+            int count = size / 36;
+            for (int i = 0; i < count; ++i)
+            {
+                var b = r.ReadBytes(36);
+                Headers.Add(b);
+            }
+        }
+
+        override public byte[] Save()
+        {
+            var s = new MemoryStream();
+            var w = new BinaryWriter(s);
+            foreach (var e in Headers)
+            {
+                w.Write(e);
+            }
+            return s.ToArray();
+        }
+    }
 }

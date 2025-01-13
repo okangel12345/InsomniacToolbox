@@ -11,6 +11,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DAT1\DAT1.csproj" />
     <ProjectReference Include="..\GDeflateWrapper\GDeflateWrapper.csproj" />
+    <ProjectReference Include="..\ModdingLab\ModdingLab.csproj" />
+    <ProjectReference Include="..\SilkTexture\SilkTex.csproj" />
+    <ProjectReference Include="..\Spandex\Spandex.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,14 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SpideyToolbox.Utilities
+namespace ModdingLab
 {
-    internal class ToolboxStyle
+    public class ToolboxStyle
     {
         // Public static method to apply all styles to a form
         //------------------------------------------------------------------------------------------
@@ -223,7 +228,7 @@ namespace SpideyToolbox.Utilities
         {
             // Configuration for GroupBox styling
             Color borderColor = Color.FromArgb(72, 72, 72);
-            Color backgroundColor = Color.FromArgb(12,12,12);
+            Color backgroundColor = Color.FromArgb(30, 30, 30);
             Color textColor = Color.WhiteSmoke;
             Font textFont = new Font("Segoe UI", 9, FontStyle.Regular);
 
@@ -315,7 +320,7 @@ namespace SpideyToolbox.Utilities
 
                         // Attach custom paint handlers based on configuration
                         button.Paint += roundedButtons
-                            ? (PaintEventHandler)((sender, e) => ApplyGradientRounded(button, e, topColor, bottomColor))
+                            ? ((sender, e) => ApplyGradientRounded(button, e, topColor, bottomColor))
                             : (sender, e) => ApplyGradient(button, e, topColor, bottomColor);
 
                         // Invalidate button to handle hover effects
@@ -548,7 +553,8 @@ namespace SpideyToolbox.Utilities
                     e.Item.ForeColor = Color.White;
                 }
             }
+
+            #endregion
         }
     }
 }
-    #endregion

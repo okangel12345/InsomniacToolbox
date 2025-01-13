@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using WebWorks.Windows;
+﻿using WebWorks.Windows;
 
 namespace SpideyToolbox.Windows
 {
@@ -18,7 +7,7 @@ namespace SpideyToolbox.Windows
         public PopMessage(string message, string caption, int buttons, int icons)
         {
             InitializeComponent();
-            Utilities.ToolboxStyle.ApplyToolBoxStyle(this, Handle);
+            ModdingLab.ToolboxStyle.ApplyToolBoxStyle(this, Handle);
 
             CustomMessage(message, caption, buttons, icons);
         }

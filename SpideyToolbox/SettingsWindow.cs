@@ -1,17 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SpideyToolbox.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SpideyToolbox
 {
@@ -21,7 +9,7 @@ namespace SpideyToolbox
         public SettingsWindow()
         {
             InitializeComponent();
-            ToolboxStyle.ApplyToolBoxStyle(this, Handle);
+            ModdingLab.ToolboxStyle.ApplyToolBoxStyle(this, Handle);
 
             ShowIcon = false;
             MaximizeBox = false;
@@ -29,7 +17,7 @@ namespace SpideyToolbox
 
             // Assign controls
             AppSettings settings = LoadSettings();
-            
+
             check_AutoLoadToc.Checked = settings._autoloadRecent;
             textBox_AuthorName.Text = settings._authorName;
             check_LoadModToc.Checked = settings._loadtocModded;
