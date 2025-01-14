@@ -159,7 +159,7 @@
             dataGridView1.ReadOnly = true;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -576,7 +576,6 @@
             data_Batch.Columns.AddRange(new DataGridViewColumn[] { batchTexturePath, batchDDSPath, batchOutputDir, btn_batchClearRow });
             data_Batch.Location = new Point(14, 81);
             data_Batch.Name = "data_Batch";
-            data_Batch.RowTemplate.Height = 25;
             data_Batch.Size = new Size(862, 189);
             data_Batch.TabIndex = 0;
             data_Batch.CellClick += data_Batch_CellClick;
@@ -629,6 +628,7 @@
             MinimumSize = new Size(640, 607);
             Name = "SpideyTexture";
             Text = "SpideyTextureScaler";
+            Load += SpideyTexture_Load;
             ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)texturestatsBindingSource).EndInit();

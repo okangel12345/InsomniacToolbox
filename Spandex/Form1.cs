@@ -12,8 +12,8 @@ namespace Spandex
         public HashSet<string> texturelist;
         public HashSet<string> materialgraphlist;
         string lastsourcedir, lastoutputdir, lastsavefile;
-
-        public Form1(string[] argv)
+        bool _openWith;
+        public Form1(string[] argv, bool OpenWith = false)
         {
             InitializeComponent();
             materials = new Material[2];
@@ -36,6 +36,13 @@ namespace Spandex
             statusLabel.Text = "layout.csv / hashes.txt weren't found, autocomplete is disabled";
 
             LoadTextureStrings();
+
+            _openWith = OpenWith;
+
+            if (_openWith)
+            {
+                Open();
+            }
 
             ModdingLab.ToolboxStyle.ApplyToolBoxStyle(this, Handle);
 
@@ -127,7 +134,7 @@ namespace Spandex
 
 
 
-        private void Open(string filename = "")
+        public void Open(string filename = "")
         {
             this.Text = $"Spandex v{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             textures = new Dictionary<uint, GridEntry>();
@@ -885,7 +892,7 @@ namespace Spandex
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void stringGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)

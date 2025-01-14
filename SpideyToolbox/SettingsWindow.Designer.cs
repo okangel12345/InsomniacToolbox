@@ -50,9 +50,9 @@
             textBox_AuthorName.BackColor = Color.FromArgb(22, 22, 22);
             textBox_AuthorName.BorderStyle = BorderStyle.FixedSingle;
             textBox_AuthorName.ForeColor = SystemColors.Control;
-            textBox_AuthorName.Location = new Point(119, 12);
+            textBox_AuthorName.Location = new Point(98, 12);
             textBox_AuthorName.Name = "textBox_AuthorName";
-            textBox_AuthorName.Size = new Size(273, 23);
+            textBox_AuthorName.Size = new Size(294, 23);
             textBox_AuthorName.TabIndex = 2;
             textBox_AuthorName.Text = "name";
             // 

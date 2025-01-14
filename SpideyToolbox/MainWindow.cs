@@ -248,7 +248,7 @@ namespace SpideyToolbox
         // Start loading the TOC
         //------------------------------------------------------------------------------------------
         private void StartLoadTOCThread(string path)
-        { 
+        {
             SettingsWindow settingsWindow = new SettingsWindow();
             AppSettings settings = settingsWindow.LoadSettings();
 
@@ -282,27 +282,29 @@ namespace SpideyToolbox
             // Start a new thread for TOC loading
             Thread thread = new(() =>
             {
-                try
-                {
-                    LoadTOC(tocPath);
-                    this.Invoke(() =>
-                    {
-                        //panel_Main.Dock = DockStyle.None;
-                        //panel_Main.Visible = false;
-                    });
-                }
-                catch (Exception ex)
-                {
-                    try
-                    {
-                        this.Invoke(() =>
-                        {
-                            toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
-                        });
-                    }
-                    catch { }
+                LoadTOC(tocPath);
 
-                }
+                //try
+                //{
+                //    LoadTOC(tocPath);
+                //    this.Invoke(() =>
+                //    {
+                //        //panel_Main.Dock = DockStyle.None;
+                //        //panel_Main.Visible = false;
+                //    });
+                //}
+                //catch (Exception ex)
+                //{
+                //    try
+                //    {
+                //        this.Invoke(() =>
+                //        {
+                //            toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
+                //        });
+                //    }
+                //    catch { }
+
+                //}
             });
 
             _taskThreads.Add(thread);
@@ -515,10 +517,8 @@ namespace SpideyToolbox
                 }
             }
 
-            // Unknown and wem assets
-
-            var unknown = root.Nodes[0];
-            var wems = root.Nodes[1];
+            var unknown = root.Nodes["[UNKNOWN]"];
+            var wems = root.Nodes["[WEM]"];
 
             for (var i = 0; i < _assets.Count; ++i)
             {
@@ -725,7 +725,74 @@ namespace SpideyToolbox
         }
         private void extractAsasciiToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool toci29;
 
+            if (_toc is TOC_I29)
+            { toci29 = true; }
+            else
+            { toci29 = false; }
+
+            string assetPath = getSelectedAssetsNames()[0];
+            ulong assetID = getSelectedAssetsIDs()[0];
+            byte assetSpan = getSelectedAssetsSpans()[0];
+
+            ExtractAsciiWindow extractAsciiWindow = new ExtractAsciiWindow(assetPath, toci29, assetID, assetSpan, _toc);
+
+            extractAsciiWindow.ShowDialog();
+        }
+        private void extractAsddsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string outputPath;
+
+            string assetNameFinalDDS = Path.GetFileNameWithoutExtension(getSelectedAssetsNames()[0]) + ".dds";
+            string assetNameTexture = Path.GetFileNameWithoutExtension(getSelectedAssetsNames()[0]);
+
+            using (var saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Title = "Save .dds file";
+                saveFileDialog.Filter = "DDS Files (*.dds)|*.txt|All Files (*.*)|*.*";
+                saveFileDialog.FileName = assetNameFinalDDS;
+                saveFileDialog.AddExtension = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    outputPath = saveFileDialog.FileName;
+
+                    string choosenName = Path.GetFileName(outputPath);
+
+                    string silkFolder = Path.GetDirectoryName(outputPath);
+                    string silkInput = Path.Combine(silkFolder, assetNameTexture);
+                    string silkOutput = Path.Combine(silkFolder, assetNameFinalDDS);
+                    string silkRename = Path.Combine(silkFolder, choosenName);
+
+                    ExtractionMethods.ExtractAsset(getSelectedAssetsIDs()[0], getSelectedAssetsSpans()[0], silkInput, _toc);
+
+                    var p = new SpideyTextureScaler.Program();
+
+                    DirectoryInfo outputdirInfo = new DirectoryInfo(silkFolder);
+                    FileInfo sourceInfo = new FileInfo(silkInput);
+
+                    p.texturestats = new List<TextureBase>()
+                    {
+                        new Source(),
+                        new DDS(),
+                        new Output(),
+                    };
+
+                    p.Extract(sourceInfo, outputdirInfo, true);
+
+                    // Cleanup and rename
+
+                    if (File.Exists(silkInput))
+                    {
+                        File.Delete(silkInput);
+                    }
+                    if (File.Exists(silkOutput))
+                    {
+                        File.Move(silkOutput, silkRename);
+                    }
+                }
+            }
         }
 
         // Extract all selected asset rows
@@ -789,16 +856,20 @@ namespace SpideyToolbox
         }
 
         #region Open additional tools
-        // Open Tools
+
+        // Set environment and open Tools
         //------------------------------------------------------------------------------------------
-        private void SetEnvironment(string Program)
+        private Spandex.Form1 spandexForm;
+        private SpideyTexture silkTextureForm;
+        private void SetEnvironment(string Program, bool OpenWith = false)
         {
             if (Program == "Spandex")
             {
                 if (spandexForm == null || spandexForm.IsDisposed)
                 {
                     string[] args = { "" };
-                    spandexForm = new Spandex.Form1(args);
+
+                    spandexForm = new Spandex.Form1(args, OpenWith);
                 }
 
                 LoadFormIntoPanel(spandexForm, panel_Main);
@@ -818,7 +889,7 @@ namespace SpideyToolbox
                     }
                     };
 
-                    silkTextureForm = new SpideyTexture(program);
+                    silkTextureForm = new SpideyTexture(program, OpenWith);
                 }
 
                 LoadFormIntoPanel(silkTextureForm, panel_Main);
@@ -835,22 +906,29 @@ namespace SpideyToolbox
                 splitContainer1.Visible = true;
                 this.Text = "WebWorks - Modding Tool";
             }
-
         }
-        
-        private Spandex.Form1 spandexForm;
-        private SpideyTexture silkTextureForm;
+
         private void spandexToolStripMenuItem_Click(object sender, EventArgs e)
         { SetEnvironment("Spandex"); }
         private void silkTextureToolStripMenuItem_Click(object sender, EventArgs e)
         { SetEnvironment("SilkTexture"); }
-
         private void calculateHashToolStripMenuItem_Click(object sender, EventArgs e)
         { SetEnvironment("HashTool"); }
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         { SetEnvironment("ModdingTool"); }
+        private void openMaterial_toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetEnvironment("Spandex", false);
+            spandexForm.Open();
+        }
+        private void OpenTexture_toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetEnvironment("SilkTexture", false);
+            silkTextureForm.Open();
+        }
 
         #endregion
+
         #endregion
 
         #region Extraction methods
@@ -954,7 +1032,7 @@ namespace SpideyToolbox
                 ExtractionMethods.ExtractAsset(assetID, span, outputPath, _toc);
             }
         }
-        
+
         #endregion
 
 

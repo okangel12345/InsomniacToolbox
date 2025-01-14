@@ -51,6 +51,8 @@
             toolStripMenuItem5 = new ToolStripMenuItem();
             toolStripMenuItem6 = new ToolStripMenuItem();
             hashesToolStripMenuItem = new ToolStripMenuItem();
+            openMaterial_toolStripMenuItem = new ToolStripMenuItem();
+            OpenTexture_toolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             searchByNameToolStripMenuItem = new ToolStripMenuItem();
             jumpToHashToolStripMenuItem = new ToolStripMenuItem();
@@ -210,7 +212,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadTOCToolStripMenuItem, loadRecentToolStripMenuItem, hashesToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadTOCToolStripMenuItem, loadRecentToolStripMenuItem, hashesToolStripMenuItem, openMaterial_toolStripMenuItem, OpenTexture_toolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -265,6 +267,20 @@
             hashesToolStripMenuItem.Name = "hashesToolStripMenuItem";
             hashesToolStripMenuItem.Size = new Size(177, 22);
             hashesToolStripMenuItem.Text = "Hashes... >";
+            // 
+            // openMaterial_toolStripMenuItem
+            // 
+            openMaterial_toolStripMenuItem.Name = "openMaterial_toolStripMenuItem";
+            openMaterial_toolStripMenuItem.Size = new Size(177, 22);
+            openMaterial_toolStripMenuItem.Text = "Open .material...";
+            openMaterial_toolStripMenuItem.Click += openMaterial_toolStripMenuItem_Click;
+            // 
+            // OpenTexture_toolStripMenuItem
+            // 
+            OpenTexture_toolStripMenuItem.Name = "OpenTexture_toolStripMenuItem";
+            OpenTexture_toolStripMenuItem.Size = new Size(177, 22);
+            OpenTexture_toolStripMenuItem.Text = "Open .texture...";
+            OpenTexture_toolStripMenuItem.Click += OpenTexture_toolStripMenuItem_Click;
             // 
             // searchToolStripMenuItem
             // 
@@ -365,7 +381,7 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { assetSelectedToolStripMenuItem, toolStripMenuItem7, ExtractSelectedtoolStripMenuItem, extractAsasciiToolStripMenuItem, extractAsddsToolStripMenuItem, extractToStageToolStripMenuItem, replaceAssetToolStripMenuItem, toolStripMenuItem8, copyPathToolStripMenuItem, copyHashToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(215, 224);
+            contextMenuStrip1.Size = new Size(215, 246);
             // 
             // assetSelectedToolStripMenuItem
             // 
@@ -410,6 +426,7 @@
             extractAsddsToolStripMenuItem.Name = "extractAsddsToolStripMenuItem";
             extractAsddsToolStripMenuItem.Size = new Size(214, 22);
             extractAsddsToolStripMenuItem.Text = "Extract as .dds...";
+            extractAsddsToolStripMenuItem.Click += extractAsddsToolStripMenuItem_Click;
             // 
             // extractToStageToolStripMenuItem
             // 
@@ -534,5 +551,7 @@
         private DataGridViewTextBoxColumn Archive;
         private DataGridViewTextBoxColumn Span;
         private DataGridViewTextBoxColumn assetID;
+        private ToolStripMenuItem openMaterial_toolStripMenuItem;
+        private ToolStripMenuItem OpenTexture_toolStripMenuItem;
     }
 }

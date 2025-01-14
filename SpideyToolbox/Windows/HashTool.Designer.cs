@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HashTool));
             textBox_Path1 = new TextBox();
             label1 = new Label();
             textBox_Hash1 = new TextBox();
@@ -138,7 +137,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(12, 12, 12);
+            BackColor = Color.FromArgb(22, 22, 22);
             ClientSize = new Size(675, 124);
             Controls.Add(checkBox_Normalize);
             Controls.Add(btn_Copy32);
@@ -151,7 +150,6 @@
             Controls.Add(textBox_Path1);
             ForeColor = SystemColors.Control;
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "HashTool";
             Text = "Hash Tool";

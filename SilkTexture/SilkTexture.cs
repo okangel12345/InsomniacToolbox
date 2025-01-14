@@ -6,11 +6,14 @@ namespace SpideyTextureScaler
     {
         Program program;
         string lastsourcedir, lastddsdir, lastoutputdir;
+        bool _openWith;
 
-        public SpideyTexture(Program p)
+        public SpideyTexture(Program p, bool OpenWith = false)
         {
             InitializeComponent();
             program = p;
+
+            _openWith = OpenWith;
 
             p.texturestats[0].ResetVisible();
             p.texturestats[1].ResetVisible();
@@ -52,6 +55,11 @@ namespace SpideyTextureScaler
         }
 
         private void sourcebutton_Click(object sender, EventArgs e)
+        {
+            Open();
+        }
+
+        public void Open()
         {
             var f = new OpenFileDialog();
             f.Filter = "Low or high res texture|*.texture";
@@ -338,7 +346,6 @@ namespace SpideyTextureScaler
                     new Output(),
                 };
 
-                // Call Extract method
                 p.Extract(sourceInfo, outputdirInfo, allowsd);
             }
         }
@@ -485,6 +492,14 @@ namespace SpideyTextureScaler
 
                 // Call Replace method
                 p.RunReplace(sourceInfo, ddsInfo, outputdirInfo, extrasd, false, testmode);
+            }
+        }
+
+        private void SpideyTexture_Load(object sender, EventArgs e)
+        {
+            if (_openWith)
+            {
+                Open();
             }
         }
     }
