@@ -220,8 +220,9 @@
             // loadTOCToolStripMenuItem
             // 
             loadTOCToolStripMenuItem.Name = "loadTOCToolStripMenuItem";
+            loadTOCToolStripMenuItem.ShortcutKeyDisplayString = "";
             loadTOCToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
-            loadTOCToolStripMenuItem.Size = new Size(177, 22);
+            loadTOCToolStripMenuItem.Size = new Size(206, 22);
             loadTOCToolStripMenuItem.Text = "Load TOC...";
             loadTOCToolStripMenuItem.Click += loadTOCToolStripMenuItem_Click;
             // 
@@ -229,56 +230,58 @@
             // 
             loadRecentToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem2, toolStripMenuItem3, toolStripMenuItem4, toolStripMenuItem5, toolStripMenuItem6 });
             loadRecentToolStripMenuItem.Name = "loadRecentToolStripMenuItem";
-            loadRecentToolStripMenuItem.Size = new Size(177, 22);
+            loadRecentToolStripMenuItem.Size = new Size(206, 22);
             loadRecentToolStripMenuItem.Text = "Load Recent...";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(80, 22);
+            toolStripMenuItem2.Size = new Size(180, 22);
             toolStripMenuItem2.Text = "1";
             // 
             // toolStripMenuItem3
             // 
             toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new Size(80, 22);
+            toolStripMenuItem3.Size = new Size(180, 22);
             toolStripMenuItem3.Text = "2";
             // 
             // toolStripMenuItem4
             // 
             toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new Size(80, 22);
+            toolStripMenuItem4.Size = new Size(180, 22);
             toolStripMenuItem4.Text = "3";
             // 
             // toolStripMenuItem5
             // 
             toolStripMenuItem5.Name = "toolStripMenuItem5";
-            toolStripMenuItem5.Size = new Size(80, 22);
+            toolStripMenuItem5.Size = new Size(180, 22);
             toolStripMenuItem5.Text = "4";
             // 
             // toolStripMenuItem6
             // 
             toolStripMenuItem6.Name = "toolStripMenuItem6";
-            toolStripMenuItem6.Size = new Size(80, 22);
+            toolStripMenuItem6.Size = new Size(180, 22);
             toolStripMenuItem6.Text = "5";
             // 
             // hashesToolStripMenuItem
             // 
             hashesToolStripMenuItem.Name = "hashesToolStripMenuItem";
-            hashesToolStripMenuItem.Size = new Size(177, 22);
-            hashesToolStripMenuItem.Text = "Hashes... >";
+            hashesToolStripMenuItem.Size = new Size(206, 22);
+            hashesToolStripMenuItem.Text = "Hashes...";
             // 
             // openMaterial_toolStripMenuItem
             // 
             openMaterial_toolStripMenuItem.Name = "openMaterial_toolStripMenuItem";
-            openMaterial_toolStripMenuItem.Size = new Size(177, 22);
+            openMaterial_toolStripMenuItem.ShortcutKeys = Keys.Control | Keys.M;
+            openMaterial_toolStripMenuItem.Size = new Size(206, 22);
             openMaterial_toolStripMenuItem.Text = "Open .material...";
             openMaterial_toolStripMenuItem.Click += openMaterial_toolStripMenuItem_Click;
             // 
             // OpenTexture_toolStripMenuItem
             // 
             OpenTexture_toolStripMenuItem.Name = "OpenTexture_toolStripMenuItem";
-            OpenTexture_toolStripMenuItem.Size = new Size(177, 22);
+            OpenTexture_toolStripMenuItem.ShortcutKeys = Keys.Control | Keys.T;
+            OpenTexture_toolStripMenuItem.Size = new Size(206, 22);
             OpenTexture_toolStripMenuItem.Text = "Open .texture...";
             OpenTexture_toolStripMenuItem.Click += OpenTexture_toolStripMenuItem_Click;
             // 
@@ -381,7 +384,7 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { assetSelectedToolStripMenuItem, toolStripMenuItem7, ExtractSelectedtoolStripMenuItem, extractAsasciiToolStripMenuItem, extractAsddsToolStripMenuItem, extractToStageToolStripMenuItem, replaceAssetToolStripMenuItem, toolStripMenuItem8, copyPathToolStripMenuItem, copyHashToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(215, 246);
+            contextMenuStrip1.Size = new Size(215, 224);
             // 
             // assetSelectedToolStripMenuItem
             // 

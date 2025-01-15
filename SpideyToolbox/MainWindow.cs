@@ -142,6 +142,29 @@ namespace SpideyToolbox
                     toolStripMenuItems[i].Visible = false;
                 }
             }
+
+            // Load all hashes and pick hashes always
+
+            string appDir = Path.GetDirectoryName(Application.ExecutablePath);
+
+            foreach (string file in Directory.GetFiles(appDir))
+            {
+                string fileName = Path.GetFileName(file);
+
+                if (fileName.StartsWith("hashes_", StringComparison.OrdinalIgnoreCase) ||
+                    fileName.Equals("hashes.txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    var menuItem = new ToolStripMenuItem(fileName);
+
+                    hashesToolStripMenuItem.DropDownItems.Add(menuItem);
+
+                    if (fileName.Equals("hashes.txt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        menuItem.Checked = true;
+                        menuItem.CheckOnClick = true;
+                    }
+                }
+            }
         }
 
         #endregion
@@ -282,29 +305,28 @@ namespace SpideyToolbox
             // Start a new thread for TOC loading
             Thread thread = new(() =>
             {
-                LoadTOC(tocPath);
+                try
+                {
+                    LoadTOC(tocPath);
+                    this.Invoke(() =>
+                    {
+                        
+                        //panel_Main.Dock = DockStyle.None;
+                        //panel_Main.Visible = false;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        this.Invoke(() =>
+                        {
+                            toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
+                        });
+                    }
+                    catch { }
 
-                //try
-                //{
-                //    LoadTOC(tocPath);
-                //    this.Invoke(() =>
-                //    {
-                //        //panel_Main.Dock = DockStyle.None;
-                //        //panel_Main.Visible = false;
-                //    });
-                //}
-                //catch (Exception ex)
-                //{
-                //    try
-                //    {
-                //        this.Invoke(() =>
-                //        {
-                //            toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
-                //        });
-                //    }
-                //    catch { }
-
-                //}
+                }
             });
 
             _taskThreads.Add(thread);
@@ -440,6 +462,7 @@ namespace SpideyToolbox
             // Add paths to build the tree
             //--------------------------------------------------------------------------------------
             var root = new TreeNode("Root");
+            root.Nodes.Clear();
 
             void AddPath(string dir, int assetIndex, bool makeFullPath = false)
             {
@@ -742,55 +765,53 @@ namespace SpideyToolbox
         }
         private void extractAsddsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string outputPath;
+            string tempName = "temp_asset";
+            string tempTexture = tempName + ".texture";
+            string tempHDTexture = tempName + ".hd.texture";
+            string tempDDS = tempName + ".dds";
+            string assetName = Path.GetFileNameWithoutExtension(getSelectedAssetsNames()[0]) + ".dds";
 
-            string assetNameFinalDDS = Path.GetFileNameWithoutExtension(getSelectedAssetsNames()[0]) + ".dds";
-            string assetNameTexture = Path.GetFileNameWithoutExtension(getSelectedAssetsNames()[0]);
-
-            using (var saveFileDialog = new SaveFileDialog())
+            using (var saveFileDialog = new SaveFileDialog
             {
-                saveFileDialog.Title = "Save .dds file";
-                saveFileDialog.Filter = "DDS Files (*.dds)|*.txt|All Files (*.*)|*.*";
-                saveFileDialog.FileName = assetNameFinalDDS;
-                saveFileDialog.AddExtension = true;
-
+                Title = "Save .dds file",
+                Filter = "DDS Files (*.dds)|*.txt|All Files (*.*)|*.*",
+                FileName = assetName,
+                AddExtension = true
+            })
+            {
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    outputPath = saveFileDialog.FileName;
+                    string finalName = Path.GetFileName(saveFileDialog.FileName);
+                    string workingDirectory = Path.GetDirectoryName(saveFileDialog.FileName);
+                    string silkInput = Path.Combine(workingDirectory, tempTexture);
+                    string silkHD = Path.Combine(workingDirectory, tempHDTexture);
 
-                    string choosenName = Path.GetFileName(outputPath);
-
-                    string silkFolder = Path.GetDirectoryName(outputPath);
-                    string silkInput = Path.Combine(silkFolder, assetNameTexture);
-                    string silkOutput = Path.Combine(silkFolder, assetNameFinalDDS);
-                    string silkRename = Path.Combine(silkFolder, choosenName);
-
-                    ExtractionMethods.ExtractAsset(getSelectedAssetsIDs()[0], getSelectedAssetsSpans()[0], silkInput, _toc);
-
-                    var p = new SpideyTextureScaler.Program();
-
-                    DirectoryInfo outputdirInfo = new DirectoryInfo(silkFolder);
-                    FileInfo sourceInfo = new FileInfo(silkInput);
-
-                    p.texturestats = new List<TextureBase>()
+                    try
                     {
-                        new Source(),
-                        new DDS(),
-                        new Output(),
-                    };
+                        ExtractionMethods.ExtractAsset(getSelectedAssetsIDs()[0], 0, silkInput, _toc);
+                        ExtractionMethods.ExtractAsset(getSelectedAssetsIDs()[0], 1, silkHD, _toc);
 
-                    p.Extract(sourceInfo, outputdirInfo, true);
+                        var p = new SpideyTextureScaler.Program
+                        {
+                            texturestats = new List<TextureBase>
+                            {
+                                new Source(),
+                                new DDS(),
+                                new Output()
+                            }
+                        };
 
-                    // Cleanup and rename
+                        p.Extract(new FileInfo(silkInput), new DirectoryInfo(workingDirectory), true);
 
-                    if (File.Exists(silkInput))
-                    {
                         File.Delete(silkInput);
+                        File.Delete(silkHD);
+
+                        string tempNamePath = Path.Combine(workingDirectory, tempDDS);
+                        string finalNamePath = Path.Combine(workingDirectory, finalName);
+
+                        if (File.Exists(tempNamePath)) File.Move(tempNamePath, finalNamePath);
                     }
-                    if (File.Exists(silkOutput))
-                    {
-                        File.Move(silkOutput, silkRename);
-                    }
+                    catch { }
                 }
             }
         }

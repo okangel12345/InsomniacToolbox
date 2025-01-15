@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using System.Linq;
+﻿using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModdingLab
 {
@@ -23,6 +18,7 @@ namespace ModdingLab
             ApplyContextMenuStripDark(context);
             ApplyTreeViewStyle(parent);
         }
+
         //------------------------------------------------------------------------------------------
 
         public class CustomToolStripRenderer : ToolStripProfessionalRenderer
@@ -44,6 +40,7 @@ namespace ModdingLab
                     e.Graphics.FillRectangle(blackBrush, e.AffectedBounds);
                 }
             }
+
             protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
             {
                 // Set menu item background explicitly
@@ -70,6 +67,7 @@ namespace ModdingLab
         }
 
         #region Controls
+
         public static void ApplySplitContainerStyle(Control parent)
         {
             Color splitterColor = Color.FromArgb(64, 64, 64); // Dark splitter color
@@ -121,6 +119,7 @@ namespace ModdingLab
             // Start applying styles from the parent control
             ApplyStyleRecursive(parent);
         }
+
         public static void ApplyDataGridViewStyle(Control parent)
         {
             Color backgroundColor = Color.FromArgb(12, 12, 12);
@@ -259,6 +258,7 @@ namespace ModdingLab
             // Start applying styles from the parent control
             ApplyStyleRecursive(parent);
         }
+
         private static void DrawCustomGroupBox(GroupBox groupBox, PaintEventArgs e, Color borderColor)
         {
             // Measure the text header
@@ -339,6 +339,7 @@ namespace ModdingLab
             // Start applying styles from the parent control
             ApplyStyleRecursive(parent);
         }
+
         private static void ApplyGradient(Button button, PaintEventArgs e, Color topColor, Color bottomColor)
         {
             // Hover effect colors
@@ -359,6 +360,7 @@ namespace ModdingLab
             // Draw border
             ControlPaint.DrawBorder(e.Graphics, button.ClientRectangle, button.FlatAppearance.BorderColor, ButtonBorderStyle.Solid);
         }
+
         private static void ApplyGradientRounded(Button button, PaintEventArgs e, Color topColor, Color bottomColor)
         {
             // Rounded corners radius
@@ -408,6 +410,7 @@ namespace ModdingLab
                 }
             }
         }
+
         private static GraphicsPath CreateRoundedRectanglePath(Rectangle bounds, int radius)
         {
             int diameter = radius * 2;
@@ -469,7 +472,6 @@ namespace ModdingLab
                 contextMenuStrip.BackColor = Color.FromArgb(25, 25, 25); // ContextMenuStrip background set to black
                 contextMenuStrip.ForeColor = Color.White;
 
-                // Set custom renderer to ensure black border and full control styling
                 contextMenuStrip.Renderer = new CustomToolStripRenderer();
 
                 // Loop through all items in the ContextMenuStrip
@@ -500,6 +502,7 @@ namespace ModdingLab
                 }
             }
         }
+
         private static void ApplyMenuItemStyle(ToolStripMenuItem menuItem)
         {
             menuItem.BackColor = Color.FromArgb(0, 0, 0); // Menu items background set to black
@@ -511,6 +514,7 @@ namespace ModdingLab
                 subItem.ForeColor = Color.White;
             }
         }
+
         public class BCustomToolStripRenderer : ToolStripProfessionalRenderer
         {
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
@@ -530,6 +534,7 @@ namespace ModdingLab
                     e.Graphics.FillRectangle(blackBrush, e.AffectedBounds);
                 }
             }
+
             protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
             {
                 // Set menu item background explicitly
@@ -539,7 +544,6 @@ namespace ModdingLab
                     e.Graphics.FillRectangle(blackBrush, rect);
                 }
 
-                // Highlight selected or hovered items with a gray shade
                 if (e.Item.Selected)
                 {
                     using (SolidBrush grayBrush = new SolidBrush(Color.FromArgb(119, 204, 221)))
@@ -554,7 +558,7 @@ namespace ModdingLab
                 }
             }
 
-            #endregion
+            #endregion Controls
         }
     }
 }
