@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Windows.Forms;
 using WebWorks.Windows;
 using WebWorks.Utilities;
+using Newtonsoft.Json.Linq;
+using Spiderman;
 
 // Spidey Toolbox is an alternative Modding Tool for Insomniac Games videogames.
 //
@@ -25,8 +27,8 @@ namespace SpideyToolbox
             InitializeComponent();
             LoadSpideyPanel();
 
-            // Apply Style
-            ModdingLab.ToolboxStyle.ApplyToolBoxStyle(this, Handle, menuStrip1, contextMenuStrip1);
+            ToolUtils.ApplyStyle(this, Handle, menuStrip1, contextMenuStrip1);
+
             panel_Main.Dock = DockStyle.Fill;
         }
 
@@ -47,6 +49,7 @@ namespace SpideyToolbox
         private Dictionary<Asset, string> _replacedAssets = new();
         private Dictionary<Asset, string> _addedAssets = new();
 
+        string _selectedHashes;
 
         // TODO: Add the UI windows
         // ui
@@ -157,13 +160,24 @@ namespace SpideyToolbox
                     var menuItem = new ToolStripMenuItem(fileName);
 
                     hashesToolStripMenuItem.DropDownItems.Add(menuItem);
+                    menuItem.CheckOnClick = true;
+                    menuItem.Click += AssetsMenuClick;
 
-                    if (fileName.Equals("hashes.txt", StringComparison.OrdinalIgnoreCase))
+                    if (hashesToolStripMenuItem.DropDownItems
+                        .OfType<ToolStripMenuItem>()
+                        .All(item => !item.Checked))
                     {
                         menuItem.Checked = true;
-                        menuItem.CheckOnClick = true;
                     }
                 }
+            }
+        }
+
+        private void AssetsMenuClick(object? sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem item in hashesToolStripMenuItem.DropDownItems)
+            {
+                item.Checked = item == sender;
             }
         }
 
@@ -310,7 +324,7 @@ namespace SpideyToolbox
                     LoadTOC(tocPath);
                     this.Invoke(() =>
                     {
-                        
+
                         //panel_Main.Dock = DockStyle.None;
                         //panel_Main.Visible = false;
                     });
@@ -342,7 +356,7 @@ namespace SpideyToolbox
 
             this.Invoke(() =>
             {
-                OverlayHeaderLabel.Text = "Loading 'toc'...";
+                OverlayHeaderLabel.Text = $"Loading '{Path.GetFileName(path)}'...";
                 OverlayOperationLabel.Text = "-";
             });
 
@@ -401,7 +415,7 @@ namespace SpideyToolbox
                     {
                         this.Invoke(() =>
                         {
-                            OverlayHeaderLabel.Text = "Loading 'toc'...";
+                            OverlayHeaderLabel.Text = $"Loading '{Path.GetFileName(path)}'...";
                             OverlayOperationLabel.Text = $"{progress}/{progressTotal} assets";
                         });
                     }
@@ -413,12 +427,21 @@ namespace SpideyToolbox
 
             // Load known hashes
             //--------------------------------------------------------------------------------------
-
-            // TODO: Let the user select which hashes to use, depending on the select hashes in the main strip menu
-            // "hashes" or files with "hashes_" at the beginning will be loaded.
-
             var appdir = AppDomain.CurrentDomain.BaseDirectory;
-            var hashes_fn = Path.Combine(appdir, "hashes.txt");
+
+            var selectedHashes = hashesToolStripMenuItem.DropDownItems
+                                    .OfType<ToolStripMenuItem>()
+                                    .FirstOrDefault(item => item.Checked)?.Text;
+
+            _selectedHashes = selectedHashes;
+
+            if (selectedHashes == null)
+            {
+                selectedHashes = "hashes.txt";
+            }
+
+            var hashes_fn = Path.Combine(appdir, selectedHashes);
+
             var knownHashes = new Dictionary<ulong, string>();
 
             if (File.Exists(hashes_fn))
@@ -450,7 +473,7 @@ namespace SpideyToolbox
                     {
                         this.Invoke(() =>
                         {
-                            OverlayHeaderLabel.Text = "Loading 'hashes.txt'...";
+                            OverlayHeaderLabel.Text = $"Loading '{selectedHashes}'...";
                             OverlayOperationLabel.Text = $"{progress}/{progressTotal} hashes";
                         });
                     }
@@ -882,7 +905,7 @@ namespace SpideyToolbox
         //------------------------------------------------------------------------------------------
         private Spandex.Form1 spandexForm;
         private SpideyTexture silkTextureForm;
-        private void SetEnvironment(string Program, bool OpenWith = false)
+        private void SetEnvironment(string Program)
         {
             if (Program == "Spandex")
             {
@@ -890,7 +913,7 @@ namespace SpideyToolbox
                 {
                     string[] args = { "" };
 
-                    spandexForm = new Spandex.Form1(args, OpenWith);
+                    spandexForm = new Spandex.Form1(args, _selectedHashes);
                 }
 
                 LoadFormIntoPanel(spandexForm, panel_Main);
@@ -910,7 +933,7 @@ namespace SpideyToolbox
                     }
                     };
 
-                    silkTextureForm = new SpideyTexture(program, OpenWith);
+                    silkTextureForm = new SpideyTexture(program);
                 }
 
                 LoadFormIntoPanel(silkTextureForm, panel_Main);
@@ -939,12 +962,12 @@ namespace SpideyToolbox
         { SetEnvironment("ModdingTool"); }
         private void openMaterial_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetEnvironment("Spandex", false);
+            SetEnvironment("Spandex");
             spandexForm.Open();
         }
         private void OpenTexture_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetEnvironment("SilkTexture", false);
+            SetEnvironment("SilkTexture");
             silkTextureForm.Open();
         }
 
@@ -1000,6 +1023,19 @@ namespace SpideyToolbox
                 i++;
             }
             return spans;
+        }
+
+        private string[] getSelectedAssetsArchives()
+        {
+            string[] assetArchives = new string[dataGridView_Files.SelectedRows.Count];
+            int i = 0;
+
+            foreach (DataGridViewRow selectedRow in dataGridView_Files.SelectedRows)
+            {
+                assetArchives[i] = selectedRow.Cells[3].Value?.ToString();
+                i++;
+            }
+            return assetArchives;
         }
 
         // Extract a single asset dialog
@@ -1067,6 +1103,79 @@ namespace SpideyToolbox
         {
             // Load user settings
             LoadPreferences();
+        }
+
+        private void replaceAssetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selected = getSelectedAssetsIDs().Count();
+            if (selected != 1) return;
+
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "Select file to replace asset with...";
+            dialog.Multiselect = false;
+            dialog.RestoreDirectory = true;
+            dialog.Filter = "All files(*.*) | *.*";
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            string path = dialog.FileName;
+
+            string assetPath = getSelectedAssetsNames()[0];
+            string assetName = Path.GetFileName(assetPath);
+            byte assetSpan = getSelectedAssetsSpans()[0];
+            ulong assetID = getSelectedAssetsIDs()[0];
+            string assetArchive = getSelectedAssetsArchives()[0];
+
+            Asset asset = new Asset();
+            asset.Span = assetSpan;
+            asset.Id = assetID;
+            asset.Name = assetName;
+            asset.FullPath = assetPath;
+            asset.Archive = assetArchive;
+
+            _replacedAssets.Set(asset, path);
+
+            for (int i = 0; i < _replacedAssets.Count; i++)
+            {
+                MessageBox.Show($"Asset {asset.FullPath}, has been replaced with {path}");
+            }
+        }
+
+        private void modToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int replacedAssetsCount = _replacedAssets.Count;
+            int addedAssetsCount = _addedAssets.Count;
+
+            menuItem_ReplacedAssets.Text = $"{replacedAssetsCount} replaced, {addedAssetsCount} new";
+
+            if (replacedAssetsCount > 0 || addedAssetsCount > 0)
+            {
+                menuItem_ClearAll.Enabled = true;
+            }
+            else
+            {
+                menuItem_ClearAll.Enabled = false;
+            }
+
+            if (Directory.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "stages")))
+            {
+                menuItem_AddFromStage.Enabled = true;
+            }
+        }
+
+        private void menuItem_PackAsStage_Click(object sender, EventArgs e)
+        {
+            var window = new PackStageWindow(_replacedAssets, _addedAssets, _toc);
+            window.ShowDialog();
+        }
+
+        private void menuItem_ClearAll_Click(object sender, EventArgs e)
+        {
+            _replacedAssets.Clear();
+            _addedAssets.Clear();
         }
     }
 }

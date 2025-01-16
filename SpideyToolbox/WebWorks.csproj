@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>WebWorks.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="WebWorks.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DAT1\DAT1.csproj" />

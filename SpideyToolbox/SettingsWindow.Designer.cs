@@ -97,7 +97,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(12, 12, 12);
-            ClientSize = new Size(404, 154);
+            ClientSize = new Size(404, 157);
             Controls.Add(check_LoadModToc);
             Controls.Add(label1);
             Controls.Add(textBox_AuthorName);

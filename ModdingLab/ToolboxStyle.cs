@@ -7,8 +7,36 @@ namespace ModdingLab
     {
         // Public static method to apply all styles to a form
         //------------------------------------------------------------------------------------------
-        public static void ApplyToolBoxStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null)
+        static Color accent = Color.FromArgb(119, 204, 221);
+        static Color accentGrid = Color.FromArgb(17, 130, 135);
+        public static void ApplyToolBoxStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null, string accentColor = null, string accentColorGrid = null)
         {
+            if (!string.IsNullOrEmpty(accentColor))
+            {
+                accentColor = accentColor.TrimStart('#');
+                if (accentColor.Length == 6)
+                {
+                    accent = Color.FromArgb(
+                        Convert.ToInt32(accentColor.Substring(0, 2), 16),
+                        Convert.ToInt32(accentColor.Substring(2, 2), 16),
+                        Convert.ToInt32(accentColor.Substring(4, 2), 16)
+                    );
+                }
+            }
+
+            if (!string.IsNullOrEmpty(accentColorGrid))
+            {
+                accentColorGrid = accentColorGrid.TrimStart('#');
+                if (accentColorGrid.Length == 6)
+                {
+                    accentGrid = Color.FromArgb(
+                        Convert.ToInt32(accentColorGrid.Substring(0, 2), 16),
+                        Convert.ToInt32(accentColorGrid.Substring(2, 2), 16),
+                        Convert.ToInt32(accentColorGrid.Substring(4, 2), 16)
+                    );
+                }
+            }
+
             ApplySplitContainerStyle(parent);
             ApplyDataGridViewStyle(parent);
             ApplyGroupBoxStyle(parent);
@@ -53,7 +81,7 @@ namespace ModdingLab
                 // Highlight selected or hovered items with a gray shade
                 if (e.Item.Selected)
                 {
-                    using (SolidBrush grayBrush = new SolidBrush(Color.FromArgb(119, 204, 221)))
+                    using (SolidBrush grayBrush = new SolidBrush(accent))
                     {
                         e.Graphics.FillRectangle(grayBrush, rect);
                     }
@@ -131,7 +159,7 @@ namespace ModdingLab
             Color selectedRowBackColor = Color.FromArgb(0, 0, 0);
             Color selectedRowForeColor = Color.LightGray; // Slightly dimmer than White
             Color alternatingRowBackColor = Color.FromArgb(25, 25, 25);
-            Color customSelectedRowBackColor = Color.FromArgb(17, 130, 135); // Custom color for selected row background
+            Color customSelectedRowBackColor = accentGrid; // Custom color for selected row background
             Color customSelectedRowForeColor = Color.FromArgb(230, 230, 230); // Custom color for selected row foreground
 
             void ApplyStyleRecursive(Control parentControl)
@@ -465,7 +493,7 @@ namespace ModdingLab
             DwmSetWindowAttribute(hwnd, DWMWA_CAPTION_COLOR, ref finalColorValue, sizeof(int));
         }
 
-        public static void ApplyContextMenuStripDark(ContextMenuStrip contextMenuStrip)
+        public static void ApplyContextMenuStripDark(ContextMenuStrip contextMenuStrip, Color? accentColor = null)
         {
             if (contextMenuStrip != null)
             {
@@ -486,7 +514,7 @@ namespace ModdingLab
             }
         }
 
-        public static void ApplyMenuStripDark(MenuStrip MainMenuStrip)
+        public static void ApplyMenuStripDark(MenuStrip MainMenuStrip, Color? accentColor = null)
         {
             if (MainMenuStrip != null)
             {

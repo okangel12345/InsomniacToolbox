@@ -13,12 +13,24 @@ namespace Spandex
         public HashSet<string> materialgraphlist;
         string lastsourcedir, lastoutputdir, lastsavefile;
         bool _openWith;
-        public Form1(string[] argv, bool OpenWith = false)
+
+        string _hashesOption;
+
+        public Form1(string[] argv, string WebWorksHashes = null)
         {
             InitializeComponent();
             materials = new Material[2];
             comboBox1.Items.Add("Marvel's Spider-Man Remastered");
             comboBox1.Items.Add("Marvel's Spider-Man: Miles Morales");
+
+            if (WebWorksHashes != null)
+            {
+                _hashesOption = WebWorksHashes;
+            }
+            else
+            {
+                _hashesOption = "hashes.txt";
+            }
 
             textures = new Dictionary<uint, GridEntry>();
             stringGrid.DataSource = textures.Values.ToList();
@@ -33,11 +45,9 @@ namespace Spandex
 
             this.Text = $"Spandex v{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             statusLabel.Image = global::Spandex.Properties.Resources.warning;
-            statusLabel.Text = "layout.csv / hashes.txt weren't found, autocomplete is disabled";
+            statusLabel.Text = $"layout.csv / {_hashesOption} weren't found, autocomplete is disabled";
 
             LoadTextureStrings();
-
-            _openWith = OpenWith;
 
             if (_openWith)
             {
@@ -95,9 +105,9 @@ namespace Spandex
                 statusLabel.Text = "Loaded layout.csv";
                 label1.Text = "Autocompleting with layout.csv";
             }
-            else if (File.Exists("hashes.txt"))
+            else if (File.Exists(_hashesOption))
             {
-                using (var reader = new StreamReader("hashes.txt"))
+                using (var reader = new StreamReader(_hashesOption))
                 {
                     string line;
                     while ((line = reader.ReadLine()) != null)
@@ -120,14 +130,14 @@ namespace Spandex
                 }
 
                 statusLabel.Image = Properties.Resources.ok;
-                statusLabel.Text = "Loaded hashes.txt";
-                label1.Text = "Autocompleting with hashes.txt";
+                statusLabel.Text = $"Loaded {_hashesOption}";
+                label1.Text = $"Autocompleting with {_hashesOption}";
             }
             else
             {
                 statusLabel.Image = Properties.Resources.warning;
                 statusLabel.Text = "No valid data found.";
-                label1.Text = "No layout.csv or hashes.txt found.";
+                label1.Text = $"No layout.csv or {_hashesOption} found.";
             }
         }
 

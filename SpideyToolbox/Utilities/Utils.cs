@@ -1,4 +1,6 @@
 ﻿using SpideyToolbox.Windows;
+using System.Reflection.Metadata;
+using System.Windows.Forms;
 
 namespace SpideyToolbox.Utilities
 {
@@ -48,6 +50,14 @@ namespace SpideyToolbox.Utilities
 
             popMessage.ShowDialog();
             return popMessage.DialogResult;
+        }
+        // Load Style with settings
+        //------------------------------------------------------------------------------------------
+        public static void ApplyStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null)
+        {
+            SettingsWindow sets = new SettingsWindow();
+            AppSettings settings = sets.LoadSettings();
+            ModdingLab.ToolboxStyle.ApplyToolBoxStyle(parent, hwnd, strip, context, settings._accentColor, settings._accentColorGrid);
         }
     }
 

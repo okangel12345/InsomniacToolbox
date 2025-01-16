@@ -15,6 +15,11 @@
         public string _recentTOC3 { get; set; }
         public string _recentTOC4 { get; set; }
         public string _recentTOC5 { get; set; }
+
+        // Customization
+        //------------------------------------------------------------------------------------------
+        public string _accentColor { get; set; }
+        public string _accentColorGrid { get; set; }
     }
 
 }
