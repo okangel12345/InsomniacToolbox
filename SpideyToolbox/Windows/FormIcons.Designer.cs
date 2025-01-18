@@ -103,9 +103,29 @@ namespace WebWorks.Windows {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Wall1 {
+            get {
+                object obj = ResourceManager.GetObject("Wall1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Warning {
             get {
                 object obj = ResourceManager.GetObject("Warning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WebWorksStandardCover {
+            get {
+                object obj = ResourceManager.GetObject("WebWorksStandardCover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

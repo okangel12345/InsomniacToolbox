@@ -155,6 +155,9 @@ namespace WebWorks.Windows
         {
             if (_initializing) return;
             _description = DescriptionTextBox.Text;
+
+            DescriptionTextBox.ForeColor = Color.FromKnownColor(KnownColor.Control);
+
             RefreshButton();
         }
 

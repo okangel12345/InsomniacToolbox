@@ -34,9 +34,11 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.BackgroundImage = WebWorks.Windows.FormIcons.Spidey;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Center;
+            pictureBox1.BackgroundImage = WebWorks.Windows.FormIcons.Wall1;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox1.Dock = DockStyle.Fill;
+            pictureBox1.ErrorImage = null;
+            pictureBox1.ImageLocation = "";
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(957, 518);

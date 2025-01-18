@@ -53,7 +53,7 @@
             // 
             // CoverPictureBox
             // 
-            CoverPictureBox.Image = FormIcons.DefaultCover;
+            CoverPictureBox.Image = FormIcons.WebWorksStandardCover;
             CoverPictureBox.Location = new Point(12, 30);
             CoverPictureBox.Name = "CoverPictureBox";
             CoverPictureBox.Size = new Size(320, 180);

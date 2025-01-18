@@ -12,7 +12,7 @@ namespace ModdingLab
 
         // Splitter colors
         static Color splitter_Color = Color.FromArgb(64, 64, 64);
-        static Color splitter_panelBackgroundColor = Color.FromArgb(40, 40, 40);
+        static Color splitter_panelBackgroundColor = Color.FromArgb(12,12,12);
 
         // Data grid
         static Color datagrid_backgroundColor = Color.FromArgb(12, 12, 12);
@@ -33,9 +33,15 @@ namespace ModdingLab
         static Color button_borderColor = groupbox_borderColor;
         static Color button_topColor = Color.FromArgb(54, 54, 54);
         static Color button_bottomColor = Color.FromArgb(44, 44, 44);
+        static Color button_foreColor = Color.WhiteSmoke;
 
         // Title bar
         static Color titlebar_color = datagrid_alternatingRowBackColor;
+        static Color titlebar_fill_color = Color.FromArgb(18, 18, 18);
+        static Color titlebar_border_startColor = Color.FromArgb(40, 40, 40);
+        static Color titlebar_border_endColor = Color.FromArgb(24, 24, 24);
+        static Color titlebar_forecolor = Color.Black;
+        static Color titlebar_forecolorSelected = Color.White;
 
         // Main menu strip
         static Color mainmenustrip_backcolor = datagrid_alternatingRowBackColor;
@@ -44,13 +50,6 @@ namespace ModdingLab
         // Tree view
         static Color tree_backgroundColor = datagrid_backgroundColor;
         static Color tree_rowForeColor = Color.Gainsboro;
-
-
-        //static Color tree_gridLineColor = Color.FromArgb(64, 64, 64);
-        //static Color tree_headerBackColor = Color.FromArgb(30, 30, 30);
-        //static Color tree_headerForeColor = Color.Gainsboro;
-        //static Color tree_rowBackColor = Color.FromArgb(20, 20, 20);
-        //static Color tree_alternatingRowBackColor = Color.FromArgb(25, 25, 25);
 
         //------------------------------------------------------------------------------------------
         public static void ApplyToolBoxStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null, string accentColor = null, string accentColorGrid = null)
@@ -98,16 +97,23 @@ namespace ModdingLab
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
             {
                 // Draw a black border explicitly
-                using (Pen blackPen = new Pen(Color.FromArgb(24, 24, 24)))
+                using (LinearGradientBrush gradientBrush = new LinearGradientBrush(
+                        new Rectangle(Point.Empty, e.ToolStrip.Size),
+                        titlebar_border_startColor,
+                        titlebar_border_endColor,
+                        -90f)) 
                 {
-                    e.Graphics.DrawRectangle(blackPen, new Rectangle(Point.Empty, e.ToolStrip.Size - new Size(1, 1)));
+                    using (Pen gradientPen = new Pen(gradientBrush))
+                    {
+                        e.Graphics.DrawRectangle(gradientPen, new Rectangle(Point.Empty, e.ToolStrip.Size - new Size(1, 1)));
+                    }
                 }
             }
 
             protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)
             {
                 // Ensure the background is fully black
-                using (SolidBrush blackBrush = new SolidBrush(Color.FromArgb(18, 18, 18)))
+                using (SolidBrush blackBrush = new SolidBrush(titlebar_fill_color))
                 {
                     e.Graphics.FillRectangle(blackBrush, e.AffectedBounds);
                 }
@@ -117,7 +123,7 @@ namespace ModdingLab
             {
                 // Set menu item background explicitly
                 Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
-                using (SolidBrush blackBrush = new SolidBrush(Color.FromArgb(18, 18, 18)))
+                using (SolidBrush blackBrush = new SolidBrush(titlebar_fill_color))
                 {
                     e.Graphics.FillRectangle(blackBrush, rect);
                 }
@@ -129,11 +135,12 @@ namespace ModdingLab
                     {
                         e.Graphics.FillRectangle(grayBrush, rect);
                     }
-                    e.Item.ForeColor = Color.Black;
+
+                    e.Item.ForeColor = titlebar_forecolor;
                 }
                 else
                 {
-                    e.Item.ForeColor = Color.White;
+                    e.Item.ForeColor = titlebar_forecolorSelected;
                 }
             }
         }
@@ -248,14 +255,13 @@ namespace ModdingLab
                         treeView.BackColor = tree_backgroundColor;
                         treeView.ForeColor = tree_rowForeColor;
 
-                        treeView.ItemHeight = 25;
+                        treeView.ItemHeight = 20;
+                        treeView.Indent = 20;
 
                         treeView.ForeColor = tree_rowForeColor;
                         treeView.BackColor = tree_backgroundColor;
 
                         treeView.BorderStyle = BorderStyle.None;
-
-                        treeView.Indent = 20;
                     }
 
                     if (control.HasChildren)
@@ -340,8 +346,6 @@ namespace ModdingLab
             FlatStyle flatStyle = FlatStyle.Flat;
             int borderSize = 2;
 
-
-
             //Color topColor = Color.FromArgb(64,64,64);
             //Color bottomColor = Color.FromArgb(54,54,54);
 
@@ -356,7 +360,7 @@ namespace ModdingLab
                         button.FlatStyle = flatStyle;
                         button.FlatAppearance.BorderSize = borderSize;
                         button.FlatAppearance.BorderColor = button_borderColor;
-                        button.ForeColor = Color.WhiteSmoke;
+                        button.ForeColor = button_foreColor;
 
                         // Attach custom paint handlers based on configuration
                         button.Paint += roundedButtons
@@ -543,60 +547,16 @@ namespace ModdingLab
 
         private static void ApplyMenuItemStyle(ToolStripMenuItem menuItem)
         {
-            menuItem.BackColor = Color.FromArgb(0, 0, 0); // Menu items background set to black
-            menuItem.ForeColor = Color.White;
+            menuItem.BackColor = titlebar_forecolor; // Menu items background set to black
+            menuItem.ForeColor = titlebar_forecolorSelected;
 
             foreach (ToolStripItem subItem in menuItem.DropDownItems)
             {
-                subItem.BackColor = Color.FromArgb(25, 25, 25); // Submenu items background set to black
-                subItem.ForeColor = Color.White;
+                subItem.BackColor = titlebar_border_endColor; // Submenu items background set to black
+                subItem.ForeColor = titlebar_forecolorSelected;
             }
         }
 
-        public class BCustomToolStripRenderer : ToolStripProfessionalRenderer
-        {
-            protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
-            {
-                // Draw a black border explicitly
-                using (Pen blackPen = new Pen(Color.FromArgb(24, 24, 24)))
-                {
-                    e.Graphics.DrawRectangle(blackPen, new Rectangle(Point.Empty, e.ToolStrip.Size - new Size(1, 1)));
-                }
-            }
-
-            protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)
-            {
-                // Ensure the background is fully black
-                using (SolidBrush blackBrush = new SolidBrush(Color.FromArgb(18, 18, 18)))
-                {
-                    e.Graphics.FillRectangle(blackBrush, e.AffectedBounds);
-                }
-            }
-
-            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
-            {
-                // Set menu item background explicitly
-                Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
-                using (SolidBrush blackBrush = new SolidBrush(Color.FromArgb(18, 18, 18)))
-                {
-                    e.Graphics.FillRectangle(blackBrush, rect);
-                }
-
-                if (e.Item.Selected)
-                {
-                    using (SolidBrush grayBrush = new SolidBrush(Color.FromArgb(119, 204, 221)))
-                    {
-                        e.Graphics.FillRectangle(grayBrush, rect);
-                    }
-                    e.Item.ForeColor = Color.Black;
-                }
-                else
-                {
-                    e.Item.ForeColor = Color.White;
-                }
-            }
-
-            #endregion Controls
-        }
+        #endregion Controls    
     }
 }

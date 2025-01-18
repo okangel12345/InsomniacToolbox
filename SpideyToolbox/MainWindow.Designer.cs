@@ -46,7 +46,7 @@
             panel_Main = new Panel();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            loadTOCToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_LoadToc = new ToolStripMenuItem();
             loadRecentToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripMenuItem();
@@ -55,12 +55,12 @@
             toolStripMenuItem6 = new ToolStripMenuItem();
             hashesToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem9 = new ToolStripMenuItem();
-            openMaterial_toolStripMenuItem = new ToolStripMenuItem();
-            OpenTexture_toolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_OpenMaterial = new ToolStripMenuItem();
+            ToolStrip_OpenTexture = new ToolStripMenuItem();
             toolStripMenuItem10 = new ToolStripMenuItem();
-            optionsToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_Settings = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
-            searchByNameToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_Search = new ToolStripMenuItem();
             jumpToHashToolStripMenuItem = new ToolStripMenuItem();
             modToolStripMenuItem = new ToolStripMenuItem();
             menuItem_ReplacedAssets = new ToolStripMenuItem();
@@ -69,25 +69,26 @@
             menuItem_AddFromStage = new ToolStripMenuItem();
             menuItem_PackAsStage = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
-            calculateHashToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_Home = new ToolStripMenuItem();
+            ToolStrip_HashTool = new ToolStripMenuItem();
             toolStripMenuItem11 = new ToolStripMenuItem();
-            toolStripMenuItem1 = new ToolStripMenuItem();
-            spandexToolStripMenuItem = new ToolStripMenuItem();
-            silkTextureToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_ModdingTool = new ToolStripMenuItem();
+            ToolStrip_SpandexTool = new ToolStripMenuItem();
+            ToolStrip_SilkTextureTool = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             informationToolStripMenuItem = new ToolStripMenuItem();
             discordToolStripMenuItem = new ToolStripMenuItem();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            assetSelectedToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_AssetsSelected = new ToolStripMenuItem();
             toolStripMenuItem7 = new ToolStripMenuItem();
-            ExtractSelectedtoolStripMenuItem = new ToolStripMenuItem();
-            extractAsasciiToolStripMenuItem = new ToolStripMenuItem();
-            extractAsddsToolStripMenuItem = new ToolStripMenuItem();
-            extractToStageToolStripMenuItem = new ToolStripMenuItem();
-            replaceAssetToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_ExtractSelected = new ToolStripMenuItem();
+            ToolStrip_ExtractAsAscii = new ToolStripMenuItem();
+            ToolStrip_ExtractAsDDS = new ToolStripMenuItem();
+            ToolStrip_ExtractToStage = new ToolStripMenuItem();
+            ToolStrip_ReplaceAsset = new ToolStripMenuItem();
             toolStripMenuItem8 = new ToolStripMenuItem();
-            copyPathToolStripMenuItem = new ToolStripMenuItem();
-            copyHashToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_CopyPath = new ToolStripMenuItem();
+            ToolStrip_CopyHash = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -235,19 +236,19 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadTOCToolStripMenuItem, loadRecentToolStripMenuItem, hashesToolStripMenuItem, toolStripMenuItem9, openMaterial_toolStripMenuItem, OpenTexture_toolStripMenuItem, toolStripMenuItem10, optionsToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_LoadToc, loadRecentToolStripMenuItem, hashesToolStripMenuItem, toolStripMenuItem9, ToolStrip_OpenMaterial, ToolStrip_OpenTexture, toolStripMenuItem10, ToolStrip_Settings });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
             // 
-            // loadTOCToolStripMenuItem
+            // ToolStrip_LoadToc
             // 
-            loadTOCToolStripMenuItem.Name = "loadTOCToolStripMenuItem";
-            loadTOCToolStripMenuItem.ShortcutKeyDisplayString = "";
-            loadTOCToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
-            loadTOCToolStripMenuItem.Size = new Size(212, 22);
-            loadTOCToolStripMenuItem.Text = "Load TOC...";
-            loadTOCToolStripMenuItem.Click += loadTOCToolStripMenuItem_Click;
+            ToolStrip_LoadToc.Name = "ToolStrip_LoadToc";
+            ToolStrip_LoadToc.ShortcutKeyDisplayString = "";
+            ToolStrip_LoadToc.ShortcutKeys = Keys.Control | Keys.O;
+            ToolStrip_LoadToc.Size = new Size(212, 22);
+            ToolStrip_LoadToc.Text = "Load TOC...";
+            ToolStrip_LoadToc.Click += ToolStrip_LoadToc_Click;
             // 
             // loadRecentToolStripMenuItem
             // 
@@ -259,31 +260,32 @@
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(80, 22);
+            toolStripMenuItem2.ShortcutKeys = Keys.Control | Keys.Shift | Keys.T;
+            toolStripMenuItem2.Size = new Size(152, 22);
             toolStripMenuItem2.Text = "1";
             // 
             // toolStripMenuItem3
             // 
             toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new Size(80, 22);
+            toolStripMenuItem3.Size = new Size(152, 22);
             toolStripMenuItem3.Text = "2";
             // 
             // toolStripMenuItem4
             // 
             toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new Size(80, 22);
+            toolStripMenuItem4.Size = new Size(152, 22);
             toolStripMenuItem4.Text = "3";
             // 
             // toolStripMenuItem5
             // 
             toolStripMenuItem5.Name = "toolStripMenuItem5";
-            toolStripMenuItem5.Size = new Size(80, 22);
+            toolStripMenuItem5.Size = new Size(152, 22);
             toolStripMenuItem5.Text = "4";
             // 
             // toolStripMenuItem6
             // 
             toolStripMenuItem6.Name = "toolStripMenuItem6";
-            toolStripMenuItem6.Size = new Size(80, 22);
+            toolStripMenuItem6.Size = new Size(152, 22);
             toolStripMenuItem6.Text = "5";
             // 
             // hashesToolStripMenuItem
@@ -299,21 +301,21 @@
             toolStripMenuItem9.Size = new Size(212, 22);
             toolStripMenuItem9.Text = "───────────────────────";
             // 
-            // openMaterial_toolStripMenuItem
+            // ToolStrip_OpenMaterial
             // 
-            openMaterial_toolStripMenuItem.Name = "openMaterial_toolStripMenuItem";
-            openMaterial_toolStripMenuItem.ShortcutKeys = Keys.Control | Keys.M;
-            openMaterial_toolStripMenuItem.Size = new Size(212, 22);
-            openMaterial_toolStripMenuItem.Text = "Open .material...";
-            openMaterial_toolStripMenuItem.Click += openMaterial_toolStripMenuItem_Click;
+            ToolStrip_OpenMaterial.Name = "ToolStrip_OpenMaterial";
+            ToolStrip_OpenMaterial.ShortcutKeys = Keys.Control | Keys.M;
+            ToolStrip_OpenMaterial.Size = new Size(212, 22);
+            ToolStrip_OpenMaterial.Text = "Open .material...";
+            ToolStrip_OpenMaterial.Click += ToolStrip_OpenMaterial_Click;
             // 
-            // OpenTexture_toolStripMenuItem
+            // ToolStrip_OpenTexture
             // 
-            OpenTexture_toolStripMenuItem.Name = "OpenTexture_toolStripMenuItem";
-            OpenTexture_toolStripMenuItem.ShortcutKeys = Keys.Control | Keys.T;
-            OpenTexture_toolStripMenuItem.Size = new Size(212, 22);
-            OpenTexture_toolStripMenuItem.Text = "Open .texture...";
-            OpenTexture_toolStripMenuItem.Click += OpenTexture_toolStripMenuItem_Click;
+            ToolStrip_OpenTexture.Name = "ToolStrip_OpenTexture";
+            ToolStrip_OpenTexture.ShortcutKeys = Keys.Control | Keys.T;
+            ToolStrip_OpenTexture.Size = new Size(212, 22);
+            ToolStrip_OpenTexture.Text = "Open .texture...";
+            ToolStrip_OpenTexture.Click += ToolStrip_OpenTexture_Click;
             // 
             // toolStripMenuItem10
             // 
@@ -322,27 +324,28 @@
             toolStripMenuItem10.Size = new Size(212, 22);
             toolStripMenuItem10.Text = "───────────────────────";
             // 
-            // optionsToolStripMenuItem
+            // ToolStrip_Settings
             // 
-            optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(212, 22);
-            optionsToolStripMenuItem.Text = "Settings";
-            optionsToolStripMenuItem.Click += optionsToolStripMenuItem_Click;
+            ToolStrip_Settings.Name = "ToolStrip_Settings";
+            ToolStrip_Settings.ShortcutKeys = Keys.Control | Keys.P;
+            ToolStrip_Settings.Size = new Size(212, 22);
+            ToolStrip_Settings.Text = "Settings";
+            ToolStrip_Settings.Click += ToolStrip_Settings_Click;
             // 
             // searchToolStripMenuItem
             // 
-            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { searchByNameToolStripMenuItem, jumpToHashToolStripMenuItem });
+            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Search, jumpToHashToolStripMenuItem });
             searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             searchToolStripMenuItem.Size = new Size(54, 20);
             searchToolStripMenuItem.Text = "Search";
             // 
-            // searchByNameToolStripMenuItem
+            // ToolStrip_Search
             // 
-            searchByNameToolStripMenuItem.Name = "searchByNameToolStripMenuItem";
-            searchByNameToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
-            searchByNameToolStripMenuItem.Size = new Size(195, 22);
-            searchByNameToolStripMenuItem.Text = "Search...";
-            searchByNameToolStripMenuItem.Click += searchByNameToolStripMenuItem_Click;
+            ToolStrip_Search.Name = "ToolStrip_Search";
+            ToolStrip_Search.ShortcutKeys = Keys.Control | Keys.S;
+            ToolStrip_Search.Size = new Size(195, 22);
+            ToolStrip_Search.Text = "Search...";
+            ToolStrip_Search.Click += ToolStrip_Search_Click;
             // 
             // jumpToHashToolStripMenuItem
             // 
@@ -356,20 +359,20 @@
             modToolStripMenuItem.Name = "modToolStripMenuItem";
             modToolStripMenuItem.Size = new Size(44, 20);
             modToolStripMenuItem.Text = "Mod";
-            modToolStripMenuItem.Click += modToolStripMenuItem_Click;
+            modToolStripMenuItem.Click += ToolStrip_Mod_Click;
             // 
             // menuItem_ReplacedAssets
             // 
             menuItem_ReplacedAssets.Enabled = false;
             menuItem_ReplacedAssets.Name = "menuItem_ReplacedAssets";
-            menuItem_ReplacedAssets.Size = new Size(212, 22);
+            menuItem_ReplacedAssets.Size = new Size(225, 22);
             menuItem_ReplacedAssets.Text = "0 replaced, 0 new";
             // 
             // menuItem_ClearAll
             // 
             menuItem_ClearAll.Enabled = false;
             menuItem_ClearAll.Name = "menuItem_ClearAll";
-            menuItem_ClearAll.Size = new Size(212, 22);
+            menuItem_ClearAll.Size = new Size(225, 22);
             menuItem_ClearAll.Text = "Clear all";
             menuItem_ClearAll.Click += menuItem_ClearAll_Click;
             // 
@@ -377,38 +380,46 @@
             // 
             toolStripMenuItem13.Enabled = false;
             toolStripMenuItem13.Name = "toolStripMenuItem13";
-            toolStripMenuItem13.Size = new Size(212, 22);
+            toolStripMenuItem13.Size = new Size(225, 22);
             toolStripMenuItem13.Text = "───────────────────────";
             // 
             // menuItem_AddFromStage
             // 
             menuItem_AddFromStage.Enabled = false;
             menuItem_AddFromStage.Name = "menuItem_AddFromStage";
-            menuItem_AddFromStage.Size = new Size(212, 22);
+            menuItem_AddFromStage.Size = new Size(225, 22);
             menuItem_AddFromStage.Text = "Add from stage...";
             menuItem_AddFromStage.Click += menuItem_AddFromStage_Click;
             // 
             // menuItem_PackAsStage
             // 
             menuItem_PackAsStage.Name = "menuItem_PackAsStage";
-            menuItem_PackAsStage.Size = new Size(212, 22);
+            menuItem_PackAsStage.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
+            menuItem_PackAsStage.Size = new Size(225, 22);
             menuItem_PackAsStage.Text = "Pack as stage...";
             menuItem_PackAsStage.Click += menuItem_PackAsStage_Click;
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { calculateHashToolStripMenuItem, toolStripMenuItem11, toolStripMenuItem1, spandexToolStripMenuItem, silkTextureToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Home, ToolStrip_HashTool, toolStripMenuItem11, ToolStrip_ModdingTool, ToolStrip_SpandexTool, ToolStrip_SilkTextureTool });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(46, 20);
             toolsToolStripMenuItem.Text = "Tools";
             // 
-            // calculateHashToolStripMenuItem
+            // ToolStrip_Home
             // 
-            calculateHashToolStripMenuItem.Name = "calculateHashToolStripMenuItem";
-            calculateHashToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.H;
-            calculateHashToolStripMenuItem.Size = new Size(215, 22);
-            calculateHashToolStripMenuItem.Text = "Calculate hash...    ";
-            calculateHashToolStripMenuItem.Click += calculateHashToolStripMenuItem_Click;
+            ToolStrip_Home.Name = "ToolStrip_Home";
+            ToolStrip_Home.Size = new Size(215, 22);
+            ToolStrip_Home.Text = "Home";
+            ToolStrip_Home.Click += home_toolStripMenuItem_Click;
+            // 
+            // ToolStrip_HashTool
+            // 
+            ToolStrip_HashTool.Name = "ToolStrip_HashTool";
+            ToolStrip_HashTool.ShortcutKeys = Keys.Control | Keys.H;
+            ToolStrip_HashTool.Size = new Size(215, 22);
+            ToolStrip_HashTool.Text = "Calculate hash...    ";
+            ToolStrip_HashTool.Click += ToolStrip_HashTool_Click;
             // 
             // toolStripMenuItem11
             // 
@@ -417,30 +428,30 @@
             toolStripMenuItem11.Size = new Size(215, 22);
             toolStripMenuItem11.Text = "───────────────────────";
             // 
-            // toolStripMenuItem1
+            // ToolStrip_ModdingTool
             // 
-            toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.ShortcutKeys = Keys.Control | Keys.D1;
-            toolStripMenuItem1.Size = new Size(215, 22);
-            toolStripMenuItem1.Text = "Modding Tool";
-            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            ToolStrip_ModdingTool.Name = "ToolStrip_ModdingTool";
+            ToolStrip_ModdingTool.ShortcutKeys = Keys.Control | Keys.D1;
+            ToolStrip_ModdingTool.Size = new Size(215, 22);
+            ToolStrip_ModdingTool.Text = "Modding Tool";
+            ToolStrip_ModdingTool.Click += ToolStrip_ModdingTool_Click;
             // 
-            // spandexToolStripMenuItem
+            // ToolStrip_SpandexTool
             // 
-            spandexToolStripMenuItem.Image = WebWorks.Windows.FormIcons.Spiderman_Symbol;
-            spandexToolStripMenuItem.Name = "spandexToolStripMenuItem";
-            spandexToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.D2;
-            spandexToolStripMenuItem.Size = new Size(215, 22);
-            spandexToolStripMenuItem.Text = "Spandex";
-            spandexToolStripMenuItem.Click += spandexToolStripMenuItem_Click;
+            ToolStrip_SpandexTool.Image = WebWorks.Windows.FormIcons.Spiderman_Symbol;
+            ToolStrip_SpandexTool.Name = "ToolStrip_SpandexTool";
+            ToolStrip_SpandexTool.ShortcutKeys = Keys.Control | Keys.D2;
+            ToolStrip_SpandexTool.Size = new Size(215, 22);
+            ToolStrip_SpandexTool.Text = "Spandex";
+            ToolStrip_SpandexTool.Click += ToolStrip_SpandexTool_Click;
             // 
-            // silkTextureToolStripMenuItem
+            // ToolStrip_SilkTextureTool
             // 
-            silkTextureToolStripMenuItem.Name = "silkTextureToolStripMenuItem";
-            silkTextureToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.D3;
-            silkTextureToolStripMenuItem.Size = new Size(215, 22);
-            silkTextureToolStripMenuItem.Text = "Silk Texture";
-            silkTextureToolStripMenuItem.Click += silkTextureToolStripMenuItem_Click;
+            ToolStrip_SilkTextureTool.Name = "ToolStrip_SilkTextureTool";
+            ToolStrip_SilkTextureTool.ShortcutKeys = Keys.Control | Keys.D3;
+            ToolStrip_SilkTextureTool.Size = new Size(215, 22);
+            ToolStrip_SilkTextureTool.Text = "Silk Texture";
+            ToolStrip_SilkTextureTool.Click += ToolStrip_SilkTextureTool_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -466,17 +477,17 @@
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { assetSelectedToolStripMenuItem, toolStripMenuItem7, ExtractSelectedtoolStripMenuItem, extractAsasciiToolStripMenuItem, extractAsddsToolStripMenuItem, extractToStageToolStripMenuItem, replaceAssetToolStripMenuItem, toolStripMenuItem8, copyPathToolStripMenuItem, copyHashToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { ToolStrip_AssetsSelected, toolStripMenuItem7, ToolStrip_ExtractSelected, ToolStrip_ExtractAsAscii, ToolStrip_ExtractAsDDS, ToolStrip_ExtractToStage, ToolStrip_ReplaceAsset, toolStripMenuItem8, ToolStrip_CopyPath, ToolStrip_CopyHash });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(215, 246);
+            contextMenuStrip1.Size = new Size(215, 224);
             // 
             // assetSelectedToolStripMenuItem
             // 
-            assetSelectedToolStripMenuItem.BackColor = Color.Black;
-            assetSelectedToolStripMenuItem.ForeColor = SystemColors.Control;
-            assetSelectedToolStripMenuItem.Name = "assetSelectedToolStripMenuItem";
-            assetSelectedToolStripMenuItem.Size = new Size(214, 22);
-            assetSelectedToolStripMenuItem.Text = "N assets selected";
+            ToolStrip_AssetsSelected.BackColor = Color.Black;
+            ToolStrip_AssetsSelected.ForeColor = SystemColors.Control;
+            ToolStrip_AssetsSelected.Name = "assetSelectedToolStripMenuItem";
+            ToolStrip_AssetsSelected.Size = new Size(214, 22);
+            ToolStrip_AssetsSelected.Text = "N assets selected";
             // 
             // toolStripMenuItem7
             // 
@@ -488,50 +499,52 @@
             toolStripMenuItem7.Size = new Size(214, 22);
             toolStripMenuItem7.Text = "____________________________";
             // 
-            // ExtractSelectedtoolStripMenuItem
+            // ToolStrip_ExtractSelected
             // 
-            ExtractSelectedtoolStripMenuItem.BackColor = Color.Black;
-            ExtractSelectedtoolStripMenuItem.ForeColor = SystemColors.Control;
-            ExtractSelectedtoolStripMenuItem.Name = "ExtractSelectedtoolStripMenuItem";
-            ExtractSelectedtoolStripMenuItem.Size = new Size(214, 22);
-            ExtractSelectedtoolStripMenuItem.Text = "Extract selected...";
-            ExtractSelectedtoolStripMenuItem.Click += ExtractSelectedtoolStripMenuItem_Click;
+            ToolStrip_ExtractSelected.BackColor = Color.Black;
+            ToolStrip_ExtractSelected.ForeColor = SystemColors.Control;
+            ToolStrip_ExtractSelected.Name = "ToolStrip_ExtractSelected";
+            ToolStrip_ExtractSelected.ShortcutKeys = Keys.Control | Keys.E;
+            ToolStrip_ExtractSelected.Size = new Size(214, 22);
+            ToolStrip_ExtractSelected.Text = "Extract selected...";
+            ToolStrip_ExtractSelected.Click += ToolStrip_ExtractSelected_Click;
             // 
-            // extractAsasciiToolStripMenuItem
+            // ToolStrip_ExtractAsAscii
             // 
-            extractAsasciiToolStripMenuItem.BackColor = Color.Black;
-            extractAsasciiToolStripMenuItem.ForeColor = SystemColors.Control;
-            extractAsasciiToolStripMenuItem.Name = "extractAsasciiToolStripMenuItem";
-            extractAsasciiToolStripMenuItem.Size = new Size(214, 22);
-            extractAsasciiToolStripMenuItem.Text = "Extract as .ascii...";
-            extractAsasciiToolStripMenuItem.Click += extractAsasciiToolStripMenuItem_Click;
+            ToolStrip_ExtractAsAscii.BackColor = Color.Black;
+            ToolStrip_ExtractAsAscii.ForeColor = SystemColors.Control;
+            ToolStrip_ExtractAsAscii.Name = "ToolStrip_ExtractAsAscii";
+            ToolStrip_ExtractAsAscii.Size = new Size(214, 22);
+            ToolStrip_ExtractAsAscii.Text = "Extract as .ascii...";
+            ToolStrip_ExtractAsAscii.Click += ToolStrip_ExtractAsAscii_Click;
             // 
-            // extractAsddsToolStripMenuItem
+            // ToolStrip_ExtractAsDDS
             // 
-            extractAsddsToolStripMenuItem.BackColor = Color.Black;
-            extractAsddsToolStripMenuItem.ForeColor = SystemColors.Control;
-            extractAsddsToolStripMenuItem.Name = "extractAsddsToolStripMenuItem";
-            extractAsddsToolStripMenuItem.Size = new Size(214, 22);
-            extractAsddsToolStripMenuItem.Text = "Extract as .dds...";
-            extractAsddsToolStripMenuItem.Click += extractAsddsToolStripMenuItem_Click;
+            ToolStrip_ExtractAsDDS.BackColor = Color.Black;
+            ToolStrip_ExtractAsDDS.ForeColor = SystemColors.Control;
+            ToolStrip_ExtractAsDDS.Name = "ToolStrip_ExtractAsDDS";
+            ToolStrip_ExtractAsDDS.Size = new Size(214, 22);
+            ToolStrip_ExtractAsDDS.Text = "Extract as .dds...";
+            ToolStrip_ExtractAsDDS.Click += ToolStrip_ExtractAsDDS_Click;
             // 
-            // extractToStageToolStripMenuItem
+            // ToolStrip_ExtractToStage
             // 
-            extractToStageToolStripMenuItem.BackColor = Color.Black;
-            extractToStageToolStripMenuItem.ForeColor = SystemColors.Control;
-            extractToStageToolStripMenuItem.Name = "extractToStageToolStripMenuItem";
-            extractToStageToolStripMenuItem.Size = new Size(214, 22);
-            extractToStageToolStripMenuItem.Text = "Extract to stage...";
-            extractToStageToolStripMenuItem.Click += extractToStageToolStripMenuItem_Click;
+            ToolStrip_ExtractToStage.BackColor = Color.Black;
+            ToolStrip_ExtractToStage.ForeColor = SystemColors.Control;
+            ToolStrip_ExtractToStage.Name = "ToolStrip_ExtractToStage";
+            ToolStrip_ExtractToStage.Size = new Size(214, 22);
+            ToolStrip_ExtractToStage.Text = "Extract to stage...";
+            ToolStrip_ExtractToStage.Click += ToolStrip_ExtractToStage_Click;
             // 
-            // replaceAssetToolStripMenuItem
+            // ToolStrip_ReplaceAsset
             // 
-            replaceAssetToolStripMenuItem.BackColor = Color.Black;
-            replaceAssetToolStripMenuItem.ForeColor = SystemColors.Control;
-            replaceAssetToolStripMenuItem.Name = "replaceAssetToolStripMenuItem";
-            replaceAssetToolStripMenuItem.Size = new Size(214, 22);
-            replaceAssetToolStripMenuItem.Text = "Replace selected...";
-            replaceAssetToolStripMenuItem.Click += replaceAssetToolStripMenuItem_Click;
+            ToolStrip_ReplaceAsset.BackColor = Color.Black;
+            ToolStrip_ReplaceAsset.ForeColor = SystemColors.Control;
+            ToolStrip_ReplaceAsset.Name = "ToolStrip_ReplaceAsset";
+            ToolStrip_ReplaceAsset.ShortcutKeys = Keys.Control | Keys.R;
+            ToolStrip_ReplaceAsset.Size = new Size(214, 22);
+            ToolStrip_ReplaceAsset.Text = "Replace selected...";
+            ToolStrip_ReplaceAsset.Click += ToolStrip_ReplaceAsset_Click;
             // 
             // toolStripMenuItem8
             // 
@@ -543,23 +556,23 @@
             toolStripMenuItem8.Size = new Size(214, 22);
             toolStripMenuItem8.Text = "____________________________";
             // 
-            // copyPathToolStripMenuItem
+            // ToolStrip_CopyPath
             // 
-            copyPathToolStripMenuItem.BackColor = Color.Black;
-            copyPathToolStripMenuItem.ForeColor = SystemColors.Control;
-            copyPathToolStripMenuItem.Name = "copyPathToolStripMenuItem";
-            copyPathToolStripMenuItem.Size = new Size(214, 22);
-            copyPathToolStripMenuItem.Text = "Copy path";
-            copyPathToolStripMenuItem.Click += copyPathToolStripMenuItem_Click;
+            ToolStrip_CopyPath.BackColor = Color.Black;
+            ToolStrip_CopyPath.ForeColor = SystemColors.Control;
+            ToolStrip_CopyPath.Name = "ToolStrip_CopyPath";
+            ToolStrip_CopyPath.Size = new Size(214, 22);
+            ToolStrip_CopyPath.Text = "Copy path";
+            ToolStrip_CopyPath.Click += ToolStrip_CopyPath_Click;
             // 
-            // copyHashToolStripMenuItem
+            // ToolStrip_CopyHash
             // 
-            copyHashToolStripMenuItem.BackColor = Color.Black;
-            copyHashToolStripMenuItem.ForeColor = SystemColors.Control;
-            copyHashToolStripMenuItem.Name = "copyHashToolStripMenuItem";
-            copyHashToolStripMenuItem.Size = new Size(214, 22);
-            copyHashToolStripMenuItem.Text = "Copy hash";
-            copyHashToolStripMenuItem.Click += copyHashToolStripMenuItem_Click;
+            ToolStrip_CopyHash.BackColor = Color.Black;
+            ToolStrip_CopyHash.ForeColor = SystemColors.Control;
+            ToolStrip_CopyHash.Name = "ToolStrip_CopyHash";
+            ToolStrip_CopyHash.Size = new Size(214, 22);
+            ToolStrip_CopyHash.Text = "Copy hash";
+            ToolStrip_CopyHash.Click += ToolStrip_CopyHash_Click;
             // 
             // MainWindow
             // 
@@ -599,24 +612,22 @@
         private ToolStripStatusLabel OverlayOperationLabel;
         private TreeView TreeView_Assets;
         private DataGridView dataGridView_Files;
-        private SplitContainer splitContainer1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem searchToolStripMenuItem;
         private ToolStripMenuItem toolsToolStripMenuItem;
-        private ToolStripMenuItem loadTOCToolStripMenuItem;
+        private ToolStripMenuItem ToolStrip_LoadToc;
         private ToolStripMenuItem loadRecentToolStripMenuItem;
         private ToolStripMenuItem hashesToolStripMenuItem;
         private ToolStripMenuItem hashestxtToolStripMenuItem;
         private ToolStripMenuItem hashesi30txtToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem searchByNameToolStripMenuItem;
         private ToolStripMenuItem jumpToHashToolStripMenuItem;
         private ToolStripMenuItem modToolStripMenuItem;
-        private ToolStripMenuItem calculateHashToolStripMenuItem;
+        private ToolStripMenuItem ToolStrip_HashTool;
         private ToolStripMenuItem informationToolStripMenuItem;
         private ToolStripMenuItem discordToolStripMenuItem;
-        private Panel panel_Main;
+        public Panel panel_Main;
         private ToolStripMenuItem toolStripMenuItem2;
         private ToolStripMenuItem toolStripMenuItem3;
         private ToolStripMenuItem toolStripMenuItem4;
@@ -624,18 +635,18 @@
         private ToolStripMenuItem toolStripMenuItem6;
         private ToolStripMenuItem toolStripMenuItem8;
         private ToolStripMenuItem toolStripMenuItem7;
-        private ToolStripMenuItem spandexToolStripMenuItem;
-        private ToolStripMenuItem silkTextureToolStripMenuItem;
-        private ToolStripMenuItem toolStripMenuItem1;
-        private ToolStripMenuItem openMaterial_toolStripMenuItem;
-        private ToolStripMenuItem OpenTexture_toolStripMenuItem;
+        private ToolStripMenuItem ToolStrip_SpandexTool;
+        private ToolStripMenuItem ToolStrip_SilkTextureTool;
+        private ToolStripMenuItem ToolStrip_ModdingTool;
+        private ToolStripMenuItem ToolStrip_OpenMaterial;
+        private ToolStripMenuItem ToolStrip_OpenTexture;
         private ToolStripMenuItem toolStripMenuItem9;
         private ToolStripMenuItem toolStripMenuItem11;
         private ToolStripMenuItem menuItem_ReplacedAssets;
         private ToolStripMenuItem menuItem_ClearAll;
         private ToolStripMenuItem menuItem_AddFromStage;
         private ToolStripMenuItem menuItem_PackAsStage;
-        private ToolStripMenuItem optionsToolStripMenuItem;
+        private ToolStripMenuItem ToolStrip_Settings;
         private ToolStripMenuItem toolStripMenuItem10;
         private ToolStripMenuItem toolStripMenuItem13;
         private DataGridViewTextBoxColumn FileName;
@@ -646,13 +657,16 @@
         private DataGridViewTextBoxColumn assetPath;
         private DataGridViewTextBoxColumn assetRef;
         public ContextMenuStrip contextMenuStrip1;
-        public ToolStripMenuItem extractToStageToolStripMenuItem;
-        public ToolStripMenuItem replaceAssetToolStripMenuItem;
-        public ToolStripMenuItem copyPathToolStripMenuItem;
-        public ToolStripMenuItem copyHashToolStripMenuItem;
-        public ToolStripMenuItem ExtractSelectedtoolStripMenuItem;
-        public ToolStripMenuItem extractAsasciiToolStripMenuItem;
-        public ToolStripMenuItem extractAsddsToolStripMenuItem;
-        public ToolStripMenuItem assetSelectedToolStripMenuItem;
+        public ToolStripMenuItem ToolStrip_ExtractToStage;
+        public ToolStripMenuItem ToolStrip_ReplaceAsset;
+        public ToolStripMenuItem ToolStrip_CopyPath;
+        public ToolStripMenuItem ToolStrip_CopyHash;
+        public ToolStripMenuItem ToolStrip_ExtractSelected;
+        public ToolStripMenuItem ToolStrip_ExtractAsAscii;
+        public ToolStripMenuItem ToolStrip_ExtractAsDDS;
+        public ToolStripMenuItem ToolStrip_AssetsSelected;
+        public SplitContainer splitContainer1;
+        private ToolStripMenuItem ToolStrip_Home;
+        private ToolStripMenuItem ToolStrip_Search;
     }
 }

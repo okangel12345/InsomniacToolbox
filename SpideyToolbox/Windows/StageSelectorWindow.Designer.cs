@@ -57,6 +57,7 @@
             // 
             NameComboBox.BackColor = Color.FromArgb(22, 22, 22);
             NameComboBox.FlatStyle = FlatStyle.Flat;
+            NameComboBox.ForeColor = SystemColors.Control;
             NameComboBox.FormattingEnabled = true;
             NameComboBox.Location = new Point(12, 12);
             NameComboBox.Name = "NameComboBox";
