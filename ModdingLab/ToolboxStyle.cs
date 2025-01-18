@@ -9,6 +9,50 @@ namespace ModdingLab
         //------------------------------------------------------------------------------------------
         static Color accent = Color.FromArgb(119, 204, 221);
         static Color accentGrid = Color.FromArgb(17, 130, 135);
+
+        // Splitter colors
+        static Color splitter_Color = Color.FromArgb(64, 64, 64);
+        static Color splitter_panelBackgroundColor = Color.FromArgb(40, 40, 40);
+
+        // Data grid
+        static Color datagrid_backgroundColor = Color.FromArgb(12, 12, 12);
+        static Color datagrid_gridLineColor = splitter_Color;
+        static Color datagrid_headerBackColor = Color.FromArgb(30, 30, 30);
+        static Color datagrid_headerForeColor = Color.Gainsboro;
+        static Color datagrid_rowBackColor = Color.FromArgb(20, 20, 20);
+        static Color datagrid_rowForeColor = Color.Gainsboro;
+        static Color datagrid_selectedRowForeColor = Color.LightGray;
+        static Color datagrid_alternatingRowBackColor = Color.FromArgb(25, 25, 25);
+
+        // Group box
+        static Color groupbox_borderColor = Color.FromArgb(72, 72, 72);
+        static Color groupbox_backgroundColor = datagrid_headerBackColor;
+        static Color groupbox_textColor = Color.WhiteSmoke;
+
+        // Buttons
+        static Color button_borderColor = groupbox_borderColor;
+        static Color button_topColor = Color.FromArgb(54, 54, 54);
+        static Color button_bottomColor = Color.FromArgb(44, 44, 44);
+
+        // Title bar
+        static Color titlebar_color = datagrid_alternatingRowBackColor;
+
+        // Main menu strip
+        static Color mainmenustrip_backcolor = datagrid_alternatingRowBackColor;
+        static Color mainmenustrip_forecolor = Color.White;
+
+        // Tree view
+        static Color tree_backgroundColor = datagrid_backgroundColor;
+        static Color tree_rowForeColor = Color.Gainsboro;
+
+
+        //static Color tree_gridLineColor = Color.FromArgb(64, 64, 64);
+        //static Color tree_headerBackColor = Color.FromArgb(30, 30, 30);
+        //static Color tree_headerForeColor = Color.Gainsboro;
+        //static Color tree_rowBackColor = Color.FromArgb(20, 20, 20);
+        //static Color tree_alternatingRowBackColor = Color.FromArgb(25, 25, 25);
+
+        //------------------------------------------------------------------------------------------
         public static void ApplyToolBoxStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null, string accentColor = null, string accentColorGrid = null)
         {
             if (!string.IsNullOrEmpty(accentColor))
@@ -98,9 +142,7 @@ namespace ModdingLab
 
         public static void ApplySplitContainerStyle(Control parent)
         {
-            Color splitterColor = Color.FromArgb(64, 64, 64); // Dark splitter color
-            int splitterWidth = 6; // Thicker splitter for better visibility
-            Color panelBackgroundColor = Color.FromArgb(40, 40, 40); // Dark panel background color
+            int splitter_Width = 6;
 
             // Recursively apply styles to all SplitContainer controls in the parent container
             void ApplyStyleRecursive(Control parentControl)
@@ -110,23 +152,23 @@ namespace ModdingLab
                     if (control is SplitContainer splitContainer)
                     {
                         // Style the SplitContainer itself
-                        splitContainer.BackColor = splitterColor;
-                        splitContainer.SplitterWidth = splitterWidth;
+                        splitContainer.BackColor = splitter_Color;
+                        splitContainer.SplitterWidth = splitter_Width;
 
                         // Style the panels
-                        splitContainer.Panel1.BackColor = panelBackgroundColor;
-                        splitContainer.Panel2.BackColor = panelBackgroundColor;
+                        splitContainer.Panel1.BackColor = splitter_panelBackgroundColor;
+                        splitContainer.Panel2.BackColor = splitter_panelBackgroundColor;
 
                         // Add custom painting for the splitter
                         splitContainer.Paint += (sender, e) =>
                         {
                             // Define the bounds for the splitter
                             Rectangle splitterBounds = splitContainer.Orientation == Orientation.Horizontal
-                                ? new Rectangle(0, splitContainer.SplitterDistance, splitContainer.Width, splitterWidth)
-                                : new Rectangle(splitContainer.SplitterDistance, 0, splitterWidth, splitContainer.Height);
+                                ? new Rectangle(0, splitContainer.SplitterDistance, splitContainer.Width, splitter_Width)
+                                : new Rectangle(splitContainer.SplitterDistance, 0, splitter_Width, splitContainer.Height);
 
                             // Fill the splitter with the specified color
-                            using (var brush = new SolidBrush(splitterColor))
+                            using (var brush = new SolidBrush(splitter_Color))
                             {
                                 e.Graphics.FillRectangle(brush, splitterBounds);
                             }
@@ -150,47 +192,35 @@ namespace ModdingLab
 
         public static void ApplyDataGridViewStyle(Control parent)
         {
-            Color backgroundColor = Color.FromArgb(12, 12, 12);
-            Color gridLineColor = Color.FromArgb(64, 64, 64);
-            Color headerBackColor = Color.FromArgb(30, 30, 30);
-            Color headerForeColor = Color.Gainsboro; // Slightly dimmer than WhiteSmoke
-            Color rowBackColor = Color.FromArgb(20, 20, 20);
-            Color rowForeColor = Color.Gainsboro;
-            Color selectedRowBackColor = Color.FromArgb(0, 0, 0);
-            Color selectedRowForeColor = Color.LightGray; // Slightly dimmer than White
-            Color alternatingRowBackColor = Color.FromArgb(25, 25, 25);
-            Color customSelectedRowBackColor = accentGrid; // Custom color for selected row background
-            Color customSelectedRowForeColor = Color.FromArgb(230, 230, 230); // Custom color for selected row foreground
-
             void ApplyStyleRecursive(Control parentControl)
             {
                 foreach (Control control in parentControl.Controls)
                 {
                     if (control is DataGridView dataGridView)
                     {
-                        dataGridView.BackgroundColor = backgroundColor;
-                        dataGridView.GridColor = gridLineColor;
+                        dataGridView.BackgroundColor = datagrid_backgroundColor;
+                        dataGridView.GridColor = datagrid_gridLineColor;
                         dataGridView.BorderStyle = BorderStyle.None;
 
                         dataGridView.EnableHeadersVisualStyles = false;
-                        dataGridView.ColumnHeadersDefaultCellStyle.BackColor = headerBackColor;
-                        dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = headerForeColor;
+                        dataGridView.ColumnHeadersDefaultCellStyle.BackColor = datagrid_headerBackColor;
+                        dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = datagrid_headerForeColor;
                         dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font(dataGridView.Font, FontStyle.Bold);
                         dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
-                        dataGridView.RowsDefaultCellStyle.BackColor = rowBackColor;
-                        dataGridView.RowsDefaultCellStyle.ForeColor = rowForeColor;
-                        dataGridView.RowsDefaultCellStyle.SelectionBackColor = customSelectedRowBackColor; // Use custom selected row background
-                        dataGridView.RowsDefaultCellStyle.SelectionForeColor = customSelectedRowForeColor; // Use custom selected row foreground
+                        dataGridView.RowsDefaultCellStyle.BackColor = datagrid_rowBackColor;
+                        dataGridView.RowsDefaultCellStyle.ForeColor = datagrid_rowForeColor;
+                        dataGridView.RowsDefaultCellStyle.SelectionBackColor = accentGrid; // Use custom selected row background
+                        dataGridView.RowsDefaultCellStyle.SelectionForeColor = datagrid_selectedRowForeColor; // Use custom selected row foreground
 
-                        dataGridView.AlternatingRowsDefaultCellStyle.BackColor = alternatingRowBackColor;
+                        dataGridView.AlternatingRowsDefaultCellStyle.BackColor = datagrid_alternatingRowBackColor;
 
-                        dataGridView.RowTemplate.DefaultCellStyle.BackColor = rowBackColor;
+                        dataGridView.RowTemplate.DefaultCellStyle.BackColor = datagrid_rowBackColor;
 
                         dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-                        dataGridView.RowHeadersDefaultCellStyle.BackColor = headerBackColor;
-                        dataGridView.RowHeadersDefaultCellStyle.ForeColor = headerForeColor;
+                        dataGridView.RowHeadersDefaultCellStyle.BackColor = datagrid_headerBackColor;
+                        dataGridView.RowHeadersDefaultCellStyle.ForeColor = datagrid_headerForeColor;
                         dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
                         dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -209,35 +239,22 @@ namespace ModdingLab
 
         public static void ApplyTreeViewStyle(Control parent)
         {
-            Color backgroundColor = Color.FromArgb(12, 12, 12);
-            Color rowForeColor = Color.Gainsboro;
-            Color gridLineColor = Color.FromArgb(64, 64, 64);
-            Color headerBackColor = Color.FromArgb(30, 30, 30);
-            Color headerForeColor = Color.Gainsboro; // Slightly dimmer than WhiteSmoke
-            Color rowBackColor = Color.FromArgb(20, 20, 20);
-            Color alternatingRowBackColor = Color.FromArgb(25, 25, 25);
-
             void ApplyStyleRecursive(Control parentControl)
             {
                 foreach (Control control in parentControl.Controls)
                 {
                     if (control is TreeView treeView)
                     {
-                        // General TreeView styling
-                        treeView.BackColor = backgroundColor;
-                        treeView.ForeColor = rowForeColor;
+                        treeView.BackColor = tree_backgroundColor;
+                        treeView.ForeColor = tree_rowForeColor;
 
-                        // Style for the node labels
-                        treeView.ItemHeight = 25; // Customize node height to make it look more spacious and consistent with the style
+                        treeView.ItemHeight = 25;
 
-                        // Alternate row styling (for every other row)
-                        treeView.ForeColor = rowForeColor;
-                        treeView.BackColor = backgroundColor;
+                        treeView.ForeColor = tree_rowForeColor;
+                        treeView.BackColor = tree_backgroundColor;
 
-                        // Set the border color and grid style (if applicable, though TreeView doesn't have a grid)
                         treeView.BorderStyle = BorderStyle.None;
 
-                        // Optional: Set the TreeView's indent for better aesthetics
                         treeView.Indent = 20;
                     }
 
@@ -254,9 +271,6 @@ namespace ModdingLab
         public static void ApplyGroupBoxStyle(Control parent)
         {
             // Configuration for GroupBox styling
-            Color borderColor = Color.FromArgb(72, 72, 72);
-            Color backgroundColor = Color.FromArgb(30, 30, 30);
-            Color textColor = Color.WhiteSmoke;
             Font textFont = new Font("Segoe UI", 9, FontStyle.Regular);
 
             // Recursively apply styles to all GroupBoxes in the parent container
@@ -267,12 +281,12 @@ namespace ModdingLab
                     if (control is GroupBox groupBox)
                     {
                         // General appearance
-                        groupBox.BackColor = backgroundColor;
-                        groupBox.ForeColor = textColor;
+                        groupBox.BackColor = groupbox_backgroundColor;
+                        groupBox.ForeColor = groupbox_textColor;
                         groupBox.Font = textFont;
 
                         // Attach custom paint event for drawing borders and header
-                        groupBox.Paint += (sender, e) => DrawCustomGroupBox(groupBox, e, borderColor);
+                        groupBox.Paint += (sender, e) => DrawCustomGroupBox(groupBox, e, groupbox_borderColor);
                     }
 
                     // Apply recursively to child controls
@@ -325,13 +339,11 @@ namespace ModdingLab
             bool roundedButtons = true;
             FlatStyle flatStyle = FlatStyle.Flat;
             int borderSize = 2;
-            Color borderColor = Color.FromArgb(72, 72, 72);
+
+
 
             //Color topColor = Color.FromArgb(64,64,64);
             //Color bottomColor = Color.FromArgb(54,54,54);
-
-            Color topColor = Color.FromArgb(54, 54, 54);
-            Color bottomColor = Color.FromArgb(44, 44, 44);
 
             // Recursively apply styles to all buttons
             void ApplyStyleRecursive(Control parentControl)
@@ -343,13 +355,13 @@ namespace ModdingLab
                         // Set basic button styles
                         button.FlatStyle = flatStyle;
                         button.FlatAppearance.BorderSize = borderSize;
-                        button.FlatAppearance.BorderColor = borderColor;
+                        button.FlatAppearance.BorderColor = button_borderColor;
                         button.ForeColor = Color.WhiteSmoke;
 
                         // Attach custom paint handlers based on configuration
                         button.Paint += roundedButtons
-                            ? ((sender, e) => ApplyGradientRounded(button, e, topColor, bottomColor))
-                            : (sender, e) => ApplyGradient(button, e, topColor, bottomColor);
+                            ? ((sender, e) => ApplyGradientRounded(button, e, button_topColor, button_bottomColor))
+                            : (sender, e) => ApplyGradient(button, e, button_topColor, button_bottomColor);
 
                         // Invalidate button to handle hover effects
                         button.MouseEnter += (sender, e) => button.Invalidate();
@@ -468,10 +480,8 @@ namespace ModdingLab
         // Static method to set title bar color
         public static void SetTitleBarColor(IntPtr hwnd)
         {
-            Color color = Color.FromArgb(26, 26, 26);
-
             // Swap the Red and Blue components of the color
-            Color swappedColor = Color.FromArgb(color.A, color.B, color.G, color.R);
+            Color swappedColor = Color.FromArgb(titlebar_color.A, titlebar_color.B, titlebar_color.G, titlebar_color.R);
 
             // Multiply each RGB component by 0.7 to darken the color
             int red = (int)(swappedColor.R * 0.7);
@@ -497,8 +507,8 @@ namespace ModdingLab
         {
             if (contextMenuStrip != null)
             {
-                contextMenuStrip.BackColor = Color.FromArgb(25, 25, 25); // ContextMenuStrip background set to black
-                contextMenuStrip.ForeColor = Color.White;
+                contextMenuStrip.BackColor = mainmenustrip_backcolor;
+                contextMenuStrip.ForeColor = mainmenustrip_forecolor;
 
                 contextMenuStrip.Renderer = new CustomToolStripRenderer();
 
@@ -518,8 +528,8 @@ namespace ModdingLab
         {
             if (MainMenuStrip != null)
             {
-                MainMenuStrip.BackColor = Color.FromArgb(25, 25, 25); // MenuStrip background set to black
-                MainMenuStrip.ForeColor = Color.White;
+                MainMenuStrip.BackColor = mainmenustrip_backcolor;
+                MainMenuStrip.ForeColor = mainmenustrip_forecolor;
 
                 // Set custom renderer to ensure black border and full control styling
                 MainMenuStrip.Renderer = new CustomToolStripRenderer();

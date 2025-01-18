@@ -1,4 +1,5 @@
 ﻿using DAT1;
+using SpideyToolbox;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,11 @@ namespace WebWorks.Utilities
         {
             try
             {
+                if (_toc == null)
+                {
+                    _toc = MainWindow._toc;
+                }
+                
                 BinaryReader assetData = _toc.GetAssetReader(span, assetID);
 
                 byte[] assetBytes = assetData.ReadBytes((int)assetData.BaseStream.Length);
@@ -31,7 +37,7 @@ namespace WebWorks.Utilities
 
                 File.WriteAllBytes(path, assetBytes);
             }
-            catch { }
+            catch (Exception ex) { MessageBox.Show("Error" + ex); }
         }
     }
 }

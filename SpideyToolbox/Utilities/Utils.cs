@@ -59,6 +59,14 @@ namespace SpideyToolbox.Utilities
             AppSettings settings = sets.LoadSettings();
             ModdingLab.ToolboxStyle.ApplyToolBoxStyle(parent, hwnd, strip, context, settings._accentColor, settings._accentColorGrid);
         }
+
+        // Copy to clipboard
+        //------------------------------------------------------------------------------------------
+        public static void copyToClipboard(string[] paths)
+        {
+            string clipboardText = paths.Length == 1 ? paths[0] : string.Join(", ", paths);
+            Clipboard.SetText(clipboardText);
+        }
     }
 
     // Modding Tool classes

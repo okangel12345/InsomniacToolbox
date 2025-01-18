@@ -36,11 +36,15 @@
             Size = new DataGridViewTextBoxColumn();
             Archive = new DataGridViewTextBoxColumn();
             Span = new DataGridViewTextBoxColumn();
+            assetID = new DataGridViewTextBoxColumn();
+            assetPath = new DataGridViewTextBoxColumn();
+            assetRef = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).BeginInit();
             SuspendLayout();
             // 
             // SearchTextBox
             // 
+            SearchTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             SearchTextBox.BackColor = Color.FromArgb(22, 22, 22);
             SearchTextBox.BorderStyle = BorderStyle.FixedSingle;
             SearchTextBox.ForeColor = SystemColors.Control;
@@ -52,6 +56,7 @@
             // 
             // btn_Search
             // 
+            btn_Search.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btn_Search.Location = new Point(608, 12);
             btn_Search.Name = "btn_Search";
             btn_Search.Size = new Size(104, 23);
@@ -62,6 +67,7 @@
             // 
             // label_ResultCount
             // 
+            label_ResultCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label_ResultCount.AutoSize = true;
             label_ResultCount.Location = new Point(662, 440);
             label_ResultCount.Name = "label_ResultCount";
@@ -74,14 +80,16 @@
             dataGridView_Files.AllowUserToAddRows = false;
             dataGridView_Files.AllowUserToDeleteRows = false;
             dataGridView_Files.AllowUserToResizeRows = false;
+            dataGridView_Files.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView_Files.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span });
+            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span, assetID, assetPath, assetRef });
             dataGridView_Files.Location = new Point(12, 41);
             dataGridView_Files.Name = "dataGridView_Files";
             dataGridView_Files.RowHeadersVisible = false;
             dataGridView_Files.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView_Files.Size = new Size(700, 396);
             dataGridView_Files.TabIndex = 3;
+            dataGridView_Files.MouseClick += dataGridView_Files_MouseClick;
             // 
             // FileName
             // 
@@ -115,6 +123,25 @@
             Span.ReadOnly = true;
             Span.Width = 75;
             // 
+            // assetID
+            // 
+            assetID.HeaderText = "assetID";
+            assetID.Name = "assetID";
+            assetID.Visible = false;
+            assetID.Width = 5;
+            // 
+            // assetPath
+            // 
+            assetPath.HeaderText = "assetPath";
+            assetPath.Name = "assetPath";
+            assetPath.Visible = false;
+            // 
+            // assetRef
+            // 
+            assetRef.HeaderText = "assetRef";
+            assetRef.Name = "assetRef";
+            assetRef.Visible = false;
+            // 
             // SearchWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -127,7 +154,7 @@
             Controls.Add(SearchTextBox);
             ForeColor = SystemColors.Control;
             Name = "SearchWindow";
-            Text = "SearchWindow";
+            Text = "Search Window";
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -143,5 +170,8 @@
         private DataGridViewTextBoxColumn Size;
         private DataGridViewTextBoxColumn Archive;
         private DataGridViewTextBoxColumn Span;
+        private DataGridViewTextBoxColumn assetID;
+        private DataGridViewTextBoxColumn assetPath;
+        private DataGridViewTextBoxColumn assetRef;
     }
 }

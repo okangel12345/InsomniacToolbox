@@ -105,7 +105,7 @@
             Controls.Add(btn_Save);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "SettingsWindow";
-            Text = "Settings";
+            Text = "Preferences";
             ResumeLayout(false);
             PerformLayout();
         }

@@ -1,5 +1,7 @@
-﻿using SpideyToolbox.Utilities;
+﻿using SpideyToolbox;
+using SpideyToolbox.Utilities;
 using System.Collections.ObjectModel;
+using System.Windows.Forms;
 
 namespace WebWorks.Windows
 {
@@ -19,9 +21,9 @@ namespace WebWorks.Windows
 
             SearchTextBox.Text = "";
             Search();
+
+            ToolUtils.ApplyStyle(this, Handle);
         }
-
-
 
         class SearchResult
         {
@@ -38,10 +40,10 @@ namespace WebWorks.Windows
 
         private void SearchTextBox_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            //if (e. == Key.Enter)
-            //{
-            //    Search();
-            //}
+            if (e.KeyCode == Keys.Enter)
+            {
+                Search();
+            }
         }
 
         private void btn_Search_Click(object sender, EventArgs e)
@@ -59,58 +61,14 @@ namespace WebWorks.Windows
 
             if (words.Length > 0)
             {
-                // search in fullpath
                 var i = 0;
                 foreach (var asset in _assets)
                 {
                     if (asset.FullPath != null && MatchesWords(Normalize(asset.FullPath), words))
                     {
-                        _displayedResults.Add(new SearchResult
-                        {
-                            AssetIndex = i,
-                            Span = asset.Span,
-                            Id = asset.Id,
-                            Size = asset.Size,
-                            Path = asset.FullPath,
-                            Archive = asset.Archive
-                        });
+                        dataGridView_Files.Rows.Add(asset.Name, asset.Size, asset.Archive, asset.Span, asset.Id, asset.FullPath, asset.RefPath);
                     }
                     ++i;
-                }
-
-                // search in fake paths (dirname + name)
-                foreach (var path in _assetsByPath.Keys)
-                {
-                    foreach (var assetIndex in _assetsByPath[path])
-                    {
-                        var asset = _assets[assetIndex];
-                        if (asset.FullPath != null) continue;
-
-                        var fakepath = Path.Combine(path, asset.Name);
-                        if (MatchesWords(Normalize(fakepath), words))
-                        {
-                            var archive = asset.Archive;
-                            var span = asset.Span;
-                            var size = asset.Size;
-                            string displaySize;
-
-                            // Dynamically update size
-                            if (size >= 1024 * 1024) // 1 MB or more
-                            {
-                                displaySize = $"{size / (1024.0 * 1024.0):F2} MB";
-                            }
-                            else if (size >= 1024) // 1 KB or more
-                            {
-                                displaySize = $"{size / 1024.0:F2} KB";
-                            }
-                            else // Less than 1 KB
-                            {
-                                displaySize = $"{size} bytes";
-                            }
-
-                            dataGridView_Files.Rows.Add(asset.Name, displaySize, archive, span);
-                        }
-                    }
                 }
             }
 
@@ -129,6 +87,12 @@ namespace WebWorks.Windows
                 if (!path.Contains(word)) return false;
             }
             return true;
+        }
+
+        private void dataGridView_Files_MouseClick(object sender, MouseEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.OpenContextMenu(sender, e);
         }
     }
 }

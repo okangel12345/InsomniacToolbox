@@ -134,7 +134,7 @@ namespace WebWorks.Windows
         {
             var isEmpty = (string s) => { return (s == null || s == ""); };
 
-            SaveStageButton.Enabled = (!isEmpty(_modName) && !isEmpty(_author));
+            SaveStageButton.Visible = (!isEmpty(_modName) && !isEmpty(_author));
         }
 
         private void NameTextBox_TextChanged(object sender, EventArgs e)
@@ -222,24 +222,14 @@ namespace WebWorks.Windows
                 {
                     if (_cover != null)
                     {
+                        try { 
                         var coverBytes = File.ReadAllBytes(_cover);
 
                         var entry = zip.CreateEntry("cover.png");
                         using var ef = entry.Open();
                         ef.Write(coverBytes, 0, coverBytes.Length);
-                    }
-
-                    else
-                    {
-                        var inAppImage = FormIcons.DefaultCover;
-
-                        using var ms = new MemoryStream();
-                        inAppImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                        var inAppImageBytes = ms.ToArray();
-
-                        var entry = zip.CreateEntry("cover.png");
-                        using var ef = entry.Open();
-                        ef.Write(inAppImageBytes, 0, inAppImageBytes.Length);
+                        }
+                        catch { }
                     }
                 }
 
