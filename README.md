@@ -1,6 +1,6 @@
 # **WebWorks**
 
-![test](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/WebWorks_Card.png)
+![WebWorks Card](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/WebWorks_Card.png)
 
 WebWorks is a free, open-source modding suite designed for **Insomniac Games** titles, including *Marvel's Spider-Man Remastered*, *Marvel's Spider-Man Miles Morales*, *Marvel's Spider-Man 2*, and *Ratchet & Clank: Rift Apart*. It empowers users to view, extract, and replace in-game assets. The suite provides direct extraction for **.ascii** models and **.dds** textures, and tools designed to make modding easier than ever.
 
