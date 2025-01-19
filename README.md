@@ -21,7 +21,7 @@ WebWorks includes tools for working with materials and textures, and supports th
   
 - **Id-Daemon**: MSM2 Model Tool
 
-![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SpideyToolbox/Screenshots/WebWorks_1.png)
+![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/Screenshots/WebWorks_1.png)
 
 ---
 
@@ -43,7 +43,7 @@ Updated with new IDs, support for all materials (RCRA, MSMR, MSMM & MSM2), enhan
 - Split container for string and numeric inputs.
 - Over 14,000 of Spider-Man's IDs.
 
-![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SpideyToolbox/Screenshots/Spandex_1.png)
+![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/Screenshots/Spandex_1.png)
 
 ---
 
@@ -54,4 +54,4 @@ Texture tool for Marvel's Spider-Man Remastered, Marvel's Spider-Man Miles Moral
 
 - Originally developed by hypermorphicmods, Nexus Mod Page: [Nexus Mods](https://www.nexusmods.com/marvelsspidermanremastered/mods/4395?tab=files)
 
-![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SpideyToolbox/Screenshots/SilkTexture_1.png)
+![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/Screenshots/SilkTexture_1.png)
