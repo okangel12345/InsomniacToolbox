@@ -27,12 +27,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>FormIcons.resx</DependentUpon>
     </Compile>
+    <Compile Update="Windows\MiscIcons.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MiscIcons.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Windows\FormIcons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FormIcons.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Windows\MiscIcons.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MiscIcons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

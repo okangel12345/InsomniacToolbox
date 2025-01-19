@@ -15,20 +15,20 @@ namespace WebWorks.Utilities
 {
     // Different environments of InsomniacToolbox
     //----------------------------------------------------------------------------------------------
-    internal class SetEnvironment
-    {
-        // Initiliaze Spandex and Silk Texture forms
+    internal class SetEnvironment {
 
+        // Initialize forms
         public static Spandex.Form1 spandexForm;
         public static SpideyTexture silkTextureForm;
         static MainWindow mainWindow = MainWindow.Instance;
 
+        // Main tools
+        //------------------------------------------------------------------------------------------
         public static void Spandex()
         {
             if (spandexForm == null || spandexForm.IsDisposed)
             {
                 string[] args = { "" };
-
                 spandexForm = new Spandex.Form1(args, mainWindow._selectedHashes);
             }
 
@@ -62,11 +62,8 @@ namespace WebWorks.Utilities
             mainWindow.Text = "WebWorks - Modding Tool";
         }
 
-        public static void Settings()
-        {
-            SettingsWindow settings = new SettingsWindow();
-            settings.ShowDialog();
-        }
+        // Search and jump to
+        //------------------------------------------------------------------------------------------
         public static void Search()
         {
             List<SpideyToolbox.Utilities.Asset> _assets = mainWindow._assets;
@@ -75,13 +72,35 @@ namespace WebWorks.Utilities
             SearchWindow searchWindow = new SearchWindow(_assets, _assetsByPath);
             searchWindow.Show();
         }
+        public static void JumpTo()
+        {
+            var window = new JumpToWindow();
+            window.ShowDialog();
 
+            if (!window.Jumped) return;
+            mainWindow.JumpTo(window.Path.Trim());
+        }
+
+        // Two lines
+        //------------------------------------------------------------------------------------------
         public static void HashTool()
         {
             HashTool hashTool = new HashTool();
             hashTool.Show();
         }
+        public static void Information()
+        {
+            InformationWindow information = new InformationWindow();
+            information.ShowDialog();
+        }
+        public static void Settings()
+        {
+            SettingsWindow settings = new SettingsWindow();
+            settings.ShowDialog();
+        }
 
+        // Home
+        //------------------------------------------------------------------------------------------
         public static void Home()
         {
             mainWindow.splitContainer1.Visible = false;
@@ -89,19 +108,12 @@ namespace WebWorks.Utilities
             ToolUtils toolUtils = new ToolUtils();
             SpideyHome spideyHome = new SpideyHome();
 
-            mainWindow.panel_Main.Dock = DockStyle.Fill;
-            mainWindow.panel_Main.Visible = true;
-
             toolUtils.LoadFormIntoPanel(spideyHome, mainWindow.panel_Main, true);
         }
 
-        public static void Information()
-        {
-            InformationWindow information = new InformationWindow();
-            information.ShowDialog();
-        }
-
-        public static void LoadFormIntoPanel(Form form, System.Windows.Forms.Panel panel)
+        // Helper methods
+        //------------------------------------------------------------------------------------------
+        public static void LoadFormIntoPanel(Form form, Panel panel)
         {
             mainWindow.splitContainer1.Visible = false;
 

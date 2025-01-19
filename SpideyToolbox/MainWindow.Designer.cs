@@ -61,7 +61,7 @@
             ToolStrip_Settings = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             ToolStrip_Search = new ToolStripMenuItem();
-            jumpToHashToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_JumpTo = new ToolStripMenuItem();
             modToolStripMenuItem = new ToolStripMenuItem();
             menuItem_ReplacedAssets = new ToolStripMenuItem();
             menuItem_ClearAll = new ToolStripMenuItem();
@@ -245,6 +245,7 @@
             // 
             // ToolStrip_LoadToc
             // 
+            ToolStrip_LoadToc.Image = WebWorks.Windows.MiscIcons.TocFile;
             ToolStrip_LoadToc.Name = "ToolStrip_LoadToc";
             ToolStrip_LoadToc.ShortcutKeyDisplayString = "";
             ToolStrip_LoadToc.ShortcutKeys = Keys.Control | Keys.O;
@@ -292,6 +293,7 @@
             // 
             // hashesToolStripMenuItem
             // 
+            hashesToolStripMenuItem.Image = WebWorks.Windows.MiscIcons.HashFile;
             hashesToolStripMenuItem.Name = "hashesToolStripMenuItem";
             hashesToolStripMenuItem.Size = new Size(212, 22);
             hashesToolStripMenuItem.Text = "Hashes...";
@@ -328,6 +330,7 @@
             // 
             // ToolStrip_Settings
             // 
+            ToolStrip_Settings.Image = WebWorks.Windows.MiscIcons.Settings;
             ToolStrip_Settings.Name = "ToolStrip_Settings";
             ToolStrip_Settings.ShortcutKeys = Keys.Control | Keys.P;
             ToolStrip_Settings.Size = new Size(212, 22);
@@ -336,24 +339,27 @@
             // 
             // searchToolStripMenuItem
             // 
-            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Search, jumpToHashToolStripMenuItem });
+            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Search, ToolStrip_JumpTo });
             searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             searchToolStripMenuItem.Size = new Size(54, 20);
             searchToolStripMenuItem.Text = "Search";
+            searchToolStripMenuItem.MouseEnter += ToolStrip_Search_MouseEnter;
             // 
             // ToolStrip_Search
             // 
+            ToolStrip_Search.Image = WebWorks.Windows.MiscIcons.Search;
             ToolStrip_Search.Name = "ToolStrip_Search";
             ToolStrip_Search.ShortcutKeys = Keys.Control | Keys.S;
             ToolStrip_Search.Size = new Size(195, 22);
             ToolStrip_Search.Text = "Search...";
             ToolStrip_Search.Click += ToolStrip_Search_Click;
             // 
-            // jumpToHashToolStripMenuItem
+            // ToolStrip_JumpTo
             // 
-            jumpToHashToolStripMenuItem.Name = "jumpToHashToolStripMenuItem";
-            jumpToHashToolStripMenuItem.Size = new Size(195, 22);
-            jumpToHashToolStripMenuItem.Text = "Jump to path or hash...";
+            ToolStrip_JumpTo.Name = "ToolStrip_JumpTo";
+            ToolStrip_JumpTo.Size = new Size(195, 22);
+            ToolStrip_JumpTo.Text = "Jump to path or hash...";
+            ToolStrip_JumpTo.Click += ToolStrip_JumpTo_Click;
             // 
             // modToolStripMenuItem
             // 
@@ -361,7 +367,7 @@
             modToolStripMenuItem.Name = "modToolStripMenuItem";
             modToolStripMenuItem.Size = new Size(44, 20);
             modToolStripMenuItem.Text = "Mod";
-            modToolStripMenuItem.Click += ToolStrip_Mod_Click;
+            modToolStripMenuItem.MouseEnter += ToolStrip_Mod_MouseEnter;
             // 
             // menuItem_ReplacedAssets
             // 
@@ -380,6 +386,7 @@
             // 
             // menuItem_WWPROJ_Handle
             // 
+            menuItem_WWPROJ_Handle.Image = WebWorks.Windows.MiscIcons.AddFrom;
             menuItem_WWPROJ_Handle.Name = "menuItem_WWPROJ_Handle";
             menuItem_WWPROJ_Handle.Size = new Size(225, 22);
             menuItem_WWPROJ_Handle.Text = "Add from .wwproj...";
@@ -417,13 +424,15 @@
             // 
             // ToolStrip_Home
             // 
+            ToolStrip_Home.Image = WebWorks.Windows.MiscIcons.Home;
             ToolStrip_Home.Name = "ToolStrip_Home";
             ToolStrip_Home.Size = new Size(215, 22);
             ToolStrip_Home.Text = "Home";
-            ToolStrip_Home.Click += home_toolStripMenuItem_Click;
+            ToolStrip_Home.Click += ToolStrip_Home_Click;
             // 
             // ToolStrip_HashTool
             // 
+            ToolStrip_HashTool.Image = WebWorks.Windows.MiscIcons.HashTool;
             ToolStrip_HashTool.Name = "ToolStrip_HashTool";
             ToolStrip_HashTool.ShortcutKeys = Keys.Control | Keys.H;
             ToolStrip_HashTool.Size = new Size(215, 22);
@@ -473,6 +482,7 @@
             // 
             // ToolStrip_Information
             // 
+            ToolStrip_Information.Image = WebWorks.Windows.MiscIcons.Info;
             ToolStrip_Information.Name = "ToolStrip_Information";
             ToolStrip_Information.ShortcutKeys = Keys.F11;
             ToolStrip_Information.Size = new Size(162, 22);
@@ -481,6 +491,7 @@
             // 
             // discordToolStripMenuItem
             // 
+            discordToolStripMenuItem.Image = WebWorks.Windows.MiscIcons.Discord;
             discordToolStripMenuItem.Name = "discordToolStripMenuItem";
             discordToolStripMenuItem.ShortcutKeys = Keys.F12;
             discordToolStripMenuItem.Size = new Size(162, 22);
@@ -634,7 +645,7 @@
         private ToolStripMenuItem hashestxtToolStripMenuItem;
         private ToolStripMenuItem hashesi30txtToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem jumpToHashToolStripMenuItem;
+        private ToolStripMenuItem ToolStrip_JumpTo;
         private ToolStripMenuItem modToolStripMenuItem;
         private ToolStripMenuItem ToolStrip_HashTool;
         private ToolStripMenuItem ToolStrip_Information;

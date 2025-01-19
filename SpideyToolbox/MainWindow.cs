@@ -12,10 +12,7 @@ using Spiderman;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using Newtonsoft.Json;
-// Spidey Toolbox is an alternative Modding Tool for Insomniac Games videogames.
-//
-// Source code for the Modding Tool developed by Tkachov can be found here:
-// https://github.com/Tkachov/Overstrike/tree/main/ModdingTool
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SpideyToolbox
 {
@@ -25,6 +22,7 @@ namespace SpideyToolbox
     {
         ToolUtils toolUtils = new ToolUtils();
         public static MainWindow Instance { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,7 +36,6 @@ namespace SpideyToolbox
 
         // Initialize
         //------------------------------------------------------------------------------------------
-
         // Tick
         private Thread _tickThread;
         private List<Thread> _taskThreads = new();
@@ -47,7 +44,6 @@ namespace SpideyToolbox
         public static TOCBase? _toc = null;
         public List<Asset> _assets = new();
         public Dictionary<string, List<int>> _assetsByPath = new();
-        //private ObservableCollection<Asset> _displayedAssetList = new();
 
         // replaced data
         private Dictionary<Asset, string> _replacedAssets = new();
@@ -55,20 +51,19 @@ namespace SpideyToolbox
 
         public string _selectedHashes;
 
+        #region User Settings
+
         // Load user settings
         //------------------------------------------------------------------------------------------
-        #region User Settings
+
         private void LoadPreferences()
         {
-            // Clear overlay text
             OverlayHeaderLabel.Text = "";
             OverlayOperationLabel.Text = "";
 
             LoadRecentTOC();
             LoadRecentMenus();
         }
-
-        // Load most recent TOC as long as _recentTOC1 isn't null and the setting is enabled
         private void LoadRecentTOC(object sender = null, EventArgs e = null, string TOC = "")
         {
             SettingsWindow settingsWindow = new SettingsWindow();
@@ -117,8 +112,6 @@ namespace SpideyToolbox
                 }
             }
 
-            // Load all hashes and pick hashes always
-
             string appDir = Path.GetDirectoryName(Application.ExecutablePath);
 
             foreach (string file in Directory.GetFiles(appDir))
@@ -151,9 +144,7 @@ namespace SpideyToolbox
             }
         }
 
-        #endregion
-
-        #region Save Recent TXT
+        // Recent TXT handle
         private void SaveRecentTXT(string path)
         {
             SettingsWindow settingsWindow = new SettingsWindow();
@@ -169,12 +160,10 @@ namespace SpideyToolbox
                 settings._recentTOC5
             };
 
-            // Check if the path already exists
             int existingIndex = Array.IndexOf(recentTOC, path);
 
             if (existingIndex != -1)
             {
-                // If path exists, remove it and shift others down
                 for (int i = existingIndex; i > 0; i--)
                 {
                     recentTOC[i] = recentTOC[i - 1];
@@ -182,17 +171,14 @@ namespace SpideyToolbox
             }
             else
             {
-                // If path doesn't exist, shift all paths down
                 for (int i = recentTOC.Length - 1; i > 0; i--)
                 {
                     recentTOC[i] = recentTOC[i - 1];
                 }
             }
 
-            // Assign the path to the first slot
             recentTOC[0] = path;
 
-            // Update settings and save
             UpdateSettings(settings, recentTOC);
             settingsWindow.SaveSettings(settings);
         }
@@ -218,8 +204,8 @@ namespace SpideyToolbox
             };
             _tickThread.Start();
         }
-
         private bool isRunning = true;
+
         private void TickThread()
         {
             try
@@ -231,9 +217,9 @@ namespace SpideyToolbox
                 }
             }
             catch (ThreadInterruptedException)
-            { } // Do nothing
+            {} // Do nothing
             catch
-            { } // Do nothing
+            {} // Do nothing
         }
         private void Tick()
         {
@@ -255,11 +241,13 @@ namespace SpideyToolbox
         //------------------------------------------------------------------------------------------
         private void StartLoadTOCThread(string path)
         {
+            // Load settings
             SettingsWindow settingsWindow = new SettingsWindow();
             AppSettings settings = settingsWindow.LoadSettings();
 
             var tocPath = path;
 
+            // Clear existing fields and lists
             _assets.Clear();
             _replacedAssets.Clear();
             _addedAssets.Clear();
@@ -268,6 +256,7 @@ namespace SpideyToolbox
             TreeView_Assets.Nodes.Clear();
             dataGridView_Files.Rows.Clear();
 
+            // Set home environment
             SetEnvironment.Home();
 
             this.Invoke(() =>
@@ -275,6 +264,8 @@ namespace SpideyToolbox
                 SaveRecentTXT(path);
                 LoadRecentMenus();
             });
+
+            // Load modded TOC, default to toc.BAK
 
             if (!settings._loadtocModded)
             {
@@ -308,6 +299,7 @@ namespace SpideyToolbox
 
                     Invoke(() =>
                     {
+                        // Set Modding Tool environment
                         menuStrip1.Visible = true;
                         SetEnvironment.ModdingTool();
                     });
@@ -321,7 +313,7 @@ namespace SpideyToolbox
                             toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
                         });
                     }
-                    catch { }
+                    catch {}
 
                 }
             });
@@ -334,7 +326,7 @@ namespace SpideyToolbox
         //------------------------------------------------------------------------------------------
         private void LoadTOC(string path)
         {
-
+            // Start loading and set environment
             this.Invoke(() =>
             {
                 OverlayHeaderLabel.Text = $"Loading '{Path.GetFileName(path)}'...";
@@ -345,8 +337,7 @@ namespace SpideyToolbox
                 menuStrip1.Visible = false;
             });
 
-            // LoadTOCFile to idenfity which type of TOC it is
-
+            // Identify TOC
             _toc = LoadTOCFile(path);
             if (_toc == null) return;
 
@@ -357,17 +348,11 @@ namespace SpideyToolbox
 
                 if (_toc is TOC_I29 && fn.StartsWith("d\\"))
                 {
-                    fn = fn.Substring(2); // Clean up for readability, RCRA and MSM2 need this.
+                    fn = fn.Substring(2); // Clean up for readability
                 }
 
                 archiveNames.Add(fn);
             }
-
-            Debug.WriteLine("2");
-
-            // Clear existing lists
-            _assets.Clear();
-            _replacedAssets.Clear();
 
             // Start getting assets
             //--------------------------------------------------------------------------------------
@@ -708,7 +693,7 @@ namespace SpideyToolbox
         #region User Input
         // Load MOD menu
         //------------------------------------------------------------------------------------------
-        private void ToolStrip_Mod_Click(object sender, EventArgs e)
+        private void ToolStrip_Mod_MouseEnter(object sender, EventArgs e)
         {
             int replacedAssetsCount = _replacedAssets.Count;
             int addedAssetsCount = _addedAssets.Count;
@@ -755,16 +740,41 @@ namespace SpideyToolbox
         { SetEnvironment.Settings(); }
         private void ToolStrip_Search_Click(object sender, EventArgs e)
         { SetEnvironment.Search(); }
+        private void ToolStrip_Search_MouseEnter(object sender, EventArgs e)
+        {
+            if (_toc != null)
+            {
+                ToolStrip_Search.Enabled = true;
+                ToolStrip_JumpTo.Enabled = true;
+            }
+            else
+            {
+                ToolStrip_Search.Enabled = false;
+                ToolStrip_JumpTo.Enabled = false;
+            }
+        }
+        private void ToolStrip_JumpTo_Click(object sender, EventArgs e)
+        { SetEnvironment.JumpTo(); }
+        private void ToolStrip_Home_Click(object sender, EventArgs e)
+        { SetEnvironment.Home(); }
+        private void ToolStrip_Information_Click(object sender, EventArgs e)
+        { SetEnvironment.Information(); }
+        
+        // Extract
         private void ToolStrip_ExtractToStage_Click(object sender, EventArgs e)
         { ExtractionMethods.ExtractToStage(); }
         private void ToolStrip_ExtractAsAscii_Click(object sender, EventArgs e)
         { ExtractionMethods.ExtractAsASCII(); }
         private void ToolStrip_ExtractAsDDS_Click(object sender, EventArgs e)
         { ExtractionMethods.ExtractAsDDS(); }
+
+        // Copy
         private void ToolStrip_CopyPath_Click(object sender, EventArgs e)
         { ToolUtils.copyToClipboard(GetCurrent.AssetsFullPath()); }
         private void ToolStrip_CopyHash_Click(object sender, EventArgs e)
         { ToolUtils.copyToClipboard(GetCurrent.AssetsHashes()); }
+
+        // Replace
         private void ToolStrip_ReplaceAsset_Click(object sender, EventArgs e)
         {
             var selected = GetCurrent.AssetsIDs().Count();
@@ -941,16 +951,30 @@ namespace SpideyToolbox
                 {
                     using (var writer = new BinaryWriter(fileStream))
                     {
-                        foreach (var assetData in assetsToSave)
+                        // Write _replacedAssets
+                        foreach (var entry in _replacedAssets)
                         {
-                            // Write data in a custom format (binary for efficiency)
-                            writer.Write(assetData.Span);
-                            writer.Write(assetData.Id);
-                            writer.Write(assetData.Name);
-                            writer.Write(assetData.Archive);
-                            writer.Write(assetData.FullPath ?? string.Empty);
-                            writer.Write(assetData.RefPath);
-                            writer.Write(assetData.AssociatedString ?? string.Empty);  // Save the associated string
+                            writer.Write("R"); // Marker for replaced assets
+                            writer.Write(entry.Key.Span);
+                            writer.Write(entry.Key.Id);
+                            writer.Write(entry.Key.Name ?? string.Empty);
+                            writer.Write(entry.Key.Archive ?? string.Empty);
+                            writer.Write(entry.Key.FullPath ?? string.Empty);
+                            writer.Write(entry.Key.RefPath);
+                            writer.Write(entry.Value ?? string.Empty);
+                        }
+
+                        // Write _addedAssets
+                        foreach (var entry in _addedAssets)
+                        {
+                            writer.Write("A"); // Marker for added assets
+                            writer.Write(entry.Key.Span);
+                            writer.Write(entry.Key.Id);
+                            writer.Write(entry.Key.Name ?? string.Empty);
+                            writer.Write(entry.Key.Archive ?? string.Empty);
+                            writer.Write(entry.Key.FullPath ?? string.Empty);
+                            writer.Write(entry.Key.RefPath);
+                            writer.Write(entry.Value ?? string.Empty);
                         }
                     }
                 }
@@ -958,7 +982,6 @@ namespace SpideyToolbox
         }
         private void AddFromWWPROJ()
         {
-            // Create the open file dialog
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "WWProj Files (*.wwproj)|*.wwproj",
@@ -978,6 +1001,10 @@ namespace SpideyToolbox
                     {
                         while (reader.BaseStream.Position < reader.BaseStream.Length)
                         {
+                            // Read the marker
+                            string marker = reader.ReadString();
+
+                            // Read the asset data
                             byte span = reader.ReadByte();
                             ulong id = reader.ReadUInt64();
                             string name = reader.ReadString();
@@ -993,11 +1020,23 @@ namespace SpideyToolbox
                                 Name = name,
                                 Archive = archive,
                                 FullPath = fullPath,
-                                // RefPath is not needed here as it's calculated from Span and Id
                             };
 
-                            // Add the asset and associated string to the appropriate dictionary
-                            _replacedAssets[asset] = associatedString;
+                            // Determine the target dictionary
+                            if (marker == "R")
+                            {
+                                if (!_replacedAssets.ContainsKey(asset))
+                                {
+                                    _replacedAssets[asset] = associatedString;
+                                }
+                            }
+                            else if (marker == "A")
+                            {
+                                if (!_addedAssets.ContainsKey(asset))
+                                {
+                                    _addedAssets[asset] = associatedString;
+                                }
+                            }
                         }
                     }
                 }
@@ -1169,6 +1208,134 @@ namespace SpideyToolbox
 
         #endregion
 
+        #region Misc
+        public void JumpTo(string path)
+        {
+            string folderToOpen = null;
+            bool openAssetById = false;
+            byte assetSpanToOpen = 0;
+            ulong assetIdToOpen = 0;
+            bool openAssetByName = false;
+            string assetNameToOpen = null;
+
+            if (Regex.IsMatch(path, "^[0-9]+/[0-9a-fA-F]{16}$"))
+            { // ref
+                var i = path.IndexOf('/');
+                var span = path.Substring(0, i);
+                var assetId = path.Substring(++i);
+
+                try
+                {
+                    var spanIndex = byte.Parse(span);
+                    var id = ulong.Parse(assetId, NumberStyles.HexNumber);
+                    var assetIndex = _toc.FindAssetIndex(spanIndex, id);
+                    if (assetIndex != -1)
+                    {
+                        var asset = _assets[assetIndex];
+
+                        folderToOpen = Path.GetDirectoryName(asset.FullPath);
+                        openAssetById = true;
+                        assetSpanToOpen = spanIndex;
+                        assetIdToOpen = id;
+
+                        if (folderToOpen == null)
+                        {
+                            foreach (var dirname in _assetsByPath.Keys)
+                            {
+                                if (_assetsByPath[dirname].Contains(assetIndex))
+                                {
+                                    folderToOpen = dirname;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+            else
+            {
+                if (path != "/") path = path.Replace('/', '\\');
+
+                folderToOpen = path;
+                openAssetByName = true;
+                assetNameToOpen = Path.GetFileName(path);
+            }
+
+            if (folderToOpen != null)
+            {
+                PopulateDataGridForNode(Path.GetDirectoryName(folderToOpen));
+
+                #region Find tree node
+                string targetPath;
+
+                if (openAssetByName)
+                {
+                    targetPath = "Root\\" + Path.GetDirectoryName(folderToOpen)?.Replace(Path.DirectorySeparatorChar, '\\');
+                }
+                else
+                {
+                    targetPath = "Root\\" + folderToOpen.Replace(Path.DirectorySeparatorChar, '\\');
+                }
+
+                TreeNode FindNodeByPath(TreeNodeCollection nodes, string path)
+                {
+                    foreach (TreeNode node in nodes)
+                    {
+                        if (node.FullPath.Equals(path, StringComparison.OrdinalIgnoreCase))
+                        { return node; }
+
+                        TreeNode foundNode = FindNodeByPath(node.Nodes, path);
+                        if (foundNode != null)
+                        { return foundNode; }
+                    }
+                    return null;
+                }
+
+                TreeNode nodeToSelect = FindNodeByPath(TreeView_Assets.Nodes, targetPath);
+
+                if (nodeToSelect != null)
+                {
+                    nodeToSelect.EnsureVisible();
+                    TreeView_Assets.SelectedNode = nodeToSelect;
+                    TreeView_Assets.Focus();
+                }
+                #endregion
+
+                if (openAssetById)
+                {
+                    foreach (DataGridViewRow assetItem in GetCurrent.DataGridView().Rows)
+                    {
+                        byte assetSpan = assetItem.Cells[3]?.Value is byte span ? span : default;
+                        ulong assetId = assetItem.Cells[4]?.Value is ulong id ? id : default;
+
+                        if (assetSpan == assetSpanToOpen && assetId == assetIdToOpen)
+                        {
+                            assetItem.Selected = true;
+                            GetCurrent.DataGridView().FirstDisplayedScrollingRowIndex = assetItem.Index;
+                            break;
+                        }
+                    }
+                }
+                else if (openAssetByName)
+                {
+                    foreach (DataGridViewRow assetItem in GetCurrent.DataGridView().Rows)
+                    {
+                        string assetName = assetItem.Cells[0]?.Value.ToString();
+
+                        if (assetName == assetNameToOpen)
+                        {
+                            assetItem.Selected = true;
+                            GetCurrent.DataGridView().FirstDisplayedScrollingRowIndex = assetItem.Index;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         // Handle form closing and loading
         //------------------------------------------------------------------------------------------
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -1177,20 +1344,8 @@ namespace SpideyToolbox
         }
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            // Load user settings
             LoadPreferences();
-
             SetEnvironment.Home();
-        }
-
-        private void home_toolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetEnvironment.Home();
-        }
-
-        private void ToolStrip_Information_Click(object sender, EventArgs e)
-        {
-            SetEnvironment.Information();
         }
     }
 }
