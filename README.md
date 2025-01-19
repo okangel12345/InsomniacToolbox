@@ -20,3 +20,38 @@ WebWorks includes tools for working with materials and textures, and supports th
 - **Hypermorphic**: [Spandex](https://github.com/hypermorphicmods/Spandex/) - [SpideyTextureScaler](https://github.com/hypermorphicmods/SpideyTextureScaler/)
   
 - **Id-Daemon**: MSM2 Model Tool
+
+![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SpideyToolbox/Screenshots/WebWorks_1.png)
+
+---
+
+# **Spandex**
+![Spandex Card](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/Spandex_Card.png)
+
+Material file editor for Marvel's Spider-Man Remastered, Marvel's Spider-Man Miles Morales and Marvel's Spider-Man 2 for PC.
+
+Updated with new IDs, support for all materials (RCRA, MSMR, MSMM & MSM2), enhanced modern dark theme.
+
+- Originally developed by hypermorphicmods, Nexus Mod Page: [Nexus Mods](https://www.nexusmods.com/marvelsspidermanremastered/mods/4395?tab=files)
+- Also modified by Blake Young.
+## New features
+
+- You can use hashes.txt from the [Modding Tool](https://github.com/Tkachov/Overstrike/tree/main/ModdingTool) to enable the existing autocompletion feature. Simply put them in the same directory.
+- Enhanced support for different game's materials. Previously uncompatible MSM2 materials can now be loaded and edited without issues.
+- Reduced memory usage when handling hashes for autocompletion.
+- Enhanced dark theme and improved UI designed to mimic QT's design.
+- Split container for string and numeric inputs.
+- Over 14,000 of Spider-Man's IDs.
+
+![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SpideyToolbox/Screenshots/Spandex_1.png)
+
+---
+
+# **Silk Texture**
+![SilkTexture Card](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SilkTexture_Card.png)
+
+Texture tool for Marvel's Spider-Man Remastered, Marvel's Spider-Man Miles Morales and Marvel's Spider-Man 2 for PC.
+
+- Originally developed by hypermorphicmods, Nexus Mod Page: [Nexus Mods](https://www.nexusmods.com/marvelsspidermanremastered/mods/4395?tab=files)
+
+![](https://raw.githubusercontent.com/okangel12345/InsomniacToolbox/refs/heads/master/SpideyToolbox/Screenshots/SilkTexture_1.png)

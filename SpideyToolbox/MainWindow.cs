@@ -640,8 +640,7 @@ namespace SpideyToolbox
             }
 
             string path = selectedNode.FullPath;
-            string fullPath1 = path.Replace("Root\\", "");
-            string fullPath = fullPath1.Replace("[Unnamed Assets]\\", "");
+            string fullPath = path.Replace("Root\\", "");
 
             if (selectedNode != null)
             {
