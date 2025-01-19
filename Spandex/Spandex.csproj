@@ -7,13 +7,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
-    <ApplicationIcon>Spiderman_Symbol.ico</ApplicationIcon>
+    <ApplicationIcon>Spandex_Icon.ico</ApplicationIcon>
     <PackageIcon>
     </PackageIcon>
     <UseWPF>False</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Spiderman_Symbol.ico" />
+    <Content Include="Spandex_Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModdingLab\ModdingLab.csproj" />

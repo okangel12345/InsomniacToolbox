@@ -38,7 +38,7 @@ namespace ModdingLab
         // Title bar
         static Color titlebar_color = datagrid_alternatingRowBackColor;
         static Color titlebar_fill_color = Color.FromArgb(18, 18, 18);
-        static Color titlebar_border_startColor = Color.FromArgb(40, 40, 40);
+        static Color titlebar_border_startColor = Color.FromArgb(0x38, 0x38, 0x38);
         static Color titlebar_border_endColor = Color.FromArgb(24, 24, 24);
         static Color titlebar_forecolor = Color.Black;
         static Color titlebar_forecolorSelected = Color.White;

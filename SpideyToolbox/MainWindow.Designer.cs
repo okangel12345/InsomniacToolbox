@@ -439,6 +439,7 @@
             // 
             // ToolStrip_ModdingTool
             // 
+            ToolStrip_ModdingTool.Image = WebWorks.Windows.FormIcons.WebWorks_IconBlue;
             ToolStrip_ModdingTool.Name = "ToolStrip_ModdingTool";
             ToolStrip_ModdingTool.ShortcutKeys = Keys.Control | Keys.D1;
             ToolStrip_ModdingTool.Size = new Size(215, 22);
@@ -447,7 +448,7 @@
             // 
             // ToolStrip_SpandexTool
             // 
-            ToolStrip_SpandexTool.Image = WebWorks.Windows.FormIcons.Spiderman_Symbol;
+            ToolStrip_SpandexTool.Image = WebWorks.Windows.FormIcons.Spandex_Icon;
             ToolStrip_SpandexTool.Name = "ToolStrip_SpandexTool";
             ToolStrip_SpandexTool.ShortcutKeys = Keys.Control | Keys.D2;
             ToolStrip_SpandexTool.Size = new Size(215, 22);
@@ -456,6 +457,7 @@
             // 
             // ToolStrip_SilkTextureTool
             // 
+            ToolStrip_SilkTextureTool.Image = WebWorks.Windows.FormIcons.SilkTexture_Icon;
             ToolStrip_SilkTextureTool.Name = "ToolStrip_SilkTextureTool";
             ToolStrip_SilkTextureTool.ShortcutKeys = Keys.Control | Keys.D3;
             ToolStrip_SilkTextureTool.Size = new Size(215, 22);

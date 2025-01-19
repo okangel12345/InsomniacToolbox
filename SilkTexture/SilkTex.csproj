@@ -7,19 +7,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x64</Platforms>
     <PackageIcon>SilkTexture.png</PackageIcon>
-    <ApplicationIcon>Icon1.ico</ApplicationIcon>
+    <ApplicationIcon>SilkTexture_Icon.ico</ApplicationIcon>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <FileVersion>1.0.0</FileVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\.Resources\Icons\SilkTexture.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Content Include="SilkTexture_Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
