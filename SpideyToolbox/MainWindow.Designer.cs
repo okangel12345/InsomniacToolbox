@@ -65,6 +65,7 @@
             modToolStripMenuItem = new ToolStripMenuItem();
             menuItem_ReplacedAssets = new ToolStripMenuItem();
             menuItem_ClearAll = new ToolStripMenuItem();
+            menuItem_WWPROJ_Handle = new ToolStripMenuItem();
             toolStripMenuItem13 = new ToolStripMenuItem();
             menuItem_AddFromStage = new ToolStripMenuItem();
             menuItem_PackAsStage = new ToolStripMenuItem();
@@ -76,7 +77,7 @@
             ToolStrip_SpandexTool = new ToolStripMenuItem();
             ToolStrip_SilkTextureTool = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
-            informationToolStripMenuItem = new ToolStripMenuItem();
+            ToolStrip_Information = new ToolStripMenuItem();
             discordToolStripMenuItem = new ToolStripMenuItem();
             contextMenuStrip1 = new ContextMenuStrip(components);
             ToolStrip_AssetsSelected = new ToolStripMenuItem();
@@ -355,7 +356,7 @@
             // 
             // modToolStripMenuItem
             // 
-            modToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuItem_ReplacedAssets, menuItem_ClearAll, toolStripMenuItem13, menuItem_AddFromStage, menuItem_PackAsStage });
+            modToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuItem_ReplacedAssets, menuItem_ClearAll, menuItem_WWPROJ_Handle, toolStripMenuItem13, menuItem_AddFromStage, menuItem_PackAsStage });
             modToolStripMenuItem.Name = "modToolStripMenuItem";
             modToolStripMenuItem.Size = new Size(44, 20);
             modToolStripMenuItem.Text = "Mod";
@@ -375,6 +376,13 @@
             menuItem_ClearAll.Size = new Size(225, 22);
             menuItem_ClearAll.Text = "Clear all";
             menuItem_ClearAll.Click += menuItem_ClearAll_Click;
+            // 
+            // menuItem_AddFromJSON
+            // 
+            menuItem_WWPROJ_Handle.Name = "menuItem_AddFromJSON";
+            menuItem_WWPROJ_Handle.Size = new Size(225, 22);
+            menuItem_WWPROJ_Handle.Text = "Add from .wwproj...";
+            menuItem_WWPROJ_Handle.Click += menuItem_ModWWPROJ_Click;
             // 
             // toolStripMenuItem13
             // 
@@ -455,17 +463,18 @@
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { informationToolStripMenuItem, discordToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Information, discordToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
             // 
-            // informationToolStripMenuItem
+            // ToolStrip_Information
             // 
-            informationToolStripMenuItem.Name = "informationToolStripMenuItem";
-            informationToolStripMenuItem.ShortcutKeys = Keys.F11;
-            informationToolStripMenuItem.Size = new Size(162, 22);
-            informationToolStripMenuItem.Text = "Information";
+            ToolStrip_Information.Name = "ToolStrip_Information";
+            ToolStrip_Information.ShortcutKeys = Keys.F11;
+            ToolStrip_Information.Size = new Size(162, 22);
+            ToolStrip_Information.Text = "Information";
+            ToolStrip_Information.Click += ToolStrip_Information_Click;
             // 
             // discordToolStripMenuItem
             // 
@@ -481,11 +490,11 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(215, 224);
             // 
-            // assetSelectedToolStripMenuItem
+            // ToolStrip_AssetsSelected
             // 
             ToolStrip_AssetsSelected.BackColor = Color.Black;
             ToolStrip_AssetsSelected.ForeColor = SystemColors.Control;
-            ToolStrip_AssetsSelected.Name = "assetSelectedToolStripMenuItem";
+            ToolStrip_AssetsSelected.Name = "ToolStrip_AssetsSelected";
             ToolStrip_AssetsSelected.Size = new Size(214, 22);
             ToolStrip_AssetsSelected.Text = "N assets selected";
             // 
@@ -625,7 +634,7 @@
         private ToolStripMenuItem jumpToHashToolStripMenuItem;
         private ToolStripMenuItem modToolStripMenuItem;
         private ToolStripMenuItem ToolStrip_HashTool;
-        private ToolStripMenuItem informationToolStripMenuItem;
+        private ToolStripMenuItem ToolStrip_Information;
         private ToolStripMenuItem discordToolStripMenuItem;
         public Panel panel_Main;
         private ToolStripMenuItem toolStripMenuItem2;
@@ -668,5 +677,6 @@
         public SplitContainer splitContainer1;
         private ToolStripMenuItem ToolStrip_Home;
         private ToolStripMenuItem ToolStrip_Search;
+        private ToolStripMenuItem menuItem_WWPROJ_Handle;
     }
 }

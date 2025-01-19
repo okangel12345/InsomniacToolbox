@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Spiderman;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using Newtonsoft.Json;
 // Spidey Toolbox is an alternative Modding Tool for Insomniac Games videogames.
 //
 // Source code for the Modding Tool developed by Tkachov can be found here:
@@ -718,10 +719,12 @@ namespace SpideyToolbox
             if (replacedAssetsCount > 0 || addedAssetsCount > 0)
             {
                 menuItem_ClearAll.Enabled = true;
+                menuItem_WWPROJ_Handle.Text = "Save as .wwproj...";
             }
             else
             {
                 menuItem_ClearAll.Enabled = false;
+                menuItem_WWPROJ_Handle.Text = "Add from .wwproj...";
             }
 
             if (Directory.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "stages")))
@@ -904,6 +907,114 @@ namespace SpideyToolbox
                 }
             }
         }
+        private void SaveAsWWPROJ()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "WWProj Files (*.wwproj)|*.wwproj",
+                DefaultExt = ".wwproj",
+                AddExtension = true
+            };
+
+            // Show the dialog and check if the user selected a file
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                // Create a list to hold the serialized assets with their associated strings
+                var assetsToSave = new List<AssetWWPROJHelper>();
+
+                // Serialize _replacedAssets (Asset and associated string)
+                foreach (var entry in _replacedAssets)
+                {
+                    assetsToSave.Add(new AssetWWPROJHelper(entry.Key, entry.Value));
+                }
+
+                // Serialize _addedAssets (Asset and associated string)
+                foreach (var entry in _addedAssets)
+                {
+                    assetsToSave.Add(new AssetWWPROJHelper(entry.Key, entry.Value));
+                }
+
+                // Serialize the data to a file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    using (var writer = new BinaryWriter(fileStream))
+                    {
+                        foreach (var assetData in assetsToSave)
+                        {
+                            // Write data in a custom format (binary for efficiency)
+                            writer.Write(assetData.Span);
+                            writer.Write(assetData.Id);
+                            writer.Write(assetData.Name);
+                            writer.Write(assetData.Archive);
+                            writer.Write(assetData.FullPath ?? string.Empty);
+                            writer.Write(assetData.RefPath);
+                            writer.Write(assetData.AssociatedString ?? string.Empty);  // Save the associated string
+                        }
+                    }
+                }
+            }
+        }
+        private void AddFromWWPROJ()
+        {
+            // Create the open file dialog
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "WWProj Files (*.wwproj)|*.wwproj",
+                DefaultExt = ".wwproj",
+                AddExtension = true
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+
+                var assetsFromFile = new List<AssetWWPROJHelper>();
+
+                using (var fileStream = new FileStream(filePath, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(fileStream))
+                    {
+                        while (reader.BaseStream.Position < reader.BaseStream.Length)
+                        {
+                            byte span = reader.ReadByte();
+                            ulong id = reader.ReadUInt64();
+                            string name = reader.ReadString();
+                            string archive = reader.ReadString();
+                            string fullPath = reader.ReadString();
+                            string refPath = reader.ReadString();
+                            string associatedString = reader.ReadString();
+
+                            Asset asset = new Asset
+                            {
+                                Span = span,
+                                Id = id,
+                                Name = name,
+                                Archive = archive,
+                                FullPath = fullPath,
+                                // RefPath is not needed here as it's calculated from Span and Id
+                            };
+
+                            // Add the asset and associated string to the appropriate dictionary
+                            // Here, you can decide if it's to go into _replacedAssets or _addedAssets
+                            _addedAssets[asset] = associatedString;
+                        }
+                    }
+                }
+            }
+        }
+        private void menuItem_ModWWPROJ_Click(object sender, EventArgs e)
+        {
+            if (_replacedAssets.Count > 0 || _addedAssets.Count > 0)
+            {
+                SaveAsWWPROJ();
+            }
+            else
+            {
+                AddFromWWPROJ();
+            }
+        }
         private void discordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(new ProcessStartInfo
@@ -1056,5 +1167,12 @@ namespace SpideyToolbox
         {
             SetEnvironment.Home();
         }
+
+        private void ToolStrip_Information_Click(object sender, EventArgs e)
+        {
+            SetEnvironment.Information();
+        }
+
+        
     }
 }

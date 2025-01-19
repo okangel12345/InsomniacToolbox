@@ -1,4 +1,6 @@
-﻿using SpideyToolbox.Windows;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SpideyToolbox.Windows;
 using System.Reflection.Metadata;
 using System.Windows.Forms;
 
@@ -144,5 +146,28 @@ namespace SpideyToolbox.Utilities
         public string Archive { get; set; }
         public string FullPath = null;
         public string RefPath { get => $"{Span}/{Id:X016}"; }
+    }
+
+    public class AssetWWPROJHelper
+    {
+        public byte Span { get; }
+        public ulong Id { get; }
+        public string Name { get; }
+        public string Archive { get; }
+        public string FullPath { get; }
+        public string RefPath { get; }
+        public string AssociatedString { get; }
+
+        // Constructor to map Asset to AssetDataWithString and include the associated string
+        public AssetWWPROJHelper(Asset asset, string associatedString)
+        {
+            Span = asset.Span;
+            Id = asset.Id;
+            Name = asset.Name;
+            Archive = asset.Archive;
+            FullPath = asset.FullPath;
+            RefPath = $"{Span}/{Id:X016}";
+            AssociatedString = associatedString;  // Store the associated string
+        }
     }
 }

@@ -95,6 +95,12 @@ namespace WebWorks.Utilities
             toolUtils.LoadFormIntoPanel(spideyHome, mainWindow.panel_Main, true);
         }
 
+        public static void Information()
+        {
+            InformationWindow information = new InformationWindow();
+            information.ShowDialog();
+        }
+
         public static void LoadFormIntoPanel(Form form, System.Windows.Forms.Panel panel)
         {
             mainWindow.splitContainer1.Visible = false;
