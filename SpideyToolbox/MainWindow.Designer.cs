@@ -148,6 +148,7 @@
             dataGridView_Files.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView_Files.Size = new Size(624, 508);
             dataGridView_Files.TabIndex = 2;
+            dataGridView_Files.KeyDown += CommandsDataGrid;
             dataGridView_Files.MouseClick += OpenContextMenu;
             // 
             // FileName
@@ -377,9 +378,9 @@
             menuItem_ClearAll.Text = "Clear all";
             menuItem_ClearAll.Click += menuItem_ClearAll_Click;
             // 
-            // menuItem_AddFromJSON
+            // menuItem_WWPROJ_Handle
             // 
-            menuItem_WWPROJ_Handle.Name = "menuItem_AddFromJSON";
+            menuItem_WWPROJ_Handle.Name = "menuItem_WWPROJ_Handle";
             menuItem_WWPROJ_Handle.Size = new Size(225, 22);
             menuItem_WWPROJ_Handle.Text = "Add from .wwproj...";
             menuItem_WWPROJ_Handle.Click += menuItem_ModWWPROJ_Click;

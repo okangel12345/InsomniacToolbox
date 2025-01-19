@@ -13,6 +13,8 @@ namespace WebWorks.Windows
         private System.Action<string, System.Collections.IList> _contextMenuCallback;
         private ObservableCollection<SearchResult> _displayedResults = new();
 
+        MainWindow mainWindow = MainWindow.Instance;
+
         public SearchWindow(List<Asset> assets, Dictionary<string, List<int>> assetsByPath)
         {
             InitializeComponent();
@@ -91,8 +93,12 @@ namespace WebWorks.Windows
 
         private void dataGridView_Files_MouseClick(object sender, MouseEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
             mainWindow.OpenContextMenu(sender, e);
+        }
+
+        private void dataGridView_Files_KeyDown(object sender, KeyEventArgs e)
+        {
+            mainWindow.CommandsDataGrid(sender, e);
         }
     }
 }

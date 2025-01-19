@@ -805,8 +805,9 @@ namespace SpideyToolbox
         private void ToolStrip_ExtractSelected_Click(object sender, EventArgs e)
         {
             var dataGridView = GetCurrent.DataGridView();
+            var selected = dataGridView.SelectedRows.Count;
 
-            if (dataGridView.SelectedRows.Count == 1)
+            if (selected == 1)
             {
                 string assetPath = GetCurrent.AssetsNames()[0];
                 ulong assetID = GetCurrent.AssetsIDs()[0];
@@ -814,7 +815,7 @@ namespace SpideyToolbox
 
                 ExtractOneAssetDialog(assetPath, assetSpan, assetID);
             }
-            else
+            else if (selected > 1)
             {
                 ExtractMultipleAssetsDialog(GetCurrent.AssetsNames(), GetCurrent.AssetsSpans(), GetCurrent.AssetsIDs());
             }
@@ -997,8 +998,7 @@ namespace SpideyToolbox
                             };
 
                             // Add the asset and associated string to the appropriate dictionary
-                            // Here, you can decide if it's to go into _replacedAssets or _addedAssets
-                            _addedAssets[asset] = associatedString;
+                            _replacedAssets[asset] = associatedString;
                         }
                     }
                 }
@@ -1025,7 +1025,7 @@ namespace SpideyToolbox
         }
 
 
-        // Handle right click for context menu
+        // Handle right click and commands for context menu
         //------------------------------------------------------------------------------------------
         public void OpenContextMenu(object sender, MouseEventArgs e)
         {
@@ -1046,6 +1046,15 @@ namespace SpideyToolbox
                     selectedRows = 1;
                 }
 
+                if (selectedRows != 1)
+                {
+                    ToolStrip_ReplaceAsset.Visible = false;
+                }
+                else
+                {
+                    ToolStrip_ReplaceAsset.Visible = true;
+                }
+
                 dataGridView.CurrentCell = dataGridView[hitTestInfo.ColumnIndex, hitTestInfo.RowIndex];
 
                 string assetType = Path.GetExtension(dataGridView.CurrentCell.Value?.ToString() ?? string.Empty);
@@ -1061,6 +1070,18 @@ namespace SpideyToolbox
                 ToolStrip_CopyHash.Text = selectedRows > 1 ? "Copy hashes" : "Copy hash";
 
                 contextMenuStrip1.Show(dataGridView, new Point(e.X, e.Y));
+            }
+        }
+        public void CommandsDataGrid(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.R)
+            {
+                ToolStrip_ReplaceAsset_Click(sender, e);
+            }
+
+            if (e.Control && e.KeyCode == Keys.E)
+            {
+                ToolStrip_ExtractSelected_Click(sender, e);
             }
         }
 
@@ -1172,7 +1193,5 @@ namespace SpideyToolbox
         {
             SetEnvironment.Information();
         }
-
-        
     }
 }
