@@ -3,7 +3,7 @@ using SpideyToolbox.Utilities;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 
-namespace WebWorks.Windows
+namespace WebWorks.Windows.Search
 {
     public partial class SearchWindow : Form
     {
@@ -68,7 +68,7 @@ namespace WebWorks.Windows
                 {
                     if (asset.FullPath != null && MatchesWords(Normalize(asset.FullPath), words))
                     {
-                        dataGridView_Files.Rows.Add(asset.Name, asset.Size, asset.Archive, asset.Span, asset.Id, asset.FullPath, asset.RefPath);
+                        dataGridView_Files.Rows.Add(asset.FullPath, asset.Size, asset.Archive, asset.Span, asset.Id, asset.FullPath, asset.RefPath);
                     }
                     ++i;
                 }
@@ -99,6 +99,11 @@ namespace WebWorks.Windows
         private void dataGridView_Files_KeyDown(object sender, KeyEventArgs e)
         {
             mainWindow.CommandsDataGrid(sender, e);
+        }
+
+        private void SearchWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            ToolUtils.CloseWithCtrlW(this, sender, e);
         }
     }
 }

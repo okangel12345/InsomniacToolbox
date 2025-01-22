@@ -76,6 +76,7 @@
             Controls.Add(SelectButton);
             Controls.Add(WarningMessage);
             Name = "StageSelectorWindow";
+            ShowIcon = false;
             Text = "Select stage...";
             ResumeLayout(false);
             PerformLayout();

@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using WebWorks.Windows.Tools;
 
 namespace SpideyToolbox
 {
@@ -23,7 +24,7 @@ namespace SpideyToolbox
         ToolUtils toolUtils = new ToolUtils();
         public static MainWindow Instance { get; private set; }
 
-        public MainWindow()
+        public MainWindow(string filePath, string tocPath)
         {
             InitializeComponent();
 
@@ -32,6 +33,16 @@ namespace SpideyToolbox
             ToolUtils.ApplyStyle(this, Handle, menuStrip1, contextMenuStrip1);
 
             panel_Main.Dock = DockStyle.Fill;
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                ReadFile(filePath);
+            }
+
+            if (!string.IsNullOrEmpty(tocPath))
+            {
+                StartLoadTOCThread(tocPath);
+            }
         }
 
         // Initialize
@@ -42,12 +53,13 @@ namespace SpideyToolbox
 
         // loaded data
         public static TOCBase? _toc = null;
+        public string _tocPath = null;
         public List<Asset> _assets = new();
         public Dictionary<string, List<int>> _assetsByPath = new();
 
         // replaced data
-        private Dictionary<Asset, string> _replacedAssets = new();
-        private Dictionary<Asset, string> _addedAssets = new();
+        public Dictionary<Asset, string> _replacedAssets = new();
+        public Dictionary<Asset, string> _addedAssets = new();
 
         public string _selectedHashes;
 
@@ -217,9 +229,9 @@ namespace SpideyToolbox
                 }
             }
             catch (ThreadInterruptedException)
-            {} // Do nothing
+            { } // Do nothing
             catch
-            {} // Do nothing
+            { } // Do nothing
         }
         private void Tick()
         {
@@ -239,13 +251,31 @@ namespace SpideyToolbox
 
         // Start loading the TOC
         //------------------------------------------------------------------------------------------
-        private void StartLoadTOCThread(string path)
+
+        public void StartLoadTOCThread(string path)
         {
+            if (_toc != null)
+            {
+                var f = MessageBox.Show("Are you sure you want to open a new TOC? All unsaved progress will be lost.", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (f == DialogResult.Yes)
+                {
+                    Process.Start(Application.ExecutablePath, $"x \"{path}\"");
+                    Application.Exit();
+                    Dispose();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
             // Load settings
             SettingsWindow settingsWindow = new SettingsWindow();
             AppSettings settings = settingsWindow.LoadSettings();
 
             var tocPath = path;
+            _tocPath = path;
 
             // Clear existing fields and lists
             _assets.Clear();
@@ -313,7 +343,7 @@ namespace SpideyToolbox
                             toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
                         });
                     }
-                    catch {}
+                    catch { }
 
                 }
             });
@@ -693,28 +723,49 @@ namespace SpideyToolbox
         #region User Input
         // Load MOD menu
         //------------------------------------------------------------------------------------------
-        private void ToolStrip_Mod_MouseEnter(object sender, EventArgs e)
+        private void ToolStrip_GeneralSettings_MouseEnter(object sender, EventArgs e)
         {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            AppSettings settings = settingsWindow.LoadSettings();
+
             int replacedAssetsCount = _replacedAssets.Count;
             int addedAssetsCount = _addedAssets.Count;
 
+            // Assets
+
             menuItem_ReplacedAssets.Text = $"{replacedAssetsCount} replaced, {addedAssetsCount} new";
 
-            if (replacedAssetsCount > 0 || addedAssetsCount > 0)
-            {
-                menuItem_ClearAll.Enabled = true;
-                menuItem_WWPROJ_Handle.Text = "Save as .wwproj...";
-            }
-            else
-            {
-                menuItem_ClearAll.Enabled = false;
-                menuItem_WWPROJ_Handle.Text = "Add from .wwproj...";
-            }
+            // WWProject
 
-            if (Directory.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "stages")))
-            {
-                menuItem_AddFromStage.Enabled = true;
-            }
+            bool hasAssets = replacedAssetsCount > 0 || addedAssetsCount > 0;
+
+            menuItem_ClearAll.Enabled = hasAssets;
+            menuItem_WWPROJ_Handle.Text = hasAssets ? "Save project as..." : "Open project...";
+
+            // Stages
+
+            string stagesPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "stages");
+            bool stagesExists = Directory.Exists(stagesPath);
+
+            menuItem_AddFromStage.Enabled = stagesExists;
+
+            // TOC loaded
+
+            bool isTocLoaded = _toc != null;
+
+            ToolStrip_Search.Enabled = isTocLoaded;
+            ToolStrip_JumpTo.Enabled = isTocLoaded;
+
+            // Experimental features
+
+            bool isExperimentalEnabled = settings._experimentalFeatures;
+
+            menuItem_WWPROJ_Handle.Visible = isExperimentalEnabled;
+            menuItem_WWPROJ_Handle.Enabled = isExperimentalEnabled;
+
+            toolStripMenuItem1.Visible = isExperimentalEnabled;
+            ToolStrip_QuickGameLaunch.Visible = isExperimentalEnabled;
+            ToolStrip_QuickGameLaunch.Enabled = isExperimentalEnabled;
         }
 
         // Load TOC menu item, Ctrl + O
@@ -740,26 +791,13 @@ namespace SpideyToolbox
         { SetEnvironment.Settings(); }
         private void ToolStrip_Search_Click(object sender, EventArgs e)
         { SetEnvironment.Search(); }
-        private void ToolStrip_Search_MouseEnter(object sender, EventArgs e)
-        {
-            if (_toc != null)
-            {
-                ToolStrip_Search.Enabled = true;
-                ToolStrip_JumpTo.Enabled = true;
-            }
-            else
-            {
-                ToolStrip_Search.Enabled = false;
-                ToolStrip_JumpTo.Enabled = false;
-            }
-        }
         private void ToolStrip_JumpTo_Click(object sender, EventArgs e)
         { SetEnvironment.JumpTo(); }
         private void ToolStrip_Home_Click(object sender, EventArgs e)
         { SetEnvironment.Home(); }
         private void ToolStrip_Information_Click(object sender, EventArgs e)
         { SetEnvironment.Information(); }
-        
+
         // Extract
         private void ToolStrip_ExtractToStage_Click(object sender, EventArgs e)
         { ExtractionMethods.ExtractToStage(); }
@@ -770,14 +808,14 @@ namespace SpideyToolbox
 
         // Copy
         private void ToolStrip_CopyPath_Click(object sender, EventArgs e)
-        { ToolUtils.copyToClipboard(GetCurrent.AssetsFullPath()); }
+        { ToolUtils.copyToClipboard(GetCurrentAssets.Paths()); }
         private void ToolStrip_CopyHash_Click(object sender, EventArgs e)
-        { ToolUtils.copyToClipboard(GetCurrent.AssetsHashes()); }
+        { ToolUtils.copyToClipboard(GetCurrentAssets.Hashes()); }
 
         // Replace
         private void ToolStrip_ReplaceAsset_Click(object sender, EventArgs e)
         {
-            var selected = GetCurrent.AssetsIDs().Count();
+            var selected = GetCurrentAssets.IDs().Count();
             if (selected != 1) return;
 
             OpenFileDialog dialog = new OpenFileDialog();
@@ -793,11 +831,11 @@ namespace SpideyToolbox
 
             string path = dialog.FileName;
 
-            string assetPath = GetCurrent.AssetsFullPath()[0];
-            string assetName = GetCurrent.AssetsNames()[0];
-            byte assetSpan = GetCurrent.AssetsSpans()[0];
-            ulong assetID = GetCurrent.AssetsIDs()[0];
-            string assetArchive = GetCurrent.AssetsArchives()[0];
+            string assetPath = GetCurrentAssets.Paths()[0];
+            string assetName = GetCurrentAssets.Names()[0];
+            byte assetSpan = GetCurrentAssets.Spans()[0];
+            ulong assetID = GetCurrentAssets.IDs()[0];
+            string assetArchive = GetCurrentAssets.Archives()[0];
 
             Asset asset = new Asset();
             asset.Span = assetSpan;
@@ -813,20 +851,20 @@ namespace SpideyToolbox
         //--------------------------------------------------------------------------------------
         private void ToolStrip_ExtractSelected_Click(object sender, EventArgs e)
         {
-            var dataGridView = GetCurrent.DataGridView();
+            var dataGridView = GetCurrentAssets.DataGridView();
             var selected = dataGridView.SelectedRows.Count;
 
             if (selected == 1)
             {
-                string assetPath = GetCurrent.AssetsNames()[0];
-                ulong assetID = GetCurrent.AssetsIDs()[0];
-                byte assetSpan = GetCurrent.AssetsSpans()[0];
+                string assetPath = GetCurrentAssets.Names()[0];
+                ulong assetID = GetCurrentAssets.IDs()[0];
+                byte assetSpan = GetCurrentAssets.Spans()[0];
 
                 ExtractOneAssetDialog(assetPath, assetSpan, assetID);
             }
             else if (selected > 1)
             {
-                ExtractMultipleAssetsDialog(GetCurrent.AssetsNames(), GetCurrent.AssetsSpans(), GetCurrent.AssetsIDs());
+                ExtractMultipleAssetsDialog(GetCurrentAssets.Names(), GetCurrentAssets.Spans(), GetCurrentAssets.IDs());
             }
         }
 
@@ -931,53 +969,7 @@ namespace SpideyToolbox
             {
                 string filePath = saveFileDialog.FileName;
 
-                // Create a list to hold the serialized assets with their associated strings
-                var assetsToSave = new List<AssetWWPROJHelper>();
-
-                // Serialize _replacedAssets (Asset and associated string)
-                foreach (var entry in _replacedAssets)
-                {
-                    assetsToSave.Add(new AssetWWPROJHelper(entry.Key, entry.Value));
-                }
-
-                // Serialize _addedAssets (Asset and associated string)
-                foreach (var entry in _addedAssets)
-                {
-                    assetsToSave.Add(new AssetWWPROJHelper(entry.Key, entry.Value));
-                }
-
-                // Serialize the data to a file
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    using (var writer = new BinaryWriter(fileStream))
-                    {
-                        // Write _replacedAssets
-                        foreach (var entry in _replacedAssets)
-                        {
-                            writer.Write("R"); // Marker for replaced assets
-                            writer.Write(entry.Key.Span);
-                            writer.Write(entry.Key.Id);
-                            writer.Write(entry.Key.Name ?? string.Empty);
-                            writer.Write(entry.Key.Archive ?? string.Empty);
-                            writer.Write(entry.Key.FullPath ?? string.Empty);
-                            writer.Write(entry.Key.RefPath);
-                            writer.Write(entry.Value ?? string.Empty);
-                        }
-
-                        // Write _addedAssets
-                        foreach (var entry in _addedAssets)
-                        {
-                            writer.Write("A"); // Marker for added assets
-                            writer.Write(entry.Key.Span);
-                            writer.Write(entry.Key.Id);
-                            writer.Write(entry.Key.Name ?? string.Empty);
-                            writer.Write(entry.Key.Archive ?? string.Empty);
-                            writer.Write(entry.Key.FullPath ?? string.Empty);
-                            writer.Write(entry.Key.RefPath);
-                            writer.Write(entry.Value ?? string.Empty);
-                        }
-                    }
-                }
+                WWProj.Write(filePath);
             }
         }
         private void AddFromWWPROJ()
@@ -993,53 +985,7 @@ namespace SpideyToolbox
             {
                 string filePath = openFileDialog.FileName;
 
-                var assetsFromFile = new List<AssetWWPROJHelper>();
-
-                using (var fileStream = new FileStream(filePath, FileMode.Open))
-                {
-                    using (var reader = new BinaryReader(fileStream))
-                    {
-                        while (reader.BaseStream.Position < reader.BaseStream.Length)
-                        {
-                            // Read the marker
-                            string marker = reader.ReadString();
-
-                            // Read the asset data
-                            byte span = reader.ReadByte();
-                            ulong id = reader.ReadUInt64();
-                            string name = reader.ReadString();
-                            string archive = reader.ReadString();
-                            string fullPath = reader.ReadString();
-                            string refPath = reader.ReadString();
-                            string associatedString = reader.ReadString();
-
-                            Asset asset = new Asset
-                            {
-                                Span = span,
-                                Id = id,
-                                Name = name,
-                                Archive = archive,
-                                FullPath = fullPath,
-                            };
-
-                            // Determine the target dictionary
-                            if (marker == "R")
-                            {
-                                if (!_replacedAssets.ContainsKey(asset))
-                                {
-                                    _replacedAssets[asset] = associatedString;
-                                }
-                            }
-                            else if (marker == "A")
-                            {
-                                if (!_addedAssets.ContainsKey(asset))
-                                {
-                                    _addedAssets[asset] = associatedString;
-                                }
-                            }
-                        }
-                    }
-                }
+                WWProj.Read(filePath);
             }
         }
         private void menuItem_ModWWPROJ_Click(object sender, EventArgs e)
@@ -1057,7 +1003,7 @@ namespace SpideyToolbox
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = "https://discord.gg/9B2Rf2AP",
+                FileName = "https://discord.gg/",
                 UseShellExecute = true
             });
         }
@@ -1067,7 +1013,7 @@ namespace SpideyToolbox
         //------------------------------------------------------------------------------------------
         public void OpenContextMenu(object sender, MouseEventArgs e)
         {
-            var dataGridView = GetCurrent.DataGridView();
+            var dataGridView = GetCurrentAssets.DataGridView();
 
             int selectedRows = dataGridView.SelectedRows.Count;
             var hitTestInfo = dataGridView.HitTest(e.X, e.Y);
@@ -1137,15 +1083,38 @@ namespace SpideyToolbox
         { SetEnvironment.ModdingTool(); }
 
         // Open with file
-        private void ToolStrip_OpenMaterial_Click(object sender, EventArgs e)
+        private void ToolStrip_OpenAsset_Click(object sender, EventArgs e)
         {
-            SetEnvironment.Spandex();
-            SetEnvironment.spandexForm.Open();
-        }
-        private void ToolStrip_OpenTexture_Click(object sender, EventArgs e)
-        {
-            SetEnvironment.SilkTexture();
-            SetEnvironment.silkTextureForm.Open();
+            using (var f = new OpenFileDialog())
+            {
+                f.Filter = "Supported Assets|*.texture;*.material";
+                f.Title = "Open asset...";
+
+                if (f.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = f.FileName;
+                    string type = Path.GetExtension(filePath).ToLower();
+
+                    switch (type)
+                    {
+                        case ".texture":
+                            SetEnvironment.SilkTexture();
+                            SetEnvironment.silkTextureForm.Open(filePath);
+                            break;
+
+                        case ".material":
+                            SetEnvironment.Spandex();
+                            SetEnvironment.spandexForm.Open(filePath);
+                            break;
+
+                        default:
+                            MessageBox.Show("Unsupported file type selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                    }
+                }
+                else
+                {}
+            }
         }
 
         #endregion
@@ -1304,7 +1273,7 @@ namespace SpideyToolbox
 
                 if (openAssetById)
                 {
-                    foreach (DataGridViewRow assetItem in GetCurrent.DataGridView().Rows)
+                    foreach (DataGridViewRow assetItem in GetCurrentAssets.DataGridView().Rows)
                     {
                         byte assetSpan = assetItem.Cells[3]?.Value is byte span ? span : default;
                         ulong assetId = assetItem.Cells[4]?.Value is ulong id ? id : default;
@@ -1312,26 +1281,51 @@ namespace SpideyToolbox
                         if (assetSpan == assetSpanToOpen && assetId == assetIdToOpen)
                         {
                             assetItem.Selected = true;
-                            GetCurrent.DataGridView().FirstDisplayedScrollingRowIndex = assetItem.Index;
+                            GetCurrentAssets.DataGridView().FirstDisplayedScrollingRowIndex = assetItem.Index;
                             break;
                         }
                     }
                 }
                 else if (openAssetByName)
                 {
-                    foreach (DataGridViewRow assetItem in GetCurrent.DataGridView().Rows)
+                    foreach (DataGridViewRow assetItem in GetCurrentAssets.DataGridView().Rows)
                     {
                         string assetName = assetItem.Cells[0]?.Value.ToString();
 
                         if (assetName == assetNameToOpen)
                         {
                             assetItem.Selected = true;
-                            GetCurrent.DataGridView().FirstDisplayedScrollingRowIndex = assetItem.Index;
+                            GetCurrentAssets.DataGridView().FirstDisplayedScrollingRowIndex = assetItem.Index;
                             break;
                         }
                     }
                 }
             }
+        }
+
+        bool skipHome = false;
+        private void ReadFile(string filePath)
+        {
+            string type = Path.GetExtension(filePath);
+
+            if (type == ".wwproj")
+            {
+                WWProj.Read(filePath);
+            }
+            else if (type == ".material")
+            {
+                SetEnvironment.Spandex();
+                SetEnvironment.spandexForm.Open(filePath);
+                skipHome = true;
+            }
+            else if (type == ".texture")
+            {
+                SetEnvironment.SilkTexture();
+                SetEnvironment.silkTextureForm.Open(filePath);
+                skipHome = true;
+            }
+            else if (filePath == "x")
+            {}
         }
 
         #endregion
@@ -1340,12 +1334,26 @@ namespace SpideyToolbox
         //------------------------------------------------------------------------------------------
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (SetEnvironment.quickGameLaunchForm != null && SetEnvironment.quickGameLaunchForm.IsProcessRunning())
+            {
+                SetEnvironment.quickGameLaunchForm.ConfirmEndGame();
+            }
+
             Process.GetCurrentProcess().Kill();
         }
         private void MainWindow_Load(object sender, EventArgs e)
         {
             LoadPreferences();
-            SetEnvironment.Home();
+
+            if (!skipHome)
+            {
+                SetEnvironment.Home();
+            }
+        }
+
+        private void ToolStrip_QuickGameLaunch_Click(object sender, EventArgs e)
+        {
+            SetEnvironment.QuickGameLaunch();
         }
     }
 }

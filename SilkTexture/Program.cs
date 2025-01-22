@@ -18,14 +18,23 @@ namespace SpideyTextureScaler
                 new Output(),
             };
 
+            string filePath;
+
             if (args.Length > 0)
             {
-                return p.ConsoleMain(args);
-            }
+                filePath = args[0];
 
-            ApplicationConfiguration.Initialize();
-            Application.Run(new SpideyTexture(p));
-            return 0;
+                ApplicationConfiguration.Initialize();
+                Application.Run(new SpideyTexture(p, false, filePath));
+                return 0;
+            }
+            else
+            {
+                filePath = "";
+                ApplicationConfiguration.Initialize();
+                Application.Run(new SpideyTexture(p, false, filePath));
+                return 0;
+            }
         }
 
         [DllImport("kernel32.dll")]

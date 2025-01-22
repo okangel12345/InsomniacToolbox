@@ -7,8 +7,9 @@ namespace SpideyTextureScaler
         Program program;
         string lastsourcedir, lastddsdir, lastoutputdir;
         bool _openWith;
+        string openingWith;
 
-        public SpideyTexture(Program p, bool OpenWith = false)
+        public SpideyTexture(Program p, bool OpenWith = false, string filePath = "")
         {
             InitializeComponent();
             program = p;
@@ -25,6 +26,12 @@ namespace SpideyTextureScaler
             this.Text = $"Silk Texture v{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
 
             ModdingLab.ToolboxStyle.ApplyToolBoxStyle(this, Handle);
+
+            if (filePath != "")
+            {
+                MessageBox.Show("Opening");
+                openingWith = filePath;
+            }
         }
 
         private void UpdateControls()
@@ -59,27 +66,30 @@ namespace SpideyTextureScaler
             Open();
         }
 
-        public void Open()
+        public void Open(string fileName = "")
         {
+            this.Text = $"Silk Texture v{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
+            string output;
+            int errorrow = 0;
+            int errorcol = -1;
+            var obj = (Source)program.texturestats[0];
+            obj.ResetVisible();
+            ClearErrorRow(dataGridView1.Rows[0]);
+
             var f = new OpenFileDialog();
             f.Filter = "Low or high res texture|*.texture";
             if (lastsourcedir is not null)
                 f.InitialDirectory = lastsourcedir;
-            var obj = (Source)program.texturestats[0];
-            obj.ResetVisible();
-            ClearErrorRow(dataGridView1.Rows[0]);
-            string output;
-            int errorrow = 0;
-            int errorcol = -1;
+            f.FileName = fileName;
 
-            this.Text = $"Silk Texture v{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             saveddsbutton.Enabled = false;
-            if (f.ShowDialog() == DialogResult.OK)
+            if (f.FileName != "" || f.ShowDialog() == DialogResult.OK)
             {
                 program.texturestats[0] = obj = new Source();
+                string filePath = f.FileName;
 
-                obj.Filename = f.FileName;
-                lastsourcedir = Path.GetDirectoryName(f.FileName) + @"\";
+                obj.Filename = filePath;
+                lastsourcedir = Path.GetDirectoryName(filePath) + @"\";
                 if (obj.Filename.ToLower().EndsWith(".hd.texture") || obj.Filename.ToLower().EndsWith("_hd.texture"))
                 {
                     var h = obj.Filename.Substring(0, obj.Filename.Length - ".hd.texture".Length) + ".texture";
@@ -500,6 +510,10 @@ namespace SpideyTextureScaler
             if (_openWith)
             {
                 Open();
+            }
+            if (openingWith != null)
+            {
+                Open(openingWith);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace SpideyToolbox.Windows
 {
-    public partial class SpideyHome : UserControl
+    public partial class SpideyHome : Form
     {
         public SpideyHome()
         {

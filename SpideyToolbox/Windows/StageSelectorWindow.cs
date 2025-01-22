@@ -16,11 +16,14 @@ namespace WebWorks.Windows
 {
     public partial class StageSelectorWindow : Form
     {
+        // Initiliaze
+
         private ObservableCollection<string> _stages = new();
         private bool _verified = false;
-
         public bool OnlyExisting = false;
         public string Stage = null;
+
+        //------------------------------------------------------------------------------------------
         public StageSelectorWindow()
         {
             InitializeComponent();
@@ -46,6 +49,8 @@ namespace WebWorks.Windows
             Verify();
         }
 
+        // Verify stage folder exists
+        //------------------------------------------------------------------------------------------
         private bool Verify()
         {
             _verified = false;
@@ -70,6 +75,8 @@ namespace WebWorks.Windows
             return _verified;
         }
 
+        // Select a stage folder
+        //------------------------------------------------------------------------------------------
         private void Select()
         {
             if (!Verify()) return;
@@ -78,6 +85,8 @@ namespace WebWorks.Windows
             Close();
         }
 
+        // User input
+        //------------------------------------------------------------------------------------------
         private void SelectButton_Click(object sender, EventArgs e)
         {
             Select();

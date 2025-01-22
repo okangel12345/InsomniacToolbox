@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebWorks.Windows;
+using WebWorks.Windows.Tools;
 
 namespace WebWorks.Utilities
 {
@@ -42,6 +43,7 @@ namespace WebWorks.Utilities
             catch (Exception ex) { MessageBox.Show("Error" + ex); }
         }
 
+        // Extract to stage
         //------------------------------------------------------------------------------------------
         public static void ExtractToStage()
         {
@@ -57,9 +59,9 @@ namespace WebWorks.Utilities
             var stagePath = Path.Combine(path, window.Stage);
             if (!Directory.Exists(stagePath)) Directory.CreateDirectory(stagePath);
 
-            string[] assetPaths = GetCurrent.AssetsFullPath();
-            ulong[] assetIDs = GetCurrent.AssetsIDs();
-            byte[] spans = GetCurrent.AssetsSpans();
+            string[] assetPaths = GetCurrentAssets.Paths();
+            ulong[] assetIDs = GetCurrentAssets.IDs();
+            byte[] spans = GetCurrentAssets.Spans();
 
             for (int i = 0; i < assetPaths.Length; i++)
             {
@@ -68,7 +70,7 @@ namespace WebWorks.Utilities
             }
         }
 
-        // Extract as DDS, ASCII
+        // Extract as DDS
         //------------------------------------------------------------------------------------------
         public static void ExtractAsDDS()
         {
@@ -76,7 +78,7 @@ namespace WebWorks.Utilities
             string tempTexture = tempName + ".texture";
             string tempHDTexture = tempName + ".hd.texture";
             string tempDDS = tempName + ".dds";
-            string assetName = Path.GetFileNameWithoutExtension(GetCurrent.AssetsNames()[0]) + ".dds";
+            string assetName = Path.GetFileNameWithoutExtension(GetCurrentAssets.Names()[0]) + ".dds";
 
             using (var saveFileDialog = new SaveFileDialog
             {
@@ -95,8 +97,8 @@ namespace WebWorks.Utilities
 
                     try
                     {
-                        ExtractAsset(GetCurrent.AssetsIDs()[0], 0, silkInput, MainWindow._toc);
-                        ExtractAsset(GetCurrent.AssetsIDs()[0], 1, silkHD, MainWindow._toc);
+                        ExtractAsset(GetCurrentAssets.IDs()[0], 0, silkInput, MainWindow._toc);
+                        ExtractAsset(GetCurrentAssets.IDs()[0], 1, silkHD, MainWindow._toc);
 
                         var p = new SpideyTextureScaler.Program
                         {
@@ -122,6 +124,9 @@ namespace WebWorks.Utilities
                 }
             }
         }
+
+        // Extract as ASCII
+        //------------------------------------------------------------------------------------------
         public static void ExtractAsASCII()
         {
             bool toci29;
@@ -131,9 +136,9 @@ namespace WebWorks.Utilities
             else
             { toci29 = false; }
 
-            string assetPath = GetCurrent.AssetsNames()[0];
-            ulong assetID = GetCurrent.AssetsIDs()[0];
-            byte assetSpan = GetCurrent.AssetsSpans()[0];
+            string assetPath = GetCurrentAssets.Names()[0];
+            ulong assetID = GetCurrentAssets.IDs()[0];
+            byte assetSpan = GetCurrentAssets.Spans()[0];
 
             ExtractAsciiWindow extractAsciiWindow = new ExtractAsciiWindow(assetPath, toci29, assetID, assetSpan, MainWindow._toc);
 

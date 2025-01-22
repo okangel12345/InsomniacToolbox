@@ -21,6 +21,7 @@ namespace WebWorks.Windows
 {
     public partial class PackStageWindow : Form
     {
+        //------------------------------------------------------------------------------------------
         private bool _initializing = true;
         private Dictionary<Asset, string> _mainWindowReplacedAssets;
         private Dictionary<Asset, string> _mainWindowAddedAssets;
@@ -34,6 +35,7 @@ namespace WebWorks.Windows
         private List<Game> _games = new();
         private BindingList<AssetReplace> _assets = new BindingList<AssetReplace>();
 
+        //------------------------------------------------------------------------------------------
         class Game
         {
             public string Name { get; set; }
@@ -52,6 +54,7 @@ namespace WebWorks.Windows
             public string ReplacingFileNameToolTip { get; set; }
         }
 
+        //------------------------------------------------------------------------------------------
         public PackStageWindow(Dictionary<Asset, string> replacedAssets, Dictionary<Asset, string> addedAssets, TOCBase toc)
         {
             InitializeComponent();
@@ -78,6 +81,7 @@ namespace WebWorks.Windows
             UpdateAssetsList();
         }
 
+        //------------------------------------------------------------------------------------------
         private void MakeGamesSelector(TOCBase toc)
         {
             _games.Clear();
@@ -99,7 +103,7 @@ namespace WebWorks.Windows
             _gameId = selected.Id;
             GameComboBox.SelectedItem = selected;
         }
-
+        //------------------------------------------------------------------------------------------
         private void UpdateAssetsList()
         {
             _assets.Clear();
@@ -154,9 +158,9 @@ namespace WebWorks.Windows
         private void DescriptionTextBox_TextChanged(object sender, EventArgs e)
         {
             if (_initializing) return;
-            _description = DescriptionTextBox.Text;
+            //_description = DescriptionTextBox.Text;
 
-            DescriptionTextBox.ForeColor = Color.FromKnownColor(KnownColor.Control);
+            //DescriptionTextBox.ForeColor = Color.FromKnownColor(KnownColor.Control);
 
             RefreshButton();
         }
@@ -247,7 +251,7 @@ namespace WebWorks.Windows
                         ["game"] = _gameId,
                         ["name"] = _modName,
                         ["author"] = _author,
-                        ["description"] = _description,
+                        //["description"] = _description,
                         ["headerless"] = headerless
                     };
 
@@ -310,7 +314,7 @@ namespace WebWorks.Windows
 
                     if (selectedImage.Width == 320 && selectedImage.Height == 180)
                     {
-                        CoverPictureBox.Image = selectedImage;
+                        //CoverPictureBox.Image = selectedImage;
 
                         _cover = openFileDialog.FileName;
                     }

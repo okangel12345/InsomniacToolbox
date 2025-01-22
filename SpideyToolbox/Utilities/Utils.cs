@@ -36,6 +36,17 @@ namespace SpideyToolbox.Utilities
             panel.Controls.Add(userControl);
 
         }
+
+        // Load form into panel
+        //------------------------------------------------------------------------------------------
+        public static void CloseWithCtrlW(Form form, object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.W)
+            {
+                form.Close();
+            }
+        }
+
         // Load Message form
         //------------------------------------------------------------------------------------------
         public DialogResult ToolMessage(string message, string caption, int buttons, int icons)

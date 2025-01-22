@@ -15,7 +15,7 @@ namespace DAT1
     public abstract class TOCBase
     {
         public DAT1 Dat1 = null;
-        protected string AssetArchivePath = null;
+        public string AssetArchivePath = null;
         public bool IsLoaded => Dat1 != null;
 
         public AssetIdsSection AssetIdsSection => Dat1.Section<AssetIdsSection>(AssetIdsSection.TAG);

@@ -1,4 +1,5 @@
 ﻿using DAT1;
+using SpideyToolbox;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ using System.Windows.Forms;
 using WebWorks.Utilities;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace WebWorks.Windows
+namespace WebWorks.Windows.Tools
 {
     public partial class ExtractAsciiWindow : Form
     {
@@ -68,6 +69,13 @@ namespace WebWorks.Windows
                 return;
             }
 
+            // Fill in spider.ini
+            string archivePath = MainWindow._toc.AssetArchivePath;
+            string filePath = Path.Combine(WebWorksMisc, "spider.ini");
+
+            File.WriteAllText(filePath, archivePath);
+
+            // Dialog and hash
             string hash = textBox_FileHash.Text.Trim();
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();

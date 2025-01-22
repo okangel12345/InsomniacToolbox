@@ -54,5 +54,10 @@ namespace WebWorks.Windows
         {
             Hash(textBox_Path1.Text);
         }
+
+        private void HashTool_KeyDown(object sender, KeyEventArgs e)
+        {
+            ToolUtils.CloseWithCtrlW(this, sender, e);
+        }
     }
 }

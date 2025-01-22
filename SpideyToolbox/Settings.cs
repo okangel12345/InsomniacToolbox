@@ -7,6 +7,7 @@
         public bool _autoloadRecent { get; set; }
         public bool _loadtocModded { get; set; }
         public string _authorName { get; set; }
+        public bool _experimentalFeatures { get; set; }
 
         // Save most recent TOCs
         //------------------------------------------------------------------------------------------

@@ -35,7 +35,7 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.Black;
-            pictureBox1.BackgroundImage = WebWorks.Windows.FormIcons.Wallpaper_Quads_PNG;
+            pictureBox1.BackgroundImage = WebWorks.Windows.FormIcons.Wallpaper_Quads_PNG1;
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.ErrorImage = null;

@@ -133,9 +133,29 @@ namespace WebWorks.Windows {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Wallpaper_Blank_Png {
+            get {
+                object obj = ResourceManager.GetObject("Wallpaper_Blank_Png", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Wallpaper_Quads_PNG {
             get {
                 object obj = ResourceManager.GetObject("Wallpaper_Quads_PNG", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Wallpaper_Quads_PNG1 {
+            get {
+                object obj = ResourceManager.GetObject("Wallpaper_Quads_PNG1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -55,8 +55,8 @@
             toolStripMenuItem6 = new ToolStripMenuItem();
             hashesToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem9 = new ToolStripMenuItem();
-            ToolStrip_OpenMaterial = new ToolStripMenuItem();
-            ToolStrip_OpenTexture = new ToolStripMenuItem();
+            menuItem_WWPROJ_Handle = new ToolStripMenuItem();
+            ToolStrip_OpenAsset = new ToolStripMenuItem();
             toolStripMenuItem10 = new ToolStripMenuItem();
             ToolStrip_Settings = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
@@ -65,7 +65,6 @@
             modToolStripMenuItem = new ToolStripMenuItem();
             menuItem_ReplacedAssets = new ToolStripMenuItem();
             menuItem_ClearAll = new ToolStripMenuItem();
-            menuItem_WWPROJ_Handle = new ToolStripMenuItem();
             toolStripMenuItem13 = new ToolStripMenuItem();
             menuItem_AddFromStage = new ToolStripMenuItem();
             menuItem_PackAsStage = new ToolStripMenuItem();
@@ -76,6 +75,8 @@
             ToolStrip_ModdingTool = new ToolStripMenuItem();
             ToolStrip_SpandexTool = new ToolStripMenuItem();
             ToolStrip_SilkTextureTool = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            ToolStrip_QuickGameLaunch = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             ToolStrip_Information = new ToolStripMenuItem();
             discordToolStripMenuItem = new ToolStripMenuItem();
@@ -238,10 +239,12 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_LoadToc, loadRecentToolStripMenuItem, hashesToolStripMenuItem, toolStripMenuItem9, ToolStrip_OpenMaterial, ToolStrip_OpenTexture, toolStripMenuItem10, ToolStrip_Settings });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_LoadToc, loadRecentToolStripMenuItem, hashesToolStripMenuItem, toolStripMenuItem9, menuItem_WWPROJ_Handle, ToolStrip_OpenAsset, toolStripMenuItem10, ToolStrip_Settings });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.Click += ToolStrip_GeneralSettings_MouseEnter;
+            fileToolStripMenuItem.MouseEnter += ToolStrip_GeneralSettings_MouseEnter;
             // 
             // ToolStrip_LoadToc
             // 
@@ -305,21 +308,21 @@
             toolStripMenuItem9.Size = new Size(212, 22);
             toolStripMenuItem9.Text = "───────────────────────";
             // 
-            // ToolStrip_OpenMaterial
+            // menuItem_WWPROJ_Handle
             // 
-            ToolStrip_OpenMaterial.Name = "ToolStrip_OpenMaterial";
-            ToolStrip_OpenMaterial.ShortcutKeys = Keys.Control | Keys.M;
-            ToolStrip_OpenMaterial.Size = new Size(212, 22);
-            ToolStrip_OpenMaterial.Text = "Open .material...";
-            ToolStrip_OpenMaterial.Click += ToolStrip_OpenMaterial_Click;
+            menuItem_WWPROJ_Handle.Image = WebWorks.Windows.MiscIcons.AddFrom;
+            menuItem_WWPROJ_Handle.Name = "menuItem_WWPROJ_Handle";
+            menuItem_WWPROJ_Handle.Size = new Size(212, 22);
+            menuItem_WWPROJ_Handle.Text = "Open project...";
+            menuItem_WWPROJ_Handle.Click += menuItem_ModWWPROJ_Click;
             // 
-            // ToolStrip_OpenTexture
+            // ToolStrip_OpenAsset
             // 
-            ToolStrip_OpenTexture.Name = "ToolStrip_OpenTexture";
-            ToolStrip_OpenTexture.ShortcutKeys = Keys.Control | Keys.T;
-            ToolStrip_OpenTexture.Size = new Size(212, 22);
-            ToolStrip_OpenTexture.Text = "Open .texture...";
-            ToolStrip_OpenTexture.Click += ToolStrip_OpenTexture_Click;
+            ToolStrip_OpenAsset.Name = "ToolStrip_OpenAsset";
+            ToolStrip_OpenAsset.ShortcutKeys = Keys.Control | Keys.M;
+            ToolStrip_OpenAsset.Size = new Size(212, 22);
+            ToolStrip_OpenAsset.Text = "Open asset...";
+            ToolStrip_OpenAsset.Click += ToolStrip_OpenAsset_Click;
             // 
             // toolStripMenuItem10
             // 
@@ -343,7 +346,8 @@
             searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             searchToolStripMenuItem.Size = new Size(54, 20);
             searchToolStripMenuItem.Text = "Search";
-            searchToolStripMenuItem.MouseEnter += ToolStrip_Search_MouseEnter;
+            searchToolStripMenuItem.Click += ToolStrip_GeneralSettings_MouseEnter;
+            searchToolStripMenuItem.MouseEnter += ToolStrip_GeneralSettings_MouseEnter;
             // 
             // ToolStrip_Search
             // 
@@ -363,11 +367,12 @@
             // 
             // modToolStripMenuItem
             // 
-            modToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuItem_ReplacedAssets, menuItem_ClearAll, menuItem_WWPROJ_Handle, toolStripMenuItem13, menuItem_AddFromStage, menuItem_PackAsStage });
+            modToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuItem_ReplacedAssets, menuItem_ClearAll, toolStripMenuItem13, menuItem_AddFromStage, menuItem_PackAsStage });
             modToolStripMenuItem.Name = "modToolStripMenuItem";
             modToolStripMenuItem.Size = new Size(44, 20);
             modToolStripMenuItem.Text = "Mod";
-            modToolStripMenuItem.MouseEnter += ToolStrip_Mod_MouseEnter;
+            modToolStripMenuItem.Click += ToolStrip_GeneralSettings_MouseEnter;
+            modToolStripMenuItem.MouseEnter += ToolStrip_GeneralSettings_MouseEnter;
             // 
             // menuItem_ReplacedAssets
             // 
@@ -383,14 +388,6 @@
             menuItem_ClearAll.Size = new Size(225, 22);
             menuItem_ClearAll.Text = "Clear all";
             menuItem_ClearAll.Click += menuItem_ClearAll_Click;
-            // 
-            // menuItem_WWPROJ_Handle
-            // 
-            menuItem_WWPROJ_Handle.Image = WebWorks.Windows.MiscIcons.AddFrom;
-            menuItem_WWPROJ_Handle.Name = "menuItem_WWPROJ_Handle";
-            menuItem_WWPROJ_Handle.Size = new Size(225, 22);
-            menuItem_WWPROJ_Handle.Text = "Add from .wwproj...";
-            menuItem_WWPROJ_Handle.Click += menuItem_ModWWPROJ_Click;
             // 
             // toolStripMenuItem13
             // 
@@ -417,16 +414,18 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Home, ToolStrip_HashTool, toolStripMenuItem11, ToolStrip_ModdingTool, ToolStrip_SpandexTool, ToolStrip_SilkTextureTool });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStrip_Home, ToolStrip_HashTool, toolStripMenuItem11, ToolStrip_ModdingTool, ToolStrip_SpandexTool, ToolStrip_SilkTextureTool, toolStripMenuItem1, ToolStrip_QuickGameLaunch });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(46, 20);
             toolsToolStripMenuItem.Text = "Tools";
+            toolsToolStripMenuItem.Click += ToolStrip_GeneralSettings_MouseEnter;
+            toolsToolStripMenuItem.MouseEnter += ToolStrip_GeneralSettings_MouseEnter;
             // 
             // ToolStrip_Home
             // 
             ToolStrip_Home.Image = WebWorks.Windows.MiscIcons.Home;
             ToolStrip_Home.Name = "ToolStrip_Home";
-            ToolStrip_Home.Size = new Size(215, 22);
+            ToolStrip_Home.Size = new Size(221, 22);
             ToolStrip_Home.Text = "Home";
             ToolStrip_Home.Click += ToolStrip_Home_Click;
             // 
@@ -435,7 +434,7 @@
             ToolStrip_HashTool.Image = WebWorks.Windows.MiscIcons.HashTool;
             ToolStrip_HashTool.Name = "ToolStrip_HashTool";
             ToolStrip_HashTool.ShortcutKeys = Keys.Control | Keys.H;
-            ToolStrip_HashTool.Size = new Size(215, 22);
+            ToolStrip_HashTool.Size = new Size(221, 22);
             ToolStrip_HashTool.Text = "Calculate hash...    ";
             ToolStrip_HashTool.Click += ToolStrip_HashTool_Click;
             // 
@@ -443,15 +442,15 @@
             // 
             toolStripMenuItem11.Enabled = false;
             toolStripMenuItem11.Name = "toolStripMenuItem11";
-            toolStripMenuItem11.Size = new Size(215, 22);
-            toolStripMenuItem11.Text = "───────────────────────";
+            toolStripMenuItem11.Size = new Size(221, 22);
+            toolStripMenuItem11.Text = "Environment ────────────";
             // 
             // ToolStrip_ModdingTool
             // 
             ToolStrip_ModdingTool.Image = WebWorks.Windows.FormIcons.WebWorks_IconBlue;
             ToolStrip_ModdingTool.Name = "ToolStrip_ModdingTool";
             ToolStrip_ModdingTool.ShortcutKeys = Keys.Control | Keys.D1;
-            ToolStrip_ModdingTool.Size = new Size(215, 22);
+            ToolStrip_ModdingTool.Size = new Size(221, 22);
             ToolStrip_ModdingTool.Text = "Modding Tool";
             ToolStrip_ModdingTool.Click += ToolStrip_ModdingTool_Click;
             // 
@@ -460,7 +459,7 @@
             ToolStrip_SpandexTool.Image = WebWorks.Windows.FormIcons.Spandex_Icon;
             ToolStrip_SpandexTool.Name = "ToolStrip_SpandexTool";
             ToolStrip_SpandexTool.ShortcutKeys = Keys.Control | Keys.D2;
-            ToolStrip_SpandexTool.Size = new Size(215, 22);
+            ToolStrip_SpandexTool.Size = new Size(221, 22);
             ToolStrip_SpandexTool.Text = "Spandex";
             ToolStrip_SpandexTool.Click += ToolStrip_SpandexTool_Click;
             // 
@@ -469,9 +468,25 @@
             ToolStrip_SilkTextureTool.Image = WebWorks.Windows.FormIcons.SilkTexture_Icon;
             ToolStrip_SilkTextureTool.Name = "ToolStrip_SilkTextureTool";
             ToolStrip_SilkTextureTool.ShortcutKeys = Keys.Control | Keys.D3;
-            ToolStrip_SilkTextureTool.Size = new Size(215, 22);
+            ToolStrip_SilkTextureTool.Size = new Size(221, 22);
             ToolStrip_SilkTextureTool.Text = "Silk Texture";
             ToolStrip_SilkTextureTool.Click += ToolStrip_SilkTextureTool_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Enabled = false;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(221, 22);
+            toolStripMenuItem1.Text = "Experimental ────────────";
+            // 
+            // ToolStrip_QuickGameLaunch
+            // 
+            ToolStrip_QuickGameLaunch.Name = "ToolStrip_QuickGameLaunch";
+            ToolStrip_QuickGameLaunch.ShortcutKeys = Keys.Control | Keys.D4;
+            ToolStrip_QuickGameLaunch.Size = new Size(221, 22);
+            ToolStrip_QuickGameLaunch.Text = "Quick Game Launch";
+            ToolStrip_QuickGameLaunch.Click += ToolStrip_QuickGameLaunch_Click;
+            ToolStrip_QuickGameLaunch.MouseEnter += ToolStrip_GeneralSettings_MouseEnter;
             // 
             // helpToolStripMenuItem
             // 
@@ -611,6 +626,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "MainWindow";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "WebWorks";
             FormClosing += MainWindow_FormClosing;
             Load += MainWindow_Load;
@@ -661,8 +677,7 @@
         private ToolStripMenuItem ToolStrip_SpandexTool;
         private ToolStripMenuItem ToolStrip_SilkTextureTool;
         private ToolStripMenuItem ToolStrip_ModdingTool;
-        private ToolStripMenuItem ToolStrip_OpenMaterial;
-        private ToolStripMenuItem ToolStrip_OpenTexture;
+        private ToolStripMenuItem ToolStrip_OpenAsset;
         private ToolStripMenuItem toolStripMenuItem9;
         private ToolStripMenuItem toolStripMenuItem11;
         private ToolStripMenuItem menuItem_ReplacedAssets;
@@ -692,5 +707,7 @@
         private ToolStripMenuItem ToolStrip_Home;
         private ToolStripMenuItem ToolStrip_Search;
         private ToolStripMenuItem menuItem_WWPROJ_Handle;
+        private ToolStripMenuItem ToolStrip_QuickGameLaunch;
+        private ToolStripMenuItem toolStripMenuItem1;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace WebWorks.Windows
+﻿namespace WebWorks.Windows.Tools
 {
     partial class ExtractAsciiWindow
     {
@@ -152,6 +152,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ExtractAsciiWindow";
+            ShowIcon = false;
             Text = "Extract .ascii - ";
             ResumeLayout(false);
             PerformLayout();

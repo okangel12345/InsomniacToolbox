@@ -1,4 +1,4 @@
-﻿namespace WebWorks.Windows
+﻿namespace WebWorks.Windows.Search
 {
     partial class SearchWindow
     {
@@ -154,8 +154,11 @@
             Controls.Add(btn_Search);
             Controls.Add(SearchTextBox);
             ForeColor = SystemColors.Control;
+            KeyPreview = true;
             Name = "SearchWindow";
+            ShowIcon = false;
             Text = "Search Window";
+            KeyDown += SearchWindow_KeyDown;
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).EndInit();
             ResumeLayout(false);
             PerformLayout();

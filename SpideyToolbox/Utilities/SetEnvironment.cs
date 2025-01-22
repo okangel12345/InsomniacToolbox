@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebWorks.Windows;
+using WebWorks.Windows.Search;
+using WebWorks.Windows.Tools;
 
 namespace WebWorks.Utilities
 {
@@ -18,8 +20,10 @@ namespace WebWorks.Utilities
     internal class SetEnvironment {
 
         // Initialize forms
+
         public static Spandex.Form1 spandexForm;
         public static SpideyTexture silkTextureForm;
+        public static QuickGameLaunch quickGameLaunchForm;
         static MainWindow mainWindow = MainWindow.Instance;
 
         // Main tools
@@ -60,6 +64,16 @@ namespace WebWorks.Utilities
             mainWindow.panel_Main.Visible = false;
             mainWindow.splitContainer1.Visible = true;
             mainWindow.Text = "WebWorks - Modding Tool";
+        }
+        public static void QuickGameLaunch()
+        {
+            if (quickGameLaunchForm == null || quickGameLaunchForm.IsDisposed)
+            {
+                quickGameLaunchForm = new QuickGameLaunch();
+            }
+
+            LoadFormIntoPanel(quickGameLaunchForm, mainWindow.panel_Main);
+            mainWindow.Text = "WebWorks - Quick Game Launch (Experimental)";
         }
 
         // Search and jump to
@@ -108,7 +122,7 @@ namespace WebWorks.Utilities
             ToolUtils toolUtils = new ToolUtils();
             SpideyHome spideyHome = new SpideyHome();
 
-            toolUtils.LoadFormIntoPanel(spideyHome, mainWindow.panel_Main, true);
+            LoadFormIntoPanel(spideyHome, mainWindow.panel_Main);
         }
 
         // Helper methods

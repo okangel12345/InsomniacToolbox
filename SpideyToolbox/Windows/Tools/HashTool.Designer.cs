@@ -150,9 +150,12 @@
             Controls.Add(textBox_Path1);
             ForeColor = SystemColors.Control;
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            KeyPreview = true;
             MaximizeBox = false;
             Name = "HashTool";
+            ShowIcon = false;
             Text = "Hash Tool";
+            KeyDown += HashTool_KeyDown;
             ResumeLayout(false);
             PerformLayout();
         }

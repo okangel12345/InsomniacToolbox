@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             btn_Save = new Button();
             textBox_AuthorName = new TextBox();
             check_AutoLoadToc = new CheckBox();
             label1 = new Label();
             check_LoadModToc = new CheckBox();
+            check_ExperimentalFeatures = new CheckBox();
             SuspendLayout();
             // 
             // btn_Save
@@ -92,20 +94,36 @@
             check_LoadModToc.Text = "Load modded TOCs";
             check_LoadModToc.UseVisualStyleBackColor = true;
             // 
+            // check_ExperimentalFeatures
+            // 
+            check_ExperimentalFeatures.AutoSize = true;
+            check_ExperimentalFeatures.Checked = true;
+            check_ExperimentalFeatures.CheckState = CheckState.Checked;
+            check_ExperimentalFeatures.ForeColor = SystemColors.Control;
+            check_ExperimentalFeatures.Location = new Point(12, 144);
+            check_ExperimentalFeatures.Name = "check_ExperimentalFeatures";
+            check_ExperimentalFeatures.Size = new Size(178, 19);
+            check_ExperimentalFeatures.TabIndex = 6;
+            check_ExperimentalFeatures.Text = "Enable experimental features";
+            check_ExperimentalFeatures.UseVisualStyleBackColor = true;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(12, 12, 12);
-            ClientSize = new Size(404, 157);
+            ClientSize = new Size(404, 174);
+            Controls.Add(check_ExperimentalFeatures);
             Controls.Add(check_LoadModToc);
             Controls.Add(label1);
             Controls.Add(textBox_AuthorName);
             Controls.Add(check_AutoLoadToc);
             Controls.Add(btn_Save);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "SettingsWindow";
-            Text = "Preferences";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Settings";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -116,5 +134,6 @@
         private TextBox textBox_AuthorName;
         private Label label1;
         private CheckBox check_LoadModToc;
+        private CheckBox check_ExperimentalFeatures;
     }
 }

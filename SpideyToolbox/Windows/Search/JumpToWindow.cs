@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
-namespace WebWorks.Windows
+namespace WebWorks.Windows.Search
 {
     public partial class JumpToWindow : Form
     {
@@ -43,6 +43,11 @@ namespace WebWorks.Windows
             Jumped = true;
             Path = PathTextBox.Text;
             Close();
+        }
+
+        private void JumpToWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            ToolUtils.CloseWithCtrlW(this, sender, e);
         }
     }
 }

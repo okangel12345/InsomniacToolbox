@@ -1,4 +1,4 @@
-﻿namespace WebWorks.Windows
+﻿namespace WebWorks.Windows.Search
 {
     partial class JumpToWindow
     {
@@ -62,8 +62,11 @@
             Controls.Add(JumpButton);
             Controls.Add(PathTextBox);
             ForeColor = Color.FromArgb(12, 12, 12);
+            KeyPreview = true;
             Name = "JumpToWindow";
+            ShowIcon = false;
             Text = "Jump to...";
+            KeyDown += JumpToWindow_KeyDown;
             ResumeLayout(false);
             PerformLayout();
         }

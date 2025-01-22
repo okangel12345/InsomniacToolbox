@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebWorks.Utilities
 {
-    public class GetCurrent
+    public class GetCurrentAssets
     {
         // Get currently selected / active DataGridView and Asset parameters
         //------------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ namespace WebWorks.Utilities
         // 5    - Full path
         // 6    - Ref
 
-        public static ulong[] AssetsIDs()
+        public static ulong[] IDs()
         {
             var dataGridView = DataGridView();
             ulong[] assetIDs = new ulong[dataGridView.SelectedRows.Count];
@@ -64,7 +64,7 @@ namespace WebWorks.Utilities
 
             return assetIDs;
         }
-        public static string[] AssetsNames()
+        public static string[] Names()
         {
             var dataGridView = DataGridView();
             string[] assetNames = new string[dataGridView.SelectedRows.Count];
@@ -77,7 +77,7 @@ namespace WebWorks.Utilities
             }
             return assetNames;
         }
-        public static byte[] AssetsSpans()
+        public static byte[] Spans()
         {
             var dataGridView = DataGridView();
             byte[] spans = new byte[dataGridView.SelectedRows.Count];
@@ -90,7 +90,7 @@ namespace WebWorks.Utilities
             }
             return spans;
         }
-        public static string[] AssetsArchives()
+        public static string[] Archives()
         {
             var dataGridView = DataGridView();
             string[] assetArchives = new string[dataGridView.SelectedRows.Count];
@@ -103,7 +103,7 @@ namespace WebWorks.Utilities
             }
             return assetArchives;
         }
-        public static string[] AssetsFullPath()
+        public static string[] Paths()
         {
             var dataGridView = DataGridView();
             string[] assetPaths = new string[dataGridView.SelectedRows.Count];
@@ -117,7 +117,7 @@ namespace WebWorks.Utilities
                 }
                 else
                 {
-                    assetPaths[i] = AssetsNames()[i];
+                    assetPaths[i] = Names()[i];
                 }
                 
 
@@ -125,7 +125,7 @@ namespace WebWorks.Utilities
             }
             return assetPaths;
         }
-        public static string[] AssetsHashes()
+        public static string[] Hashes()
         {
             var dataGridView = DataGridView();
             string[] assetHashes = new string[dataGridView.SelectedRows.Count];

@@ -6,11 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>WebWorks.ico</ApplicationIcon>
+    <ApplicationIcon>WebWorks_PNG.ico</ApplicationIcon>
+    <UseWPF>False</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="WebWorks.ico" />
+    <Content Include="WebWorks_PNG.ico" />
   </ItemGroup>
 
   <ItemGroup>
