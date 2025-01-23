@@ -38,6 +38,7 @@ namespace WebWorks.Utilities
                         string archive = reader.ReadString();
                         string fullPath = reader.ReadString();
                         string refPath = reader.ReadString();
+                        byte hasHeader = reader.ReadByte();
                         string associatedString = reader.ReadString();
 
                         Asset asset = new Asset
@@ -47,6 +48,7 @@ namespace WebWorks.Utilities
                             Name = name,
                             Archive = archive,
                             FullPath = fullPath,
+                            HasHeader = hasHeader != 0
                         };
 
                         // Determine the target dictionary
@@ -101,6 +103,7 @@ namespace WebWorks.Utilities
                         writer.Write(entry.Key.Archive ?? string.Empty);
                         writer.Write(entry.Key.FullPath ?? string.Empty);
                         writer.Write(entry.Key.RefPath);
+                        writer.Write(entry.Key.HasHeader);
                         writer.Write(entry.Value ?? string.Empty);
                     }
 
@@ -114,6 +117,7 @@ namespace WebWorks.Utilities
                         writer.Write(entry.Key.Archive ?? string.Empty);
                         writer.Write(entry.Key.FullPath ?? string.Empty);
                         writer.Write(entry.Key.RefPath);
+                        writer.Write(entry.Key.HasHeader);
                         writer.Write(entry.Value ?? string.Empty);
                     }
                 }

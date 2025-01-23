@@ -1,4 +1,4 @@
-namespace ModdingLab
+﻿namespace ModdingLab
 {
     internal static class Program
     {

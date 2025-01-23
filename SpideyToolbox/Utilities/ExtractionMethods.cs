@@ -136,11 +136,9 @@ namespace WebWorks.Utilities
             else
             { toci29 = false; }
 
-            string assetPath = GetCurrentAssets.Names()[0];
-            ulong assetID = GetCurrentAssets.IDs()[0];
-            byte assetSpan = GetCurrentAssets.Spans()[0];
+            var asset = GetCurrentAssets.Assets()[0];
 
-            ExtractAsciiWindow extractAsciiWindow = new ExtractAsciiWindow(assetPath, toci29, assetID, assetSpan, MainWindow._toc);
+            ExtractAsciiWindow extractAsciiWindow = new ExtractAsciiWindow(asset.FullPath, toci29, asset.Id, asset.Span, MainWindow._toc);
 
             extractAsciiWindow.ShowDialog();
         }

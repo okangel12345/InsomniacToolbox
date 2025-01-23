@@ -39,6 +39,7 @@
             assetID = new DataGridViewTextBoxColumn();
             assetPath = new DataGridViewTextBoxColumn();
             assetRef = new DataGridViewTextBoxColumn();
+            HasHeader = new DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).BeginInit();
             SuspendLayout();
             // 
@@ -82,7 +83,7 @@
             dataGridView_Files.AllowUserToResizeRows = false;
             dataGridView_Files.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView_Files.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span, assetID, assetPath, assetRef });
+            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span, assetID, assetPath, assetRef, HasHeader });
             dataGridView_Files.Location = new Point(12, 41);
             dataGridView_Files.Name = "dataGridView_Files";
             dataGridView_Files.RowHeadersVisible = false;
@@ -143,6 +144,12 @@
             assetRef.Name = "assetRef";
             assetRef.Visible = false;
             // 
+            // HasHeader
+            // 
+            HasHeader.HeaderText = "HasHeader";
+            HasHeader.Name = "HasHeader";
+            HasHeader.Visible = false;
+            // 
             // SearchWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -177,5 +184,6 @@
         private DataGridViewTextBoxColumn assetID;
         private DataGridViewTextBoxColumn assetPath;
         private DataGridViewTextBoxColumn assetRef;
+        private DataGridViewCheckBoxColumn HasHeader;
     }
 }

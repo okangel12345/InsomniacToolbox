@@ -14,6 +14,9 @@ using System.Windows.Controls;
 using Newtonsoft.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using WebWorks.Windows.Tools;
+using WebWorks.Windows.Asserts;
+using DAT1.Sections.TOC;
+using System.Text;
 
 namespace SpideyToolbox
 {
@@ -67,7 +70,6 @@ namespace SpideyToolbox
 
         // Load user settings
         //------------------------------------------------------------------------------------------
-
         private void LoadPreferences()
         {
             OverlayHeaderLabel.Text = "";
@@ -205,9 +207,9 @@ namespace SpideyToolbox
 
         #endregion
 
+        #region Tick
         // Load Ticks
         //------------------------------------------------------------------------------------------
-        #region Tick
         private void StartTickThread()
         {
             _tickThread = new Thread(TickThread)
@@ -249,14 +251,18 @@ namespace SpideyToolbox
 
         #region LoadTOC
 
-        // Start loading the TOC
-        //------------------------------------------------------------------------------------------
-
+        //-----------------------------------------------------------------------------------------
+        //  Start loading the TOC
+        //-----------------------------------------------------------------------------------------
         public void StartLoadTOCThread(string path)
         {
+            // Restart application with new TOC
             if (_toc != null)
             {
-                var f = MessageBox.Show("Are you sure you want to open a new TOC? All unsaved progress will be lost.", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var f = MessageBox.Show("Are you sure you want to open a new TOC? All unsaved progress will be lost.",
+                                        "Warning",
+                                        MessageBoxButtons.YesNo,
+                                        MessageBoxIcon.Warning);
 
                 if (f == DialogResult.Yes)
                 {
@@ -270,9 +276,12 @@ namespace SpideyToolbox
                 }
             }
 
-            // Load settings
+            // Load and save settings
             SettingsWindow settingsWindow = new SettingsWindow();
             AppSettings settings = settingsWindow.LoadSettings();
+
+            SaveRecentTXT(path);
+            LoadRecentMenus();
 
             var tocPath = path;
             _tocPath = path;
@@ -289,14 +298,7 @@ namespace SpideyToolbox
             // Set home environment
             SetEnvironment.Home();
 
-            this.Invoke(() =>
-            {
-                SaveRecentTXT(path);
-                LoadRecentMenus();
-            });
-
-            // Load modded TOC, default to toc.BAK
-
+            // Load original TOC file (toc.BAK) created by Overstrike
             if (!settings._loadtocModded)
             {
                 string gameFolder = Path.GetDirectoryName(path);
@@ -312,15 +314,16 @@ namespace SpideyToolbox
                 }
             }
 
+            // Verify file exists
             if (!File.Exists(tocPath))
             {
-                toolUtils.ToolMessage($"TOC file \"{tocPath}\" not found.", "Error", 0, 0);
+                MessageBox.Show($"TOC file \"{tocPath}\" not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-
+            //-------------------------------------------------------------------------------------
             // Start a new thread for TOC loading
-            //--------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------
             Thread thread = new(() =>
             {
                 try
@@ -340,20 +343,22 @@ namespace SpideyToolbox
                     {
                         this.Invoke(() =>
                         {
-                            toolUtils.ToolMessage($"An error occurred while loading the TOC: {ex.Message}", "Error", 0, 1);
+                            MessageBox.Show($"An error occurred while loading the TOC: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         });
                     }
-                    catch { }
+                    catch {}
 
                 }
             });
 
+            // Add thread
             _taskThreads.Add(thread);
             thread.Start();
         }
 
-        // Start loading the TOC file
-        //------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
+        // Load TOC file method
+        //-----------------------------------------------------------------------------------------
         private void LoadTOC(string path)
         {
             // Start loading and set environment
@@ -362,8 +367,6 @@ namespace SpideyToolbox
                 OverlayHeaderLabel.Text = $"Loading '{Path.GetFileName(path)}'...";
                 OverlayOperationLabel.Text = "-";
 
-                SetEnvironment.Home();
-
                 menuStrip1.Visible = false;
             });
 
@@ -371,6 +374,7 @@ namespace SpideyToolbox
             _toc = LoadTOCFile(path);
             if (_toc == null) return;
 
+            // List archive names
             var archiveNames = new List<string>();
             for (uint i = 0; i < _toc.GetArchivesCount(); ++i)
             {
@@ -384,9 +388,9 @@ namespace SpideyToolbox
                 archiveNames.Add(fn);
             }
 
+            //-------------------------------------------------------------------------------------
             // Start getting assets
-            //--------------------------------------------------------------------------------------
-
+            //-------------------------------------------------------------------------------------
             int progress = 0;
             int progressTotal = _toc.AssetIdsSection.Values.Count;
             byte spanIndex = 0;
@@ -426,25 +430,26 @@ namespace SpideyToolbox
 
             this.Invoke(() => OverlayOperationLabel.Text = "-");
 
+            //-------------------------------------------------------------------------------------
             // Load known hashes
-            //--------------------------------------------------------------------------------------
-
+            //-------------------------------------------------------------------------------------
             var appdir = AppDomain.CurrentDomain.BaseDirectory;
-
             var selectedHashes = hashesToolStripMenuItem.DropDownItems
                                     .OfType<ToolStripMenuItem>()
                                     .FirstOrDefault(item => item.Checked)?.Text;
 
             _selectedHashes = selectedHashes;
 
+            // Default to hashes.txt if selected is null
             if (selectedHashes == null)
             {
                 selectedHashes = "hashes.txt";
             }
 
+            // Build hashes path and use it
             var hashes_fn = Path.Combine(appdir, selectedHashes);
-
             var knownHashes = new Dictionary<ulong, string>();
+
             knownHashes.Clear();
 
             if (File.Exists(hashes_fn))
@@ -485,9 +490,9 @@ namespace SpideyToolbox
 
             this.Invoke(() => OverlayOperationLabel.Text = "-");
 
+            //-------------------------------------------------------------------------------------
             // Add paths to build the tree
-            //--------------------------------------------------------------------------------------
-
+            //-------------------------------------------------------------------------------------
             var root = new TreeNode("Root");
             root.Nodes.Clear();
 
@@ -544,7 +549,9 @@ namespace SpideyToolbox
                 }
             }
 
-            //--------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------
+            // Sort all nodes
+            //-------------------------------------------------------------------------------------
             this.Invoke((MethodInvoker)delegate
             {
                 if (root != null)
@@ -568,8 +575,9 @@ namespace SpideyToolbox
                 }
             }
 
-            //--------------------------------------------------------------------------------------
-
+            //-------------------------------------------------------------------------------------
+            // Handle UNKNOWN and WEM assets
+            //-------------------------------------------------------------------------------------
             var unknown = root.Nodes["[UNKNOWN]"];
             var wems = root.Nodes["[WEM]"];
 
@@ -594,8 +602,9 @@ namespace SpideyToolbox
                 }
             }
 
+            //-------------------------------------------------------------------------------------
             // Populate TreeView
-            //--------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------
             this.Invoke(() =>
             {
                 TreeView_Assets.Nodes.Clear();
@@ -617,6 +626,7 @@ namespace SpideyToolbox
             });
         }
 
+        //------------------------------------------------------------------------------------------
         // Identify TOC file
         //------------------------------------------------------------------------------------------
         private static TOCBase? LoadTOCFile(string tocPath)
@@ -642,7 +652,10 @@ namespace SpideyToolbox
 
         #region Handle tree view
 
+        //------------------------------------------------------------------------------------------
+        //
         // Show assets from folder in Data Grid
+        //
         //------------------------------------------------------------------------------------------
         private void TreeView_Assets_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -677,6 +690,7 @@ namespace SpideyToolbox
             OverlayHeaderLabel.Text = "Current directory: " + fullPath;
         }
 
+        //------------------------------------------------------------------------------------------
         // Populate the grid view
         //------------------------------------------------------------------------------------------
         private void PopulateDataGridForNode(string folderPath)
@@ -694,23 +708,8 @@ namespace SpideyToolbox
                     var archive = asset.Archive;
                     var span = asset.Span.ToString();
                     var size = asset.Size;
-                    string displaySize;
 
-                    // Dynamically update size
-                    if (size >= 1024 * 1024) // 1 MB or more
-                    {
-                        displaySize = $"{size / (1024.0 * 1024.0):F2} MB";
-                    }
-                    else if (size >= 1024) // 1 KB or more
-                    {
-                        displaySize = $"{size / 1024.0:F2} KB";
-                    }
-                    else // Less than 1 KB
-                    {
-                        displaySize = $"{size} bytes";
-                    }
-
-                    dataGridView_Files.Rows.Add(asset.Name, displaySize, archive, span, asset.Id, asset.FullPath, asset.RefPath);
+                    dataGridView_Files.Rows.Add(asset.Name, asset.SizeFormatted, archive, span, asset.Id, asset.FullPath, asset.RefPath, asset.HasHeader);
                 }
             }
 
@@ -732,32 +731,27 @@ namespace SpideyToolbox
             int addedAssetsCount = _addedAssets.Count;
 
             // Assets
-
             menuItem_ReplacedAssets.Text = $"{replacedAssetsCount} replaced, {addedAssetsCount} new";
 
             // WWProject
-
             bool hasAssets = replacedAssetsCount > 0 || addedAssetsCount > 0;
 
             menuItem_ClearAll.Enabled = hasAssets;
             menuItem_WWPROJ_Handle.Text = hasAssets ? "Save project as..." : "Open project...";
 
             // Stages
-
             string stagesPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "stages");
             bool stagesExists = Directory.Exists(stagesPath);
 
             menuItem_AddFromStage.Enabled = stagesExists;
 
             // TOC loaded
-
             bool isTocLoaded = _toc != null;
 
             ToolStrip_Search.Enabled = isTocLoaded;
             ToolStrip_JumpTo.Enabled = isTocLoaded;
 
             // Experimental features
-
             bool isExperimentalEnabled = settings._experimentalFeatures;
 
             menuItem_WWPROJ_Handle.Visible = isExperimentalEnabled;
@@ -831,20 +825,20 @@ namespace SpideyToolbox
 
             string path = dialog.FileName;
 
-            string assetPath = GetCurrentAssets.Paths()[0];
-            string assetName = GetCurrentAssets.Names()[0];
-            byte assetSpan = GetCurrentAssets.Spans()[0];
-            ulong assetID = GetCurrentAssets.IDs()[0];
-            string assetArchive = GetCurrentAssets.Archives()[0];
+            Asset asset = GetCurrentAssets.Assets()[0];
 
-            Asset asset = new Asset();
-            asset.Span = assetSpan;
-            asset.Id = assetID;
-            asset.Name = assetName;
-            asset.FullPath = assetPath;
-            asset.Archive = assetArchive;
+            var existingAsset = _replacedAssets.FirstOrDefault(a => a.Key.Id == asset.Id);
 
-            _replacedAssets.Set(asset, path);
+            if (existingAsset.Key != null)
+            {
+                // Update the existing asset
+                _replacedAssets[existingAsset.Key] = path;
+            }
+            else
+            {
+                // Add the new asset
+                _replacedAssets.Set(asset, path);
+            }
         }
 
         // Extract all selected asset rows
@@ -856,11 +850,8 @@ namespace SpideyToolbox
 
             if (selected == 1)
             {
-                string assetPath = GetCurrentAssets.Names()[0];
-                ulong assetID = GetCurrentAssets.IDs()[0];
-                byte assetSpan = GetCurrentAssets.Spans()[0];
-
-                ExtractOneAssetDialog(assetPath, assetSpan, assetID);
+                var asset = GetCurrentAssets.Assets()[0];
+                ExtractOneAssetDialog(asset.Name, asset.Span, asset.Id);
             }
             else if (selected > 1)
             {

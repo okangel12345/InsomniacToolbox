@@ -35,13 +35,6 @@
             OverlayOperationLabel = new ToolStripStatusLabel();
             TreeView_Assets = new TreeView();
             dataGridView_Files = new DataGridView();
-            FileName = new DataGridViewTextBoxColumn();
-            Size = new DataGridViewTextBoxColumn();
-            Archive = new DataGridViewTextBoxColumn();
-            Span = new DataGridViewTextBoxColumn();
-            assetID = new DataGridViewTextBoxColumn();
-            assetPath = new DataGridViewTextBoxColumn();
-            assetRef = new DataGridViewTextBoxColumn();
             splitContainer1 = new SplitContainer();
             panel_Main = new Panel();
             menuStrip1 = new MenuStrip();
@@ -91,6 +84,14 @@
             toolStripMenuItem8 = new ToolStripMenuItem();
             ToolStrip_CopyPath = new ToolStripMenuItem();
             ToolStrip_CopyHash = new ToolStripMenuItem();
+            FileName = new DataGridViewTextBoxColumn();
+            Size = new DataGridViewTextBoxColumn();
+            Archive = new DataGridViewTextBoxColumn();
+            Span = new DataGridViewTextBoxColumn();
+            assetID = new DataGridViewTextBoxColumn();
+            assetPath = new DataGridViewTextBoxColumn();
+            assetRef = new DataGridViewTextBoxColumn();
+            HasHeader = new DataGridViewCheckBoxColumn();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Files).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -141,7 +142,7 @@
             dataGridView_Files.AllowUserToDeleteRows = false;
             dataGridView_Files.AllowUserToResizeRows = false;
             dataGridView_Files.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span, assetID, assetPath, assetRef });
+            dataGridView_Files.Columns.AddRange(new DataGridViewColumn[] { FileName, Size, Archive, Span, assetID, assetPath, assetRef, HasHeader });
             dataGridView_Files.Dock = DockStyle.Fill;
             dataGridView_Files.Location = new Point(0, 0);
             dataGridView_Files.Name = "dataGridView_Files";
@@ -151,57 +152,6 @@
             dataGridView_Files.TabIndex = 2;
             dataGridView_Files.KeyDown += CommandsDataGrid;
             dataGridView_Files.MouseClick += OpenContextMenu;
-            // 
-            // FileName
-            // 
-            FileName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            FileName.FillWeight = 45F;
-            FileName.HeaderText = "Assets";
-            FileName.MinimumWidth = 50;
-            FileName.Name = "FileName";
-            FileName.ReadOnly = true;
-            // 
-            // Size
-            // 
-            Size.FillWeight = 25F;
-            Size.HeaderText = "Size";
-            Size.Name = "Size";
-            Size.ReadOnly = true;
-            Size.Width = 75;
-            // 
-            // Archive
-            // 
-            Archive.FillWeight = 19F;
-            Archive.HeaderText = "Archive";
-            Archive.Name = "Archive";
-            Archive.ReadOnly = true;
-            // 
-            // Span
-            // 
-            Span.FillWeight = 6F;
-            Span.HeaderText = "Span";
-            Span.Name = "Span";
-            Span.ReadOnly = true;
-            Span.Width = 75;
-            // 
-            // assetID
-            // 
-            assetID.HeaderText = "assetID";
-            assetID.Name = "assetID";
-            assetID.Visible = false;
-            assetID.Width = 5;
-            // 
-            // assetPath
-            // 
-            assetPath.HeaderText = "assetPath";
-            assetPath.Name = "assetPath";
-            assetPath.Visible = false;
-            // 
-            // assetRef
-            // 
-            assetRef.HeaderText = "assetRef";
-            assetRef.Name = "assetRef";
-            assetRef.Visible = false;
             // 
             // splitContainer1
             // 
@@ -612,6 +562,63 @@
             ToolStrip_CopyHash.Text = "Copy hash";
             ToolStrip_CopyHash.Click += ToolStrip_CopyHash_Click;
             // 
+            // FileName
+            // 
+            FileName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            FileName.FillWeight = 45F;
+            FileName.HeaderText = "Assets";
+            FileName.MinimumWidth = 50;
+            FileName.Name = "FileName";
+            FileName.ReadOnly = true;
+            // 
+            // Size
+            // 
+            Size.FillWeight = 25F;
+            Size.HeaderText = "Size";
+            Size.Name = "Size";
+            Size.ReadOnly = true;
+            Size.Width = 75;
+            // 
+            // Archive
+            // 
+            Archive.FillWeight = 19F;
+            Archive.HeaderText = "Archive";
+            Archive.Name = "Archive";
+            Archive.ReadOnly = true;
+            // 
+            // Span
+            // 
+            Span.FillWeight = 6F;
+            Span.HeaderText = "Span";
+            Span.Name = "Span";
+            Span.ReadOnly = true;
+            Span.Width = 75;
+            // 
+            // assetID
+            // 
+            assetID.HeaderText = "assetID";
+            assetID.Name = "assetID";
+            assetID.Visible = false;
+            assetID.Width = 5;
+            // 
+            // assetPath
+            // 
+            assetPath.HeaderText = "assetPath";
+            assetPath.Name = "assetPath";
+            assetPath.Visible = false;
+            // 
+            // assetRef
+            // 
+            assetRef.HeaderText = "assetRef";
+            assetRef.Name = "assetRef";
+            assetRef.Visible = false;
+            // 
+            // HasHeader
+            // 
+            HasHeader.HeaderText = "HasHeader";
+            HasHeader.Name = "HasHeader";
+            HasHeader.Visible = false;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -687,13 +694,6 @@
         private ToolStripMenuItem ToolStrip_Settings;
         private ToolStripMenuItem toolStripMenuItem10;
         private ToolStripMenuItem toolStripMenuItem13;
-        private DataGridViewTextBoxColumn FileName;
-        private DataGridViewTextBoxColumn Size;
-        private DataGridViewTextBoxColumn Archive;
-        private DataGridViewTextBoxColumn Span;
-        private DataGridViewTextBoxColumn assetID;
-        private DataGridViewTextBoxColumn assetPath;
-        private DataGridViewTextBoxColumn assetRef;
         public ContextMenuStrip contextMenuStrip1;
         public ToolStripMenuItem ToolStrip_ExtractToStage;
         public ToolStripMenuItem ToolStrip_ReplaceAsset;
@@ -709,5 +709,13 @@
         private ToolStripMenuItem menuItem_WWPROJ_Handle;
         private ToolStripMenuItem ToolStrip_QuickGameLaunch;
         private ToolStripMenuItem toolStripMenuItem1;
+        private DataGridViewTextBoxColumn FileName;
+        private DataGridViewTextBoxColumn Size;
+        private DataGridViewTextBoxColumn Archive;
+        private DataGridViewTextBoxColumn Span;
+        private DataGridViewTextBoxColumn assetID;
+        private DataGridViewTextBoxColumn assetPath;
+        private DataGridViewTextBoxColumn assetRef;
+        private DataGridViewCheckBoxColumn HasHeader;
     }
 }

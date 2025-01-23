@@ -53,7 +53,7 @@
             NameTextBox.BackColor = Color.FromArgb(22, 22, 22);
             NameTextBox.BorderStyle = BorderStyle.FixedSingle;
             NameTextBox.ForeColor = SystemColors.Control;
-            NameTextBox.Location = new Point(60, 30);
+            NameTextBox.Location = new Point(60, 12);
             NameTextBox.Name = "NameTextBox";
             NameTextBox.Size = new Size(687, 23);
             NameTextBox.TabIndex = 1;
@@ -65,7 +65,7 @@
             AuthorTextBox.BackColor = Color.FromArgb(22, 22, 22);
             AuthorTextBox.BorderStyle = BorderStyle.FixedSingle;
             AuthorTextBox.ForeColor = SystemColors.Control;
-            AuthorTextBox.Location = new Point(60, 59);
+            AuthorTextBox.Location = new Point(60, 41);
             AuthorTextBox.Name = "AuthorTextBox";
             AuthorTextBox.Size = new Size(687, 23);
             AuthorTextBox.TabIndex = 4;
@@ -78,7 +78,7 @@
             GameComboBox.FlatStyle = FlatStyle.Flat;
             GameComboBox.ForeColor = SystemColors.Control;
             GameComboBox.FormattingEnabled = true;
-            GameComboBox.Location = new Point(60, 88);
+            GameComboBox.Location = new Point(60, 70);
             GameComboBox.Name = "GameComboBox";
             GameComboBox.Size = new Size(687, 23);
             GameComboBox.TabIndex = 5;
@@ -143,7 +143,7 @@
             // 
             label1.AutoSize = true;
             label1.ForeColor = SystemColors.ActiveBorder;
-            label1.Location = new Point(12, 38);
+            label1.Location = new Point(12, 20);
             label1.Name = "label1";
             label1.Size = new Size(42, 15);
             label1.TabIndex = 10;
@@ -153,7 +153,7 @@
             // 
             label2.AutoSize = true;
             label2.ForeColor = SystemColors.ActiveBorder;
-            label2.Location = new Point(12, 67);
+            label2.Location = new Point(12, 49);
             label2.Name = "label2";
             label2.Size = new Size(47, 15);
             label2.TabIndex = 11;
@@ -163,7 +163,7 @@
             // 
             label3.AutoSize = true;
             label3.ForeColor = SystemColors.ActiveBorder;
-            label3.Location = new Point(12, 96);
+            label3.Location = new Point(12, 78);
             label3.Name = "label3";
             label3.Size = new Size(41, 15);
             label3.TabIndex = 12;

@@ -77,23 +77,22 @@ namespace WebWorks.Windows.Tools
 
             // Dialog and hash
             string hash = textBox_FileHash.Text.Trim();
-
+            
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Ascii File (*.ascii)|*.ascii";
+            saveFileDialog.FileName = Path.GetFileNameWithoutExtension(textBox_FilePath.Text) + ".ascii";
             saveFileDialog.DefaultExt = "*.ascii";
             saveFileDialog.InitialDirectory = Path.Combine(WebWorksMisc);
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFilePath = saveFileDialog.FileName;
+                string fileName = Path.GetFileNameWithoutExtension(selectedFilePath);
+                string directoryName = Path.GetDirectoryName(selectedFilePath); 
 
-                if (!selectedFilePath.EndsWith(".ascii", StringComparison.OrdinalIgnoreCase))
-                {
-                    selectedFilePath += ".ascii";
-                }
+                string finalSelectedPath = Path.Combine(directoryName, fileName);
 
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(selectedFilePath);
-                string arguments = $"{hash} {fileNameWithoutExtension}";
+                string arguments = $"{hash} \"{finalSelectedPath}\"";
 
                 // Execute the command
                 try
@@ -107,62 +106,15 @@ namespace WebWorks.Windows.Tools
                     process.Start();
                     process.WaitForExit(); // Wait for the process to complete before proceeding
 
-                    // Move the file to the user's selected location
-                    string destinationFilePath = selectedFilePath;
+                    richTextBox_Log.AppendText($"Running {Path.GetFileName(sm2Extract)}");
+                    richTextBox_Log.AppendText($"\nAsset hash: {hash}");
+                    richTextBox_Log.AppendText($"\nOutput file: {selectedFilePath}");
 
-                    // Assuming the file was created in the Utilities\ModelTool\PS5 directory (you may need to adjust based on the actual behavior)
-                    string sourceFilePath = Path.Combine(WebWorksMisc, Path.GetFileName(selectedFilePath));
-
-                    // Move the model file if it exists, replace it if already exists
-                    if (File.Exists(sourceFilePath))
-                    {
-                        // Delete the destination file if it already exists
-                        if (sourceFilePath != destinationFilePath)
-                        {
-                            if (File.Exists(destinationFilePath))
-                            {
-                                File.Delete(destinationFilePath);
-                            }
-                        }
-
-                        File.Move(sourceFilePath, destinationFilePath);
-                    }
-                    else
-                    {
-                        richTextBox_Log.Text = $"The model file was not created at the expected location: {sourceFilePath}";
-                        return;
-                    }
-
-                    // Move the _materials.txt file
-                    string materialsFileName = fileNameWithoutExtension + "_materials.txt";
-                    string materialsFilePath = Path.Combine(WebWorksMisc, materialsFileName);
-
-                    if (File.Exists(materialsFilePath))
-                    {
-                        string destinationMaterialsFilePath = Path.Combine(Path.GetDirectoryName(destinationFilePath), materialsFileName);
-
-                        // Delete the materials file if it already exists
-                        if (destinationMaterialsFilePath != materialsFilePath)
-                        {
-                            if (File.Exists(destinationMaterialsFilePath))
-                            {
-                                File.Delete(destinationMaterialsFilePath);
-                            }
-                        }
-                        File.Move(materialsFilePath, destinationMaterialsFilePath);
-                    }
-                    else
-                    {
-                        richTextBox_Log.AppendText($"The materials file was not created at the expected location: {materialsFilePath}");
-                        return;
-                    }
-
-                    // Inform the user of the successful operation
-                    richTextBox_Log.Text = ($"Files successfully saved to: {destinationFilePath}\nMaterials file: {Path.Combine(Path.GetDirectoryName(destinationFilePath), materialsFileName)}");
+                    richTextBox_Log.AppendText($"\n\nFile successfully created!");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error executing command: {ex.Message}", "Execution Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    richTextBox_Log.AppendText($"Error executing command: {ex.Message}");
                 }
             }
         }
@@ -175,9 +127,9 @@ namespace WebWorks.Windows.Tools
                 File.Delete(outputPath);
             }
 
-            Debug.WriteLine("Extracting with ALERT");
+            richTextBox_Log.AppendText("Extracting with ALERT");
 
-            Debug.WriteLine($"Extracting {_assetID}, with span {_assetSpan}, to {outputPath}");
+            richTextBox_Log.AppendText($"\nExtracting {_assetID}, with span {_assetSpan}, to {outputPath}");
 
             ExtractionMethods.ExtractAsset(_assetID, _assetSpan, outputPath, _toc);
 
@@ -198,8 +150,6 @@ namespace WebWorks.Windows.Tools
 
                 try
                 {
-                    Debug.WriteLine("Running process!");
-
                     Process process = new Process();
                     process.StartInfo.FileName = sm1ModelTool;
                     process.StartInfo.Arguments = arguments;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpideyToolbox.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,39 @@ namespace WebWorks.Utilities
         // 4    - ID
         // 5    - Full path
         // 6    - Ref
+        // 7    - HasHeader
 
+        public static Asset[] Assets()
+        {
+            var spans = Spans();
+            var ids = IDs();
+            var hasHeaders = HasHeader();
+            var names = Names();
+            var archives = Archives();
+            var paths = Paths();
+
+            int assetCount = spans.Length;
+
+            Asset[] assets = new Asset[assetCount];
+
+            for (int i = 0; i < assetCount; i++)
+            {
+                // Create each asset
+                assets[i] = new Asset
+                {
+                    Span = spans[i],
+                    Id = ids[i],
+                    HasHeader = hasHeaders[i],
+                    Name = names[i],
+                    Archive = archives[i],
+                    FullPath = paths[i]
+                };
+            }
+
+            return assets;
+        }
+
+        //------------------------------------------------------------------------------------------
         public static ulong[] IDs()
         {
             var dataGridView = DataGridView();
@@ -137,6 +170,20 @@ namespace WebWorks.Utilities
                 i++;
             }
             return assetHashes;
+        }
+        public static bool[] HasHeader()
+        {
+            var dataGridView = DataGridView();
+            bool[] hasHeader = new bool[dataGridView.SelectedRows.Count];
+            int i = 0;
+
+            foreach (DataGridViewRow selectedRow in dataGridView.SelectedRows)
+            {
+                object cellValue = selectedRow.Cells[7].Value;
+                hasHeader[i] = cellValue != null && cellValue is bool value && value;
+                i++;
+            }
+            return hasHeader;
         }
     }
 }

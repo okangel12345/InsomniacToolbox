@@ -68,7 +68,7 @@ namespace WebWorks.Windows.Search
                 {
                     if (asset.FullPath != null && MatchesWords(Normalize(asset.FullPath), words))
                     {
-                        dataGridView_Files.Rows.Add(asset.FullPath, asset.Size, asset.Archive, asset.Span, asset.Id, asset.FullPath, asset.RefPath);
+                        dataGridView_Files.Rows.Add(asset.FullPath, asset.Size, asset.Archive, asset.Span, asset.Id, asset.FullPath, asset.RefPath, asset.HasHeader);
                     }
                     ++i;
                 }

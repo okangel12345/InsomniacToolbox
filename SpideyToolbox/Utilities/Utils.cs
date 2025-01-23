@@ -47,23 +47,6 @@ namespace SpideyToolbox.Utilities
             }
         }
 
-        // Load Message form
-        //------------------------------------------------------------------------------------------
-        public DialogResult ToolMessage(string message, string caption, int buttons, int icons)
-        {
-            var popMessage = new PopMessage(message, caption, buttons, icons);
-
-            popMessage.ShowDialog();
-            return popMessage.DialogResult;
-        }
-
-        public static DialogResult StaticToolMessage(string message, string caption, int buttons, int icons)
-        {
-            var popMessage = new PopMessage(message, caption, buttons, icons);
-
-            popMessage.ShowDialog();
-            return popMessage.DialogResult;
-        }
         // Load Style with settings
         //------------------------------------------------------------------------------------------
         public static void ApplyStyle(Control parent, IntPtr hwnd, MenuStrip strip = null, ContextMenuStrip context = null)

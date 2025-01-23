@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spandex", "Spandex\Spandex.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilkTex", "SilkTexture\SilkTex.csproj", "{6FFC741E-B699-4B4F-8D64-56826EF76DB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModdingLab", "ModdingLab\ModdingLab.csproj", "{54B4CBCE-E360-4811-8BEC-B98F5D091421}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModdingLab", "ModdingLab\ModdingLab.csproj", "{54B4CBCE-E360-4811-8BEC-B98F5D091421}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
